@@ -1,0 +1,45 @@
+package novi.nl.wildplukrecepten.dto.outputDto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import novi.nl.wildplukrecepten.models.Ingredient;
+import novi.nl.wildplukrecepten.models.Instruction;
+import novi.nl.wildplukrecepten.models.Recipe;
+import novi.nl.wildplukrecepten.models.Utensil;
+
+import javax.validation.constraints.NotBlank;
+import java.util.Collection;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+
+@Getter
+@Setter
+public class RecipeOutputDto {
+    private Long id;
+    @NotBlank
+    private String title;
+    private String sub_title;
+    private Integer persons;
+    private String source;
+    private String story;
+
+    private String prep_time;
+    private String cook_time;
+
+    Collection<Recipe.MonthsEnum> months;
+    Collection<Recipe.TagsEnum> tags;
+
+    //relations............................................
+    @JsonIncludeProperties({"amount", "unit", "ingredient_name"})
+    private List<Ingredient> ingredients;
+    @JsonIncludeProperties("instruction")
+    private List<Instruction> instructions;
+    @JsonIncludeProperties("utensil")
+    private List<Utensil> utensils;
+}
