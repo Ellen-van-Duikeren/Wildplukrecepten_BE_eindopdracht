@@ -26,5 +26,4 @@ public class Authority implements Serializable {
     @Id
     @Column(nullable = false)
     private String authority;
-
 }

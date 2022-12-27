@@ -18,7 +18,7 @@ import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
 //patchmapping nog toevoegen
 
-
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;
@@ -57,11 +57,11 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipeOutputDto);
     }
 
-//    @PatchMapping("/recipes/{id}")
-//    public ResponseEntity<RecipeOutputDto> updatePartOfRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInputDto recipeInputDto) {
-//        RecipeOutputDto recipeOutputDto = recipeService.patchRecipe(id, recipeInputDto);
-//        return ResponseEntity.ok().body(recipeOutputDto);
-//    }
+    @PatchMapping("/recipes/{id}")
+    public ResponseEntity<RecipeOutputDto> updatePartOfRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInputDto recipeInputDto) {
+        RecipeOutputDto recipeOutputDto = recipeService.patchRecipe(id, recipeInputDto);
+        return ResponseEntity.ok().body(recipeOutputDto);
+    }
 
     @DeleteMapping("/recipes/{id}")
     public ResponseEntity<String> deleteRecipe(@PathVariable Long id) {

@@ -15,8 +15,8 @@ import java.util.List;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:8081")
+@RestController
 public class UtensilController {
     private final UtensilService utensilService;
     public UtensilController(UtensilService utensilService) {

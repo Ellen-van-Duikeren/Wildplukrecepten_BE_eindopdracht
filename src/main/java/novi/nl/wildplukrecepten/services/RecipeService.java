@@ -53,7 +53,7 @@ public class RecipeService {
         }
     }
 
-    //     PostMapping, function for adding a recipe
+    // PostMapping, function for adding a recipe
     public Long createRecipe(RecipeInputDto recipeInputDto) {
         Recipe newRecipe = new Recipe();
         newRecipe = transferToRecipe(recipeInputDto);
@@ -61,7 +61,7 @@ public class RecipeService {
         return savedRecipe.getId();
     }
 
-    //PutMapping, function for changing a (whole) recipe
+    // PutMapping, function for changing a (whole) recipe
     public RecipeOutputDto putRecipe(Long id, RecipeInputDto recipeInputDto) {
         {
             if (recipeRepository.findById(id).isPresent()) {
@@ -77,38 +77,53 @@ public class RecipeService {
     }
 
     // Patchmapping, function for changing parts of a recipe
-//    public RecipeOutputDto patchRecipe(Long id, RecipeInputDto recipeInputDto) {
-//        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-//        if (recipeRepository.existsById(id)) {
-//            Recipe recipeToUpdate = optionalRecipe.get();
-//
-//            if (recipeInputDto.getTitle() != null) {
-//                recipeToUpdate.setTitle(recipeInputDto.getTitle());
-//            }
-//            if (recipeInputDto.getSub_title() != null) {
-//                recipeToUpdate.setSub_title(recipeInputDto.getSub_title());
-//            }
-//            if (recipeInputDto.getPersons() != null) {
-//                recipeToUpdate.setPersons(recipeInputDto.getPersons());
-//            }
-//            if (recipeInputDto.getSource() != null) {
-//                recipeToUpdate.setSource(recipeInputDto.getSource());
-//            }
-//            if (recipeInputDto.getStory() != null) {
-//                recipeToUpdate.setStory(recipeInputDto.getStory());
-//            }
-//            if (recipeInputDto.getPrep_time() != null) {
-//                recipeToUpdate.setPrep_time(recipeInputDto.getPrep_time());
-//            }
-//            if (recipeInputDto.getCook_time() != null) {
-//                recipeToUpdate.setCook_time(recipeInputDto.getCook_time());
-//            }
-//            Recipe savedRecipe = recipeRepository.save(recipeToUpdate);
-//            return transferToDto(savedRecipe);
-//        } else {
-//            throw new RecordNotFoundException("No recipe with id " + id);
-//        }
-//    }
+    public RecipeOutputDto patchRecipe(Long id, RecipeInputDto recipeInputDto) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (recipeRepository.existsById(id)) {
+            Recipe recipeToUpdate = optionalRecipe.get();
+            if (recipeInputDto.getTitle() != null) {
+                recipeToUpdate.setTitle(recipeInputDto.getTitle());
+            }
+            if (recipeInputDto.getSub_title() != null) {
+                recipeToUpdate.setSub_title(recipeInputDto.getSub_title());
+            }
+            if (recipeInputDto.getPersons() != null) {
+                recipeToUpdate.setPersons(recipeInputDto.getPersons());
+            }
+            if (recipeInputDto.getSource() != null) {
+                recipeToUpdate.setSource(recipeInputDto.getSource());
+            }
+            if (recipeInputDto.getStory() != null) {
+                recipeToUpdate.setStory(recipeInputDto.getStory());
+            }
+            if (recipeInputDto.getPrep_time() != null) {
+                recipeToUpdate.setPrep_time(recipeInputDto.getPrep_time());
+            }
+            if (recipeInputDto.getCook_time() != null) {
+                recipeToUpdate.setCook_time(recipeInputDto.getCook_time());
+            }
+            if (recipeInputDto.getIngredients() != null) {
+                recipeToUpdate.setIngredients(recipeInputDto.getIngredients());
+            }
+            if (recipeInputDto.getInstructions() != null) {
+                recipeToUpdate.setInstructions(recipeInputDto.getInstructions());
+            }
+            if (recipeInputDto.getUtensils() != null) {
+                recipeToUpdate.setUtensils(recipeInputDto.getUtensils());
+            }
+            if (recipeInputDto.getMonths() != null) {
+                recipeToUpdate.setMonths(recipeInputDto.getMonths());
+            }
+            if (recipeInputDto.getTags() != null) {
+                recipeToUpdate.setTags(recipeInputDto.getTags());
+            }
+
+            Recipe savedRecipe = recipeRepository.save(recipeToUpdate);
+            return transferToDto(savedRecipe);
+        } else {
+            throw new RecordNotFoundException("No recipe with id " + id);
+        }
+    }
 
     // DeleteMapping, function for deleting a recipe
     public String deleteById(Long id) {
@@ -121,6 +136,7 @@ public class RecipeService {
             throw new RecordNotFoundException("No recipe found with id: " + id + ".");
         }
     }
+
 
     // relations...........................................................................................................
     public void assignIngredientToRecipe(Long id, Long IngredientId) {
