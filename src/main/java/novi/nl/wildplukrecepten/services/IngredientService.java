@@ -2,10 +2,8 @@ package novi.nl.wildplukrecepten.services;
 
 import novi.nl.wildplukrecepten.dto.inputDto.IngredientInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.IngredientOutputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Ingredient;
-import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import novi.nl.wildplukrecepten.models.Authority;
-import novi.nl.wildplukrecepten.models.UserAccount;
 
 import java.util.Set;
 
@@ -17,10 +16,10 @@ public class UserOutputDto {
     public String password;
     public Boolean enabled;
     public String apikey;
+    public String firstname;
+    public String lastname;
+    public String emailadress;
 
     @JsonSerialize
     public Set<Authority> authorities;
-
-    private UserAccount userAccount;
-
 }

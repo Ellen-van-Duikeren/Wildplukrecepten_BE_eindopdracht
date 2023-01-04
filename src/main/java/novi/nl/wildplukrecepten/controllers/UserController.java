@@ -24,38 +24,28 @@ public class UserController {
 
     @GetMapping(value = "")
     public ResponseEntity<List<UserOutputDto>> getUsers() {
-
         List<UserOutputDto> userOutputDtos = userService.getUsers();
-
         return ResponseEntity.ok().body(userOutputDtos);
     }
 
     @GetMapping(value = "/{username}")
     public ResponseEntity<UserOutputDto> getUser(@PathVariable("username") String username) {
-
         UserOutputDto optionalUser = userService.getUser(username);
-
         return ResponseEntity.ok().body(optionalUser);
-
     }
 
     @PostMapping(value = "")
     public ResponseEntity<UserOutputDto> createUser(@RequestBody UserOutputDto userOutputDto) {;
-
         String newUsername = userService.createUser(userOutputDto);
         userService.addAuthority(newUsername, "ROLE_USER");
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
-
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(value = "/{username}")
     public ResponseEntity<UserOutputDto> updateUser(@PathVariable("username") String username, @RequestBody UserOutputDto userOutputDto) {
-
         userService.updateUser(username, userOutputDto);
-
         return ResponseEntity.noContent().build();
     }
 
@@ -87,5 +77,4 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
 }

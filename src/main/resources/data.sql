@@ -1,16 +1,16 @@
 --Users.....................................................
-INSERT INTO users (username, password, enabled, apikey) VALUES ('user', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
-INSERT INTO authorities (username, authority) VALUES ('user', 'ROLE_USER');
-INSERT INTO users (username, password, enabled, apikey) VALUES ('admin', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
-INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN');
-INSERT INTO users (username, password, enabled, apikey) VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
-INSERT INTO authorities (username, authority) VALUES ('e.vanduikeren@gmail.com', 'ROLE_ADMIN');
-
-INSERT INTO useraccounts (firstname, lastname, emailadress, user_username) VALUES ('user', 'user', 'user@mail.com', 'user');
-INSERT INTO useraccounts (firstname, lastname, emailadress, user_username) VALUES ('admin', 'admin', 'admin@mail.com', 'admin');
-INSERT INTO useraccounts (firstname, lastname, emailadress, user_username) VALUES ('Ellen', 'van Duikeren', 'e.vanduikeren@gmail.com', 'e.vanduikeren@gmail.com');
-
-
+INSERT INTO users (username, password, enabled, apikey)
+    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
+INSERT INTO authorities (username, authority)
+    VALUES ('user@mail.com', 'ROLE_USER');
+INSERT INTO users (username, password, enabled, apikey)
+    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
+INSERT INTO authorities (username, authority)
+    VALUES ('admin@mail.com', 'ROLE_ADMIN');
+INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
+    VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'Ellen', 'Van Duikeren', 'e.vanduikeren@gmail.com');
+INSERT INTO authorities (username, authority)
+    VALUES ('e.vanduikeren@gmail.com', 'ROLE_ADMIN');
 
 --Recipes
 --Bramenjam.................................................

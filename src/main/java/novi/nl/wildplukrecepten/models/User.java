@@ -32,8 +32,14 @@ public class User {
     @Column
     private String apikey;
 
-    @OneToOne
-    private UserAccount userAccount;
+    @Column
+    private String firstname;
+
+    @Column
+    private String lastname;
+
+    @Column
+    private String emailadress;
 
     @OneToMany(
             targetEntity = Authority.class,
@@ -43,6 +49,8 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+//    @OneToOne
+//    private Message message;
 
     public Set<Authority> getAuthorities() {
         return authorities;
@@ -55,6 +63,4 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
-
-
 }

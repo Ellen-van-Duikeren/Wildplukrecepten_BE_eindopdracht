@@ -60,6 +60,17 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
+                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+
+//
+//                .antMatchers(HttpMethod.GET, "/users").permitAll()
+//                .antMatchers(HttpMethod.GET, "/users/**").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
+//                .antMatchers(HttpMethod.PATCH, "/users/**").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/users/**").permitAll()
+
+
+
 //antMatchers for recipes......................................................................................
                 .antMatchers(HttpMethod.POST, "/recipes").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")

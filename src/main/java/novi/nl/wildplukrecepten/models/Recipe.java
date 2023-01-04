@@ -91,11 +91,12 @@ public class Recipe {
         this.instructions.add(instruction);
     }
 
-
     @OneToMany(mappedBy = "recipe")
     private List<Utensil> utensils;
     public void addUtensil(Utensil utensil) {
         this.utensils.add(utensil);
     }
 
+    @OneToOne
+    FileUploadResponse file;
 }

@@ -3,12 +3,10 @@ package novi.nl.wildplukrecepten.services;
 import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
+import novi.nl.wildplukrecepten.models.FileUploadResponse;
 import novi.nl.wildplukrecepten.models.Ingredient;
 import novi.nl.wildplukrecepten.models.Recipe;
-import novi.nl.wildplukrecepten.repositories.IngredientRepository;
-import novi.nl.wildplukrecepten.repositories.InstructionRepository;
-import novi.nl.wildplukrecepten.repositories.RecipeRepository;
-import novi.nl.wildplukrecepten.repositories.UtensilRepository;
+import novi.nl.wildplukrecepten.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +19,15 @@ public class RecipeService {
     private final IngredientRepository ingredientRepository;
     private final InstructionRepository instructionRepository;
     private final UtensilRepository utensilRepository;
+    private final FileUploadRepository uploadRepository;
 
 
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository) {
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository, FileUploadRepository uploadRepository) {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.utensilRepository = utensilRepository;
         this.instructionRepository = instructionRepository;
+        this.uploadRepository = uploadRepository;
     }
 
 
@@ -149,6 +149,18 @@ public class RecipeService {
             recipeRepository.save(recipe);
         } else {
             throw new RecordNotFoundException();
+        }
+    }
+
+//assign photo to a recipe
+    public void assignPhotoToRecipe(String fileName, Long id) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(fileName);
+        if (optionalRecipe.isPresent() && fileUploadResponse.isPresent()) {
+            FileUploadResponse photo = fileUploadResponse.get();
+            Recipe recipe = optionalRecipe.get();
+            recipe.setFile(photo);
+            recipeRepository.save(recipe);
         }
     }
 
