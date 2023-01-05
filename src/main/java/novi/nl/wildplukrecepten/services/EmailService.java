@@ -1,5 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
+
 import novi.nl.wildplukrecepten.models.EmailDetails;
 
 public interface EmailService {
