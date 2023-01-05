@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.models.FileUploadResponse;
+import novi.nl.wildplukrecepten.models.FileUpload;
 import novi.nl.wildplukrecepten.repositories.FileUploadRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -18,14 +18,14 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 @Service
-public class PhotoService {
+public class FileUploadService {
     @Value("${my.upload_location}")
     private Path fileStoragePath;
     private final String fileStorageLocation;
 
     private final FileUploadRepository fileUploadRepository;
 
-    public PhotoService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
+    public FileUploadService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
         fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
 
         this.fileStorageLocation = fileStorageLocation;
@@ -51,7 +51,7 @@ public class PhotoService {
             throw new RuntimeException("Issue in storing the file", e);
         }
 
-        fileUploadRepository.save(new FileUploadResponse(fileName, file.getContentType(), url));
+        fileUploadRepository.save(new FileUpload(fileName, file.getContentType(), url));
 
         return fileName;
     }

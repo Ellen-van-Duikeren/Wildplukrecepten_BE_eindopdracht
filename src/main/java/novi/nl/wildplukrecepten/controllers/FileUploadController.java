@@ -1,7 +1,7 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.models.FileUploadResponse;
-import novi.nl.wildplukrecepten.services.PhotoService;
+import novi.nl.wildplukrecepten.models.FileUpload;
+import novi.nl.wildplukrecepten.services.FileUploadService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,17 +16,17 @@ import java.util.Objects;
 
 @RestController
 @CrossOrigin
-public class PhotoController {
-    private final PhotoService service;
+public class FileUploadController {
+    private final FileUploadService service;
 
 
-    public PhotoController(PhotoService service) {
+    public FileUploadController(FileUploadService service) {
         this.service = service;
     }
 
     //    post for single upload
     @PostMapping("/upload")
-    FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file){
+    FileUpload singleFileUpload(@RequestParam("file") MultipartFile file){
 
         // next line makes url. example "http://localhost:8080/download/naam.jpg"
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
@@ -35,7 +35,7 @@ public class PhotoController {
 
         String fileName = service.storeFile(file, url);
 
-        return new FileUploadResponse(fileName, contentType, url );
+        return new FileUpload(fileName, contentType, url );
     }
 
     //    get for single download

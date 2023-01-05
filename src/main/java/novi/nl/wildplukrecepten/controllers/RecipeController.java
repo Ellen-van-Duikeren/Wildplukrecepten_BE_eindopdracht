@@ -2,7 +2,7 @@ package novi.nl.wildplukrecepten.controllers;
 
 import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
-import novi.nl.wildplukrecepten.models.FileUploadResponse;
+import novi.nl.wildplukrecepten.models.FileUpload;
 import novi.nl.wildplukrecepten.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ import java.util.List;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "false")
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;
-    private final PhotoController photoController;
-    public RecipeController(RecipeService recipeService, PhotoController photoController) {
+    private final FileUploadController fileUploadController;
+    public RecipeController(RecipeService recipeService, FileUploadController fileUploadController) {
         this.recipeService = recipeService;
-        this.photoController = photoController;
+        this.fileUploadController = fileUploadController;
     }
 
     @GetMapping("/recipes")
@@ -77,7 +77,7 @@ public class RecipeController {
 //  to link a photo to a recipe
     @PostMapping("/recipes/{id}/photo")
     public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
-        FileUploadResponse photo = photoController.singleFileUpload(file);
+        FileUpload photo = fileUploadController.singleFileUpload(file);
         recipeService.assignPhotoToRecipe(photo.getFileName(), id);
     }
 }

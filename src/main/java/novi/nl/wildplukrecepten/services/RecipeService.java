@@ -3,7 +3,8 @@ package novi.nl.wildplukrecepten.services;
 import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
-import novi.nl.wildplukrecepten.models.FileUploadResponse;
+import novi.nl.wildplukrecepten.models.EmailDetails;
+import novi.nl.wildplukrecepten.models.FileUpload;
 import novi.nl.wildplukrecepten.models.Ingredient;
 import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.repositories.*;
@@ -21,13 +22,17 @@ public class RecipeService {
     private final UtensilRepository utensilRepository;
     private final FileUploadRepository uploadRepository;
 
+//    test
+    public final EmailService emailService;
 
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository, FileUploadRepository uploadRepository) {
+
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository, FileUploadRepository uploadRepository, EmailService emailService) {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.utensilRepository = utensilRepository;
         this.instructionRepository = instructionRepository;
         this.uploadRepository = uploadRepository;
+        this.emailService = emailService;
     }
 
 
@@ -58,6 +63,11 @@ public class RecipeService {
         Recipe newRecipe = new Recipe();
         newRecipe = transferToRecipe(recipeInputDto);
         Recipe savedRecipe = recipeRepository.save(newRecipe);
+
+        // Sending automaticaly an email to admin when someone post a new recipe
+        EmailDetails test = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd", "nieuw recept toegevoegd", "C:/Users/evand/Novi/Eindopdracht/Onderliggend/Assets/bramenjam.jpg");
+        this.emailService.sendMailWithAttachment(test);
+
         return savedRecipe.getId();
     }
 
@@ -155,9 +165,9 @@ public class RecipeService {
 //assign photo to a recipe
     public void assignPhotoToRecipe(String fileName, Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-        Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(fileName);
+        Optional<FileUpload> fileUploadResponse = uploadRepository.findByFileName(fileName);
         if (optionalRecipe.isPresent() && fileUploadResponse.isPresent()) {
-            FileUploadResponse photo = fileUploadResponse.get();
+            FileUpload photo = fileUploadResponse.get();
             Recipe recipe = optionalRecipe.get();
             recipe.setFile(photo);
             recipeRepository.save(recipe);

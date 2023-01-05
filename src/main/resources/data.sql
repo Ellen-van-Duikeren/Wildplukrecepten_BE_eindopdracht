@@ -1,10 +1,10 @@
 --Users.....................................................
-INSERT INTO users (username, password, enabled, apikey)
-    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
+INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
+    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'user', 'user', 'user@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('user@mail.com', 'ROLE_USER');
-INSERT INTO users (username, password, enabled, apikey)
-    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678');
+INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
+    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'admin', 'admin', 'admin@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('admin@mail.com', 'ROLE_ADMIN');
 INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
