@@ -18,7 +18,7 @@ import java.util.List;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
-@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "false")
+//@CrossOrigin
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;

@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:8081")
+//@CrossOrigin
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -35,7 +35,8 @@ public class UserController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<UserOutputDto> createUser(@RequestBody UserOutputDto userOutputDto) {;
+    public ResponseEntity<UserOutputDto> createUser(@RequestBody UserOutputDto userOutputDto) {
+        ;
         String newUsername = userService.createUser(userOutputDto);
         userService.addAuthority(newUsername, "ROLE_USER");
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
@@ -66,8 +67,7 @@ public class UserController {
             String authorityName = (String) fields.get("authority");
             userService.addAuthority(username, authorityName);
             return ResponseEntity.noContent().build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new BadRequestException();
         }
     }

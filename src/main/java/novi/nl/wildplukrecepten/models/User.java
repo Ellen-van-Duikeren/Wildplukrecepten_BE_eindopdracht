@@ -49,9 +49,6 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-//    @OneToOne
-//    private Message message;
-
     public Set<Authority> getAuthorities() {
         return authorities;
     }

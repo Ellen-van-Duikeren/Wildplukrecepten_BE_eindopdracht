@@ -49,7 +49,7 @@ public class SpringSecurityConfig {
         //JWT token authentication
         http
                 .csrf().disable()
-                .httpBasic().disable()
+                .httpBasic().disable().cors().and()
                 .authorizeRequests()
 
 // antMatchers for users........................................................................................
@@ -85,6 +85,11 @@ public class SpringSecurityConfig {
                 .antMatchers("/ingredients").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/instructions").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/utensils").hasAnyRole("ADMIN", "USER")
+
+                .antMatchers("/recipes/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/ingredients/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/instructions/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/utensils/**").hasAnyRole("ADMIN", "USER")
 
                 .antMatchers(HttpMethod.PUT, "/recipes/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.PUT, "/ingredients/**").hasAnyRole("ADMIN", "USER")

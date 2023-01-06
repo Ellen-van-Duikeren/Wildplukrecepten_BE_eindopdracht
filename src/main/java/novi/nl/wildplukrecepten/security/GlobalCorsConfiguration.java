@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class GlobalCorsConfiguration {
 
-    //original video FE to BE
+//    original video FE to BE
     @Bean
     public WebMvcConfigurer corsConfigurer()
     {
@@ -17,21 +17,22 @@ public class GlobalCorsConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
             }
         };
     }
 }
 
 
-
+//
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {
 //            @Override
 //            public void addCorsMappings(CorsRegistry registry) {
 //                registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:8081")
+//                        .allowedOrigins("http://localhost:3000")
 //                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
 //                        .allowedHeaders("Content-Type", "Authorization")
 //                        .allowCredentials(true)
