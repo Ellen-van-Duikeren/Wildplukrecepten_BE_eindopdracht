@@ -18,7 +18,6 @@ import java.util.List;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
-//@CrossOrigin
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;
@@ -42,7 +41,7 @@ public class RecipeController {
     }
 
     @PostMapping("/recipes")
-    public ResponseEntity<String> createRecipe(@Valid @RequestBody RecipeInputDto recipeInputDto, BindingResult br) {
+    public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeInputDto recipeInputDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
@@ -52,9 +51,10 @@ public class RecipeController {
                     .fromCurrentRequest()
                     .path("/recipes/" + createdId)
                     .toUriString());
-            return ResponseEntity.created(uri).body("Recipe created.");
+            return ResponseEntity.created(uri).body(createdId);
         }
     }
+
 
     @PutMapping("/recipes/{id}")
     public ResponseEntity<RecipeOutputDto> updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInputDto recipeInputDto) {
@@ -74,11 +74,22 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
-//  to link a photo to a recipe
+//origineel
+    //  to link a photo to a recipe
+//    @PostMapping("/recipes/{id}/photo")
+//    public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
+//        FileUpload photo = fileUploadController.singleFileUpload(file);
+//        recipeService.assignPhotoToRecipe(photo.getFileName(), id);
+//    }
+
+
+    //  to link a photo to a recipe
     @PostMapping("/recipes/{id}/photo")
     public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
         FileUpload photo = fileUploadController.singleFileUpload(file);
         recipeService.assignPhotoToRecipe(photo.getFileName(), id);
     }
+
+
 }
 

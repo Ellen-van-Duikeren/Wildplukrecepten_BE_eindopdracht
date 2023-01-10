@@ -1,12 +1,12 @@
 package novi.nl.wildplukrecepten.services;
 
+import novi.nl.wildplukrecepten.dto.inputDto.IngredientInputDto;
+import novi.nl.wildplukrecepten.dto.inputDto.InstructionInputDto;
 import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
+import novi.nl.wildplukrecepten.dto.inputDto.UtensilInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
-import novi.nl.wildplukrecepten.models.EmailDetails;
-import novi.nl.wildplukrecepten.models.FileUpload;
-import novi.nl.wildplukrecepten.models.Ingredient;
-import novi.nl.wildplukrecepten.models.Recipe;
+import novi.nl.wildplukrecepten.models.*;
 import novi.nl.wildplukrecepten.repositories.*;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class RecipeService {
     private final UtensilRepository utensilRepository;
     private final FileUploadRepository uploadRepository;
 
-//    test
+    //    test
     public final EmailService emailService;
 
 
@@ -62,13 +62,21 @@ public class RecipeService {
     public Long createRecipe(RecipeInputDto recipeInputDto) {
         Recipe newRecipe = new Recipe();
         newRecipe = transferToRecipe(recipeInputDto);
-        Recipe savedRecipe = recipeRepository.save(newRecipe);
+        Recipe savedRecipe1 = recipeRepository.save(newRecipe);
 
-        // Sending automaticaly an email to admin when someone post a new recipe
-        EmailDetails test = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd", "nieuw recept toegevoegd", "C:/Users/evand/Novi/Eindopdracht/Onderliggend/Assets/bramenjam.jpg");
-        this.emailService.sendMailWithAttachment(test);
+        // need to save in between in savedRecipe1, savedRecipe2 instead of using savedRecipe in every line; otherwise the last instructions will overwrite the first utensils and you will only see instructions and no utensils        addUtensilToRecipe(recipeInputDto, savedRecipe);
+        addUtensilToRecipe(recipeInputDto, savedRecipe1);
+        Recipe savedRecipe2 = recipeRepository.save(savedRecipe1);
+        addIngredientToRecipe(recipeInputDto, savedRecipe2);
+        Recipe savedRecipe3 = recipeRepository.save(savedRecipe2);
+        addInstructionToRecipe(recipeInputDto, savedRecipe3);
+        recipeRepository.save(savedRecipe3);
 
-        return savedRecipe.getId();
+        // Automaticaly sending an email to admin when someone post a new recipe
+//        EmailDetails test = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd", "nieuw recept toegevoegd", "C:/Users/evand/Novi/Eindopdracht/Onderliggend/Assets/bramenjam.jpg");
+//        this.emailService.sendMailWithAttachment(test);
+
+        return savedRecipe1.getId();
     }
 
     // PutMapping, function for changing a (whole) recipe
@@ -162,7 +170,7 @@ public class RecipeService {
         }
     }
 
-//assign photo to a recipe
+    //assign photo to a recipe
     public void assignPhotoToRecipe(String fileName, Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         Optional<FileUpload> fileUploadResponse = uploadRepository.findByFileName(fileName);
@@ -216,10 +224,60 @@ public class RecipeService {
         recipe.setStory(recipeInputDto.getStory());
         recipe.setPrep_time(recipeInputDto.getPrep_time());
         recipe.setCook_time(recipeInputDto.getCook_time());
+
         recipe.setMonths(recipeInputDto.getMonths());
         recipe.setTags(recipeInputDto.getTags());
+
         return recipe;
     }
+
+//    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
+//    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
+//        for (Utensil utensil : recipeInputDto.getUtensils()) {
+//            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
+//                continue;
+//            } else {
+//                utensil.setRecipe(recipe);
+//                utensilRepository.save(utensil);
+//            }
+//        }
+//    }
+
+    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
+        for (Utensil utensil : recipeInputDto.getUtensils()) {
+            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
+                continue;
+            } else {
+                utensil.setRecipe(recipe);
+                utensilRepository.save(utensil);
+            }
+        }
+    }
+
+    // onderstaande werkt nog niet, want ingredients heeft 3 inutfleds nl unit amount en ingredient_name
+    public void addIngredientToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
+//        for (Ingredient ingredient : recipeInputDto.getIngredients()) {
+//            if (ingredientRepository.existsByIngredient(ingredient.getIngredient_name())) {
+//                continue;
+//            } else {
+//                ingredient.setRecipe(recipe);
+//                ingredientRepository.save(ingredient);
+//            }
+//        }
+    }
+
+    public void addInstructionToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
+        for (Instruction instruction : recipeInputDto.getInstructions()) {
+            if (instructionRepository.existsByInstruction(instruction.getInstruction())) {
+                continue;
+            } else {
+                instruction.setRecipe(recipe);
+                instructionRepository.save(instruction);
+            }
+        }
+    }
+
+
 }
 
 

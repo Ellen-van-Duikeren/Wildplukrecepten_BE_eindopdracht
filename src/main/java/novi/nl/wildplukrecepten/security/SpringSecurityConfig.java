@@ -101,6 +101,9 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PATCH, "/instructions/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.PATCH, "/utensils/**").hasAnyRole("ADMIN", "USER")
 
+                .antMatchers(HttpMethod.POST, "/recipes/**/**").hasAnyRole("ADMIN", "USER")
+
+
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
                 .anyRequest().permitAll()

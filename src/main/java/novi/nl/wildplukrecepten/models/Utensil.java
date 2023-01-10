@@ -26,5 +26,4 @@ public class Utensil {
     @ManyToOne
     private Recipe recipe;
 
-
 }

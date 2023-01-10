@@ -32,7 +32,7 @@ public class Recipe {
     private String cook_time;
 
 // enums............................................................................................................
-    public enum MonthsEnum {
+    public enum Months {
         JANUARI,
         FEBRUARI,
         MAART,
@@ -48,12 +48,12 @@ public class Recipe {
         JAARROND
     }
 
-    @ElementCollection(targetClass = MonthsEnum.class)
+    @ElementCollection(targetClass = Months.class)
     @CollectionTable
     @Enumerated(EnumType.STRING)
-    Collection<MonthsEnum> months;
+    List<Months> months;
 
-    public enum TagsEnum {
+    public enum Tags {
         VEGETARISCH,
         VEGANISTISCH,
         LACTOSEVRIJ,
@@ -71,10 +71,10 @@ public class Recipe {
         DUTCHOVEN
     }
 
-    @ElementCollection(targetClass = TagsEnum.class)
+    @ElementCollection(targetClass = Tags.class)
     @CollectionTable
     @Enumerated(EnumType.STRING)
-    Collection<TagsEnum> tags;
+    List<Tags> tags;
 
 
 // relations......................................................................................................

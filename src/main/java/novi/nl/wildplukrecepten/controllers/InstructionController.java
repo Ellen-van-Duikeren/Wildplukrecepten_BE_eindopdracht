@@ -15,7 +15,6 @@ import java.util.List;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 public class InstructionController {
 
@@ -34,6 +33,7 @@ public class InstructionController {
     public ResponseEntity<InstructionOutputDto> getInstruction(@PathVariable Long id) {
         return ResponseEntity.ok(instructionService.getInstruction(id));
     }
+
 
     @PostMapping("/instructions")
     public ResponseEntity<String> createInstruction(@Valid @RequestBody InstructionInputDto instructionInputDto, BindingResult br) {

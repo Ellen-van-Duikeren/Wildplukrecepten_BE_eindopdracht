@@ -32,8 +32,8 @@ public class RecipeOutputDto {
     private String prep_time;
     private String cook_time;
 
-    Collection<Recipe.MonthsEnum> months;
-    Collection<Recipe.TagsEnum> tags;
+    List<Recipe.Months> months;
+    List<Recipe.Tags> tags;
 
     //relations............................................
     @JsonIncludeProperties({"amount", "unit", "ingredient_name"})

@@ -53,7 +53,7 @@ INSERT INTO utensils (utensil) VALUES ('kernthermometer');
 INSERT INTO utensils (utensil) VALUES ('groot mes, bijv een broodmes');
 
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (1, '', 'pompoen');
-INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (125, 'gram', 'geitenkaas( Bettine blanc of Bucheron');
+INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (125, 'gram', 'geitenkaas (Bettine blanc of Bucheron');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (85, 'gram', 'wilde kruiden (bijv zevenblad, wilde rucola, madeliefrozetjes');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (2, 'eetlepels', 'gesneden wilde kruiden voor vinaigrette (bijv pinksterbloem, smalle weegbree, waterpeper)');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (50, 'ml', 'rode wijn azijn');
@@ -121,7 +121,7 @@ INSERT INTO instructions(instruction) VALUES ('Pluk de zevenbladblaadjes en snij
 INSERT INTO instructions(instruction) VALUES ('Doe zevenblad, knoflook, zout en pijnboompitten samen met een flinke scheut olijfolie in de vijzel en vijzel dit tot een groene pasta.');
 INSERT INTO instructions(instruction) VALUES ('Voeg, al roerend, de rest van de olijfolie en de kaas toe.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Zevenbladpesto', 'Bij notenallergie kan je zonnebloempitten gebruiken ipv pijnboompitten', 12, 'https://www.kampvuurkok.nl/zevenbladpesto/', '45 minuten', '45 minuten');
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Zevenbladpesto', 'Bij notenallergie kan je zonnebloempitten gebruiken ipv pijnboompitten', 0, 'https://www.kampvuurkok.nl/zevenbladpesto/', '45 minuten', '45 minuten');
 
 UPDATE utensils SET recipe_id = 3 WHERE id = 6;
 
@@ -251,7 +251,7 @@ INSERT INTO instructions(instruction) VALUES ('Zo niet: voeg de gist toe en laat
 INSERT INTO instructions(instruction) VALUES ('Bottel in beugelflessen. Vul de flessen niet helemaal af vanwege de druk die onstaat. Laat nog een paar dagen staan voor een heerlijk verfrissend licht-alcoholisch drankje met bubbels.');
 INSERT INTO instructions(instruction) VALUES ('Met wel een waarschuwing voor ontploffingsgevaar: controleer regelmatig of er niet te veel druk op de gebottelde champagne staat door de buegelflessen kort te openen en weer te sluiten.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Vlierbloesemchampagne', 'Lekkere voorjaarsbubbels', 0, 'https://downtoearthmagazine.nl/vlierbloesemchampagne/', '20 minuten', '1-3 weken');
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Vlierbloesemchampagne', 'Lekkere voorjaarsbubbels', 0, 'https://downtoearthmagazine.nl/vlierbloesemchampagne/', '20 minuten', '1 - 3 weken');
 
 UPDATE utensils SET recipe_id = 6 WHERE id = 7;
 UPDATE utensils SET recipe_id = 6 WHERE id = 8;
