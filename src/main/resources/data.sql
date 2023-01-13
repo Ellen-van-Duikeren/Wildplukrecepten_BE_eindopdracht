@@ -1,14 +1,16 @@
 --Users.....................................................
 INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'user', 'user', 'user@mail.com');
+    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'jG3KOpz7qKRjcYfAjH4J', 'user', 'user', 'user@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('user@mail.com', 'ROLE_USER');
-INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'admin', 'admin', 'admin@mail.com');
+
+    INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
+    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'VeRXQ5QNGvRRE3GtrLaD', 'admin', 'admin', 'admin@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('admin@mail.com', 'ROLE_ADMIN');
+
 INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, '12345678', 'Ellen', 'Van Duikeren', 'e.vanduikeren@gmail.com');
+    VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'n6n44lK99nPlXlqIukNd', 'Ellen', 'Van Duikeren', 'e.vanduikeren@gmail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('e.vanduikeren@gmail.com', 'ROLE_ADMIN');
 
@@ -24,7 +26,9 @@ INSERT INTO instructions(instruction) VALUES ('Was de bramen en pureer deze. Dit
 INSERT INTO instructions(instruction) VALUES ('Doe de bramenpuree met suiker en citroensap in een pan. Breng het mengsel aan de kook. Blijf voortdurend roeren. Als het kookt, laat je het ongeveer 2 minuten doorkoken. Blijf roeren.');
 INSERT INTO instructions(instruction) VALUES ('Giet de bramenjam in de schone potjes. Draai de deksels op de potjes en zet ze op hun kop voor in ieder geval 5 minuten. Daarna mag je ze weer omdraaien. Nu zijn ze vacuüm gezogen.');
 
-INSERT INTO recipes (title, sub_title, persons, source, story, prep_time, cook_time) VALUES ('Bramenjam', 'Voor ca. 600 ml bramenjam', 4, 'https://www.laurasbakery.nl/zelf-bramenjam-maken/',  'Dit is een heel makkelijk recept en bramen zijn overal te vinden. Ook juist op de ruige plekken.', '2 minuten', '10 minuten');
+INSERT INTO file_uploads (file_name, content_type, url) VALUES ('raspberry.png', 'image/png', 'http://localhost:8081/download/raspberry.png');
+
+INSERT INTO recipes (title, sub_title, persons, source, story, prep_time, cook_time, file_file_name) VALUES ('Bramenjam', 'Voor ca. 600 ml bramenjam', 4, 'https://www.laurasbakery.nl/zelf-bramenjam-maken/',  'Dit is een heel makkelijk recept en bramen zijn overal te vinden. Ook juist op de ruige plekken.', '2 minuten', '10 minuten', 'raspberry.png');
 
 UPDATE utensils SET recipe_id = 1 WHERE id = 1;
 
@@ -54,7 +58,7 @@ INSERT INTO utensils (utensil) VALUES ('groot mes, bijv een broodmes');
 
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (1, '', 'pompoen');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (125, 'gram', 'geitenkaas (Bettine blanc of Bucheron');
-INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (85, 'gram', 'wilde kruiden (bijv zevenblad, wilde rucola, madeliefrozetjes');
+INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (85, 'gram', 'wilde kruiden (bijv zevenblad, wilde rucola, madeliefrozetjes)');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (2, 'eetlepels', 'gesneden wilde kruiden voor vinaigrette (bijv pinksterbloem, smalle weegbree, waterpeper)');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (50, 'ml', 'rode wijn azijn');
 INSERT INTO ingredients (amount, unit, ingredient_name) VALUES (100, 'ml', 'olijfolie');
@@ -72,7 +76,9 @@ INSERT INTO instructions(instruction) VALUES ('Verkruimel de geitenkaas over de 
 INSERT INTO instructions(instruction) VALUES ('Verdeel de rucola en de vinaigrette over de geitenkaas.');
 INSERT INTO instructions(instruction) VALUES ('Schraap voorzichtig het pompoenvruchtvlees los van de schil en meng alles voorzichtig.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Pompoen met wilde kruiden', 'Ultiem, zoals een goede vriendin zegt', 4, 'https://natuurkok.nl/pompoen-met-wilde-kruiden/', '2 uur', '45-60 minuten');
+INSERT INTO file_uploads (file_name, url) VALUES ('pumpkin.jpeg', 'http://localhost:8081/download/pumpkin.jpeg');
+
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time, file_file_name) VALUES ('Pompoen met wilde kruiden', 'Ultiem, zoals een goede vriendin zegt', 4, 'https://natuurkok.nl/pompoen-met-wilde-kruiden/', '2 uur', '45-60 minuten', 'pumpkin.jpeg');
 
 UPDATE utensils SET recipe_id = 2 WHERE id = 2;
 UPDATE utensils SET recipe_id = 2 WHERE id = 3;
@@ -121,7 +127,9 @@ INSERT INTO instructions(instruction) VALUES ('Pluk de zevenbladblaadjes en snij
 INSERT INTO instructions(instruction) VALUES ('Doe zevenblad, knoflook, zout en pijnboompitten samen met een flinke scheut olijfolie in de vijzel en vijzel dit tot een groene pasta.');
 INSERT INTO instructions(instruction) VALUES ('Voeg, al roerend, de rest van de olijfolie en de kaas toe.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Zevenbladpesto', 'Bij notenallergie kan je zonnebloempitten gebruiken ipv pijnboompitten', 0, 'https://www.kampvuurkok.nl/zevenbladpesto/', '45 minuten', '45 minuten');
+INSERT INTO file_uploads (file_name, url) VALUES ('sevenleafpesto.jpg', 'http://localhost:8081/download/sevenleafpesto.jpg');
+
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time, file_file_name) VALUES ('Zevenbladpesto', 'Bij notenallergie kan je zonnebloempitten gebruiken ipv pijnboompitten', 0, 'https://www.kampvuurkok.nl/zevenbladpesto/', '45 minuten', '45 minuten', 'sevenleafpesto.jpg');
 
 UPDATE utensils SET recipe_id = 3 WHERE id = 6;
 
@@ -160,7 +168,9 @@ INSERT INTO instructions(instruction) VALUES ('Laat het brouwsel ministens 10 we
 INSERT INTO instructions(instruction) VALUES ('Zeef het met een koffiefilter. Dit kan best wat tijd in beslag nemen.');
 INSERT INTO instructions(instruction) VALUES ('Doe de sloe gin in een fles.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Sloegin', 'Heerlijk in de winter', 0, 'https://www.landleven.nl/inspiratie/lekker-eten/2019/november/maak-een-heerlijke-borrel-sloe-gin/', '2 dagen', '10 weken');
+INSERT INTO file_uploads (file_name, url) VALUES ('sloegin.png', 'http://localhost:8081/download/sloegin.png');
+
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time, file_file_name) VALUES ('Sloegin', 'Heerlijk in de winter', 0, 'https://www.landleven.nl/inspiratie/lekker-eten/2019/november/maak-een-heerlijke-borrel-sloe-gin/', '2 dagen', '10 weken', 'sloegin.png');
 
 UPDATE ingredients SET recipe_id = 4 WHERE id = 17;
 UPDATE ingredients SET recipe_id = 4 WHERE id = 18;
@@ -203,7 +213,9 @@ INSERT INTO instructions(instruction) VALUES ('De aardappel zorgt ervoor dat de 
 INSERT INTO instructions(instruction) VALUES ('Laat het mengsel een kwartiertje pruttelen, tot de aardappel gaar is.');
 INSERT INTO instructions(instruction) VALUES ('Haal dan de pan van het vuur en pureer de soep met een staafmixer.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Brandnetelsoep', '', 4, 'https://www.natuurmonumenten.nl/kinderen/zelf-spelen/maak-zelf-brandnetelsoep', '', '30 minuten');
+INSERT INTO file_uploads (file_name, url) VALUES ('nettlesoup.jpeg', 'http://localhost:8081/download/nettlesoup.jpeg');
+
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time, file_file_name) VALUES ('Brandnetelsoep', '', 4, 'https://www.natuurmonumenten.nl/kinderen/zelf-spelen/maak-zelf-brandnetelsoep', '', '30 minuten', 'nettlesoup.jpeg');
 
 UPDATE ingredients SET recipe_id = 5 WHERE id = 25;
 UPDATE ingredients SET recipe_id = 5 WHERE id = 26;
@@ -251,7 +263,9 @@ INSERT INTO instructions(instruction) VALUES ('Zo niet: voeg de gist toe en laat
 INSERT INTO instructions(instruction) VALUES ('Bottel in beugelflessen. Vul de flessen niet helemaal af vanwege de druk die onstaat. Laat nog een paar dagen staan voor een heerlijk verfrissend licht-alcoholisch drankje met bubbels.');
 INSERT INTO instructions(instruction) VALUES ('Met wel een waarschuwing voor ontploffingsgevaar: controleer regelmatig of er niet te veel druk op de gebottelde champagne staat door de buegelflessen kort te openen en weer te sluiten.');
 
-INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time) VALUES ('Vlierbloesemchampagne', 'Lekkere voorjaarsbubbels', 0, 'https://downtoearthmagazine.nl/vlierbloesemchampagne/', '20 minuten', '1 - 3 weken');
+INSERT INTO file_uploads (file_name, url) VALUES ('elderflowerchampagne.jpeg', 'http://localhost:8081/download/elderflowerchampagne.jpeg');
+
+INSERT INTO recipes (title, sub_title, persons, source, prep_time, cook_time, file_file_name) VALUES ('Vlierbloesemchampagne', 'Lekkere voorjaarsbubbels', 0, 'https://downtoearthmagazine.nl/vlierbloesemchampagne/', '20 minuten', '1 - 3 weken', 'elderflowerchampagne.jpeg');
 
 UPDATE utensils SET recipe_id = 6 WHERE id = 7;
 UPDATE utensils SET recipe_id = 6 WHERE id = 8;

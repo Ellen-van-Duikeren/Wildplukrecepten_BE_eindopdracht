@@ -36,7 +36,6 @@ public class FileUploadService {
         } catch (IOException e) {
             throw new RuntimeException("Issue in creating file directory");
         }
-
     }
 
     public String storeFile(MultipartFile file, String url) {

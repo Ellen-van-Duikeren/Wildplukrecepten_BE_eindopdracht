@@ -55,7 +55,7 @@ public class SpringSecurityConfig {
 // antMatchers for users........................................................................................
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")

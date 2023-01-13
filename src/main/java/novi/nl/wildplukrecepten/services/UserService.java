@@ -1,11 +1,15 @@
 package novi.nl.wildplukrecepten.services;
 
+import novi.nl.wildplukrecepten.dto.inputDto.UserInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.UserOutputDto;
 import novi.nl.wildplukrecepten.models.Authority;
 import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.repositories.UserRepository;
 import novi.nl.wildplukrecepten.utilities.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +20,9 @@ import java.util.Set;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -45,10 +52,15 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
-    public String createUser(UserOutputDto userOutputDto) {
+
+    public String createUser(UserInputDto userInputDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userOutputDto.setApikey(randomString);
-        User newUser = userRepository.save(toUser(userOutputDto));
+        userInputDto.setApikey(randomString);
+        // zelf toegevoegd
+        userInputDto.setEnabled(true);
+
+        userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
+        User newUser = userRepository.save(toUser(userInputDto));
         return newUser.getUsername();
     }
 
@@ -85,7 +97,6 @@ public class UserService {
     }
 
     public void addAuthority(String username, String authority) {
-
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.addAuthority(new Authority(username, authority));
@@ -114,15 +125,15 @@ public class UserService {
         return userOutputDto;
     }
 
-    public User toUser(UserOutputDto userOutputDto) {
+    public User toUser(UserInputDto userInputDto) {
         var user = new User();
-        user.setUsername(userOutputDto.getUsername());
-        user.setPassword(userOutputDto.getPassword());
-        user.setEnabled(userOutputDto.getEnabled());
-        user.setApikey(userOutputDto.getApikey());
-        user.setFirstname(userOutputDto.getFirstname());
-        user.setLastname(userOutputDto.getLastname());
-        user.setEmailadress(userOutputDto.getEmailadress());
+        user.setUsername(userInputDto.getUsername());
+        user.setPassword(userInputDto.getPassword());
+        user.setEnabled(userInputDto.getEnabled());
+        user.setApikey(userInputDto.getApikey());
+        user.setFirstname(userInputDto.getFirstname());
+        user.setLastname(userInputDto.getLastname());
+        user.setEmailadress(userInputDto.getEmailadress());
 
         return user;
     }

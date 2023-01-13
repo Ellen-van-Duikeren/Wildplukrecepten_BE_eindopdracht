@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import novi.nl.wildplukrecepten.models.Ingredient;
-import novi.nl.wildplukrecepten.models.Instruction;
-import novi.nl.wildplukrecepten.models.Recipe;
-import novi.nl.wildplukrecepten.models.Utensil;
+import novi.nl.wildplukrecepten.models.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
@@ -42,4 +39,7 @@ public class RecipeOutputDto {
     private List<Instruction> instructions;
     @JsonIncludeProperties("utensil")
     private List<Utensil> utensils;
+    @JsonIncludeProperties({"fileName", "url"})
+    private FileUpload file;
+
 }

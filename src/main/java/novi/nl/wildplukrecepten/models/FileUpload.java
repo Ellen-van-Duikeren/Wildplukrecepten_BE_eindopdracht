@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 @Setter
 
 @Entity
+@Table(name = "file_uploads")
 public class FileUpload {
 
     @Id

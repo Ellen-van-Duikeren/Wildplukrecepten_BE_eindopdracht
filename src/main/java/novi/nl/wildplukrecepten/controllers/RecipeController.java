@@ -2,7 +2,7 @@ package novi.nl.wildplukrecepten.controllers;
 
 import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
-import novi.nl.wildplukrecepten.models.FileUpload;
+import novi.nl.wildplukrecepten.services.FileUploadService;
 import novi.nl.wildplukrecepten.services.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +15,20 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;
-    private final FileUploadController fileUploadController;
-    public RecipeController(RecipeService recipeService, FileUploadController fileUploadController) {
+    //    private final FileUploadController fileUploadController;
+    private final FileUploadService fileUploadService;
+
+    public RecipeController(RecipeService recipeService, FileUploadController fileUploadController, FileUploadService fileUploadService) {
         this.recipeService = recipeService;
-        this.fileUploadController = fileUploadController;
+        this.fileUploadService = fileUploadService;
+//        this.fileUploadController = fileUploadController;
     }
 
     @GetMapping("/recipes")
@@ -39,6 +43,8 @@ public class RecipeController {
     public ResponseEntity<RecipeOutputDto> getRecipe(@PathVariable Long id) {
         return ResponseEntity.ok(recipeService.getRecipe(id));
     }
+
+
 
     @PostMapping("/recipes")
     public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeInputDto recipeInputDto, BindingResult br) {
@@ -74,22 +80,19 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
-//origineel
-    //  to link a photo to a recipe
-//    @PostMapping("/recipes/{id}/photo")
-//    public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
-//        FileUpload photo = fileUploadController.singleFileUpload(file);
-//        recipeService.assignPhotoToRecipe(photo.getFileName(), id);
-//    }
-
 
     //  to link a photo to a recipe
+
     @PostMapping("/recipes/{id}/photo")
     public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
-        FileUpload photo = fileUploadController.singleFileUpload(file);
-        recipeService.assignPhotoToRecipe(photo.getFileName(), id);
+//        origineel
+//        FileUpload photo = fileUploadController.singleFileUpload(file);
+//        recipeService.assignPhotoToRecipe(photo.getFileName(), id);
+
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
+        String photo = fileUploadService.storeFile(file, url);
+
+        recipeService.assignPhotoToRecipe(photo, id);
     }
-
-
 }
 

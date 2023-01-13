@@ -210,6 +210,10 @@ public class RecipeService {
         if (recipe.getTags() != null) {
             recipeOutputDto.setTags(recipe.getTags());
         }
+
+        if (recipe.getFile() != null) {
+            recipeOutputDto.setFile(recipe.getFile());
+        }
         return recipeOutputDto;
     }
 
@@ -228,21 +232,12 @@ public class RecipeService {
         recipe.setMonths(recipeInputDto.getMonths());
         recipe.setTags(recipeInputDto.getTags());
 
+        recipe.setFile(recipeInputDto.getFile());
+
         return recipe;
     }
 
 //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
-//    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-//        for (Utensil utensil : recipeInputDto.getUtensils()) {
-//            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
-//                continue;
-//            } else {
-//                utensil.setRecipe(recipe);
-//                utensilRepository.save(utensil);
-//            }
-//        }
-//    }
-
     public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
         for (Utensil utensil : recipeInputDto.getUtensils()) {
             if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
@@ -254,7 +249,7 @@ public class RecipeService {
         }
     }
 
-    // onderstaande werkt nog niet, want ingredients heeft 3 inutfleds nl unit amount en ingredient_name
+    // onderstaande werkt nog niet, want ingredients heeft 3 inputfields nl unit amount en ingredient_name
     public void addIngredientToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
 //        for (Ingredient ingredient : recipeInputDto.getIngredients()) {
 //            if (ingredientRepository.existsByIngredient(ingredient.getIngredient_name())) {

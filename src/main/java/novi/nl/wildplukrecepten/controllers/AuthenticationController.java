@@ -2,6 +2,7 @@ package novi.nl.wildplukrecepten.controllers;
 
 import novi.nl.wildplukrecepten.dto.inputDto.AuthenticationRequest;
 import novi.nl.wildplukrecepten.dto.inputDto.AuthenticationResponse;
+import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.utilities.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,12 +34,11 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(principal);
     }
 
+
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
@@ -46,12 +46,9 @@ public class AuthenticationController {
         } catch (BadCredentialsException ex) {
             throw new Exception("Incorrect username or password", ex);
         }
-
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(username);
-
         final String jwt = jwtUtil.generateToken(userDetails);
-
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 

@@ -7,10 +7,7 @@ import lombok.Setter;
 import novi.nl.wildplukrecepten.dto.outputDto.IngredientOutputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.InstructionOutputDto;
 import novi.nl.wildplukrecepten.dto.outputDto.UtensilOutputDto;
-import novi.nl.wildplukrecepten.models.Ingredient;
-import novi.nl.wildplukrecepten.models.Instruction;
-import novi.nl.wildplukrecepten.models.Recipe;
-import novi.nl.wildplukrecepten.models.Utensil;
+import novi.nl.wildplukrecepten.models.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,5 +37,7 @@ public class RecipeInputDto {
     private List<Ingredient> ingredients;
     private List<Instruction> instructions;
     private List<Utensil> utensils;
+    private FileUpload file;
+
 
 }
