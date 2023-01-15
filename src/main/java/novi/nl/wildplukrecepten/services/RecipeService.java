@@ -148,6 +148,16 @@ public class RecipeService {
         if (recipeRepository.existsById(id)) {
             Optional<Recipe> deletedRecipe = recipeRepository.findById(id);
             Recipe recipe1 = deletedRecipe.get();
+            // deleting utensils, ingredients and instructions first
+            for (Utensil utensil : recipe1.getUtensils()) {
+                utensilRepository.delete(utensil);
+            }
+            for (Ingredient ingredient : recipe1.getIngredients()) {
+                ingredientRepository.delete(ingredient);
+            }
+            for (Instruction instruction : recipe1.getInstructions()) {
+                instructionRepository.delete(instruction);
+            }
             recipeRepository.delete(recipe1);
             return "Recipe with id: " + id + " deleted.";
         } else {
@@ -237,38 +247,37 @@ public class RecipeService {
         return recipe;
     }
 
-//    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
+    //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
+//    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
+//        for (Utensil utensil : recipeInputDto.getUtensils()) {
+//            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
+//                continue;
+//            } else {
+//                utensil.setRecipe(recipe);
+//                utensilRepository.save(utensil);
+//            }
+//        }
+//    }
+//
+
     public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
         for (Utensil utensil : recipeInputDto.getUtensils()) {
-            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
-                continue;
-            } else {
-                utensil.setRecipe(recipe);
-                utensilRepository.save(utensil);
-            }
+            utensil.setRecipe(recipe);
+            utensilRepository.save(utensil);
         }
     }
 
-    // onderstaande werkt nog niet, want ingredients heeft 3 inputfields nl unit amount en ingredient_name
     public void addIngredientToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-//        for (Ingredient ingredient : recipeInputDto.getIngredients()) {
-//            if (ingredientRepository.existsByIngredient(ingredient.getIngredient_name())) {
-//                continue;
-//            } else {
-//                ingredient.setRecipe(recipe);
-//                ingredientRepository.save(ingredient);
-//            }
-//        }
+        for (Ingredient ingredient : recipeInputDto.getIngredients()) {
+            ingredient.setRecipe(recipe);
+            ingredientRepository.save(ingredient);
+        }
     }
 
     public void addInstructionToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
         for (Instruction instruction : recipeInputDto.getInstructions()) {
-            if (instructionRepository.existsByInstruction(instruction.getInstruction())) {
-                continue;
-            } else {
-                instruction.setRecipe(recipe);
-                instructionRepository.save(instruction);
-            }
+            instruction.setRecipe(recipe);
+            instructionRepository.save(instruction);
         }
     }
 

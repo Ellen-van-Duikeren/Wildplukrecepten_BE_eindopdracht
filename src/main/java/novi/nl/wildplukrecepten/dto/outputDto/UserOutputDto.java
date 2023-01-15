@@ -12,7 +12,6 @@ import java.util.Set;
 @Setter
 
 public class UserOutputDto {
-
     @NotBlank
     public String username;
     @NotBlank

@@ -52,6 +52,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/users/{username}")
+    public ResponseEntity<UserOutputDto> patchUser(@PathVariable("username") String username, @RequestBody UserOutputDto userOutputDto) {
+        userService.patchUser(username, userOutputDto);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @DeleteMapping("/users/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);

@@ -193,6 +193,7 @@ INSERT INTO recipe_months(recipe_id, months) VALUES (4, 'NOVEMBER');
 
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (4, 'VEGETARISCH');
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (4, 'LACTOSEVRIJ');
+INSERT INTO recipe_tags(recipe_id, tags) VALUES (4, 'DRINKEN');
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (4, 'ALCOHOLISCH');
 
 
@@ -293,6 +294,7 @@ INSERT INTO recipe_months(recipe_id, months) VALUES (6, 'JUNI');
 
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (6, 'VEGETARISCH');
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (6, 'LACTOSEVRIJ');
+INSERT INTO recipe_tags(recipe_id, tags) VALUES (6, 'DRINKEN');
 INSERT INTO recipe_tags(recipe_id, tags) VALUES (6, 'ALCOHOLISCH');
 
 

@@ -72,21 +72,37 @@ public class UserService {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
+        user.setEnabled(newUser.getEnabled());
+        user.setApikey(newUser.getApikey());
+        user.setFirstname(newUser.getFirstname());
+        user.setLastname(newUser.getLastname());
+        user.setEmailadress(newUser.getEmailadress());
         userRepository.save(user);
     }
 
-//    van Paul, extra toevoeging binnen bovenstaande functie om password te checken icm functie die onderaan staat
-//    public void updateUser(String username, UserDto userDto) {
-//        String password = userDto.getPassword();
-//        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
-//        if(validatePassword(password)){
-//            User user = userRepository.findById(username).get();
-//            user.setPassword(userDto.getPassword());
-//            userRepository.save(user);
-//        }else {
-//            throw new InvalidPasswordException("Your password must contain:\n At least 6 characters, 1 uppercase letter, 1 lowercase letter, 1 special character and may not contain any whitespaces");
-//        }
-//    }
+    public void patchUser(String username, UserOutputDto changeUser) {
+        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        if (changeUser.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(changeUser.getPassword()));
+        }
+        if (changeUser.getEnabled() != null) {
+            user.setEnabled(changeUser.getEnabled());
+        }
+        if (changeUser.getApikey() != null) {
+            user.setApikey(changeUser.getApikey());
+        }
+        if (changeUser.getFirstname() != null) {
+            user.setFirstname(changeUser.getFirstname());
+        }
+        if (changeUser.getLastname() != null) {
+            user.setLastname(changeUser.getLastname());
+        }
+        if (changeUser.getEmailadress() != null) {
+            user.setEmailadress(changeUser.getEmailadress());
+        }
+        userRepository.save(user);
+    }
 
 
     public Set<Authority> getAuthorities(String username) {
@@ -137,24 +153,5 @@ public class UserService {
 
         return user;
     }
-
-//    van Paul, om password te checken, icm hierboven
-//    public Boolean validatePassword(String password){
-//        if(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?=])(?=\\S+$).{6,}$")){
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-/*  ^                 - start-of-string
-    (?=.*[0-9])       - a digit must occur at least once
-    (?=.*[a-z])       - a lower case letter must occur at least once
-    (?=.*[A-Z])       - an upper case letter must occur at least once
-    (?=.*[@#$%^&+=])  - a special character must occur at least once
-    (?=\S+$)          - no whitespace allowed in the entire string
-    .{6,}             - anything, at least six places though
-    $                 # end-of-string*/
-
 
 }

@@ -33,11 +33,11 @@ public class RecipeOutputDto {
     List<Recipe.Tags> tags;
 
     //relations............................................
-    @JsonIncludeProperties({"amount", "unit", "ingredient_name"})
+    @JsonIncludeProperties({"id", "amount", "unit", "ingredient_name"})
     private List<Ingredient> ingredients;
-    @JsonIncludeProperties("instruction")
+    @JsonIncludeProperties({"id", "instruction"})
     private List<Instruction> instructions;
-    @JsonIncludeProperties("utensil")
+    @JsonIncludeProperties({"id", "utensil"})
     private List<Utensil> utensils;
     @JsonIncludeProperties({"fileName", "url"})
     private FileUpload file;
