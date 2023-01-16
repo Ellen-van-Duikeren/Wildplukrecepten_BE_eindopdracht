@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
+import novi.nl.wildplukrecepten.dto.RecipeDto;
 import novi.nl.wildplukrecepten.services.FileUploadService;
 import novi.nl.wildplukrecepten.services.RecipeService;
 import org.springframework.http.HttpStatus;
@@ -28,31 +27,28 @@ public class RecipeController {
     public RecipeController(RecipeService recipeService, FileUploadController fileUploadController, FileUploadService fileUploadService) {
         this.recipeService = recipeService;
         this.fileUploadService = fileUploadService;
-//        this.fileUploadController = fileUploadController;
     }
 
     @GetMapping("/recipes")
     @Transactional
     // transactional to link a photo to a recipe
-    public ResponseEntity<List<RecipeOutputDto>> getAllRecipes() {
+    public ResponseEntity<List<RecipeDto>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
 
     @GetMapping("/recipes/{id}")
     @Transactional
-    public ResponseEntity<RecipeOutputDto> getRecipe(@PathVariable Long id) {
+    public ResponseEntity<RecipeDto> getRecipe(@PathVariable Long id) {
         return ResponseEntity.ok(recipeService.getRecipe(id));
     }
 
-
-
     @PostMapping("/recipes")
-    public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeInputDto recipeInputDto, BindingResult br) {
+    public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDto recipeDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
         } else {
-            Long createdId = recipeService.createRecipe(recipeInputDto);
+            Long createdId = recipeService.createRecipe(recipeDto);
             URI uri = URI.create(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/recipes/" + createdId)
@@ -63,15 +59,15 @@ public class RecipeController {
 
 
     @PutMapping("/recipes/{id}")
-    public ResponseEntity<RecipeOutputDto> updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInputDto recipeInputDto) {
-        RecipeOutputDto recipeOutputDto = recipeService.putRecipe(id, recipeInputDto);
-        return ResponseEntity.ok().body(recipeOutputDto);
+    public ResponseEntity<RecipeDto> updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeDto recipeDto) {
+        RecipeDto recipeDto1 = recipeService.putRecipe(id, recipeDto);
+        return ResponseEntity.ok().body(recipeDto1);
     }
 
     @PatchMapping("/recipes/{id}")
-    public ResponseEntity<RecipeOutputDto> updatePartOfRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInputDto recipeInputDto) {
-        RecipeOutputDto recipeOutputDto = recipeService.patchRecipe(id, recipeInputDto);
-        return ResponseEntity.ok().body(recipeOutputDto);
+    public ResponseEntity<RecipeDto> updatePartOfRecipe(@PathVariable Long id, @Valid @RequestBody RecipeDto recipeDto) {
+        RecipeDto recipeDto1 = recipeService.patchRecipe(id, recipeDto);
+        return ResponseEntity.ok().body(recipeDto1);
     }
 
     @DeleteMapping("/recipes/{id}")
@@ -85,13 +81,8 @@ public class RecipeController {
 
     @PostMapping("/recipes/{id}/photo")
     public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
-//        origineel
-//        FileUpload photo = fileUploadController.singleFileUpload(file);
-//        recipeService.assignPhotoToRecipe(photo.getFileName(), id);
-
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
         String photo = fileUploadService.storeFile(file, url);
-
         recipeService.assignPhotoToRecipe(photo, id);
     }
 }

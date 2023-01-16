@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.InstructionInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.InstructionOutputDto;
+import novi.nl.wildplukrecepten.dto.InstructionDto;
 import novi.nl.wildplukrecepten.services.InstructionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +24,23 @@ public class InstructionController {
     }
 
     @GetMapping("/instructions")
-    public ResponseEntity<List<InstructionOutputDto>> getAllInstructions() {
+    public ResponseEntity<List<InstructionDto>> getAllInstructions() {
         return ResponseEntity.ok(instructionService.getAllInstructions());
     }
 
     @GetMapping("/instructions/{id}")
-    public ResponseEntity<InstructionOutputDto> getInstruction(@PathVariable Long id) {
+    public ResponseEntity<InstructionDto> getInstruction(@PathVariable Long id) {
         return ResponseEntity.ok(instructionService.getInstruction(id));
     }
 
 
     @PostMapping("/instructions")
-    public ResponseEntity<String> createInstruction(@Valid @RequestBody InstructionInputDto instructionInputDto, BindingResult br) {
+    public ResponseEntity<String> createInstruction(@Valid @RequestBody InstructionDto instructionDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
         } else {
-            Long createdId = instructionService.createInstruction(instructionInputDto);
+            Long createdId = instructionService.createInstruction(instructionDto);
             URI uri = URI.create(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/instructions/" + createdId)
@@ -51,15 +50,15 @@ public class InstructionController {
     }
 
     @PutMapping("/instructions/{id}")
-    public ResponseEntity<InstructionOutputDto> updateInstruction(@PathVariable Long id, @Valid @RequestBody InstructionInputDto instructionInputDto) {
-        InstructionOutputDto instructionDto = instructionService.putInstruction(id, instructionInputDto);
-        return ResponseEntity.ok().body(instructionDto);
+    public ResponseEntity<InstructionDto> updateInstruction(@PathVariable Long id, @Valid @RequestBody InstructionDto instructionDto) {
+        InstructionDto instructionDto1 = instructionService.putInstruction(id, instructionDto);
+        return ResponseEntity.ok().body(instructionDto1);
     }
 
     @PatchMapping("/instructions/{id}")
-    public ResponseEntity<InstructionOutputDto> updatePartOfInstruction(@PathVariable Long id, @Valid @RequestBody InstructionInputDto instructionInputDto) {
-        InstructionOutputDto instructionDto = instructionService.patchInstruction(id, instructionInputDto);
-        return ResponseEntity.ok().body(instructionDto);
+    public ResponseEntity<InstructionDto> updatePartOfInstruction(@PathVariable Long id, @Valid @RequestBody InstructionDto instructionDto) {
+        InstructionDto instructionDto1 = instructionService.patchInstruction(id, instructionDto);
+        return ResponseEntity.ok().body(instructionDto1);
     }
 
     @DeleteMapping("/instructions/{id}")

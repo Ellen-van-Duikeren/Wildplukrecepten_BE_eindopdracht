@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.inputDto.InstructionInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.InstructionOutputDto;
+import novi.nl.wildplukrecepten.dto.InstructionDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Instruction;
 import novi.nl.wildplukrecepten.repositories.InstructionRepository;
@@ -19,58 +18,58 @@ import java.util.Optional;
             this.instructionRepository = instructionRepository;
         }
 
-        public List<InstructionOutputDto> getAllInstructions() {
+        public List<InstructionDto> getAllInstructions() {
             List<Instruction> instructions = instructionRepository.findAll();
-            ArrayList<InstructionOutputDto> instructionOutputDtos = new ArrayList<>();
+            ArrayList<InstructionDto> instructionDtos = new ArrayList<>();
             for (Instruction instruction : instructions) {
-                InstructionOutputDto instructionOutputDto = transferInstructionToDto(instruction);
-                instructionOutputDtos.add(instructionOutputDto);
+                InstructionDto instructionDto = transferInstructionToInstructionDto(instruction);
+                instructionDtos.add(instructionDto);
             }
-            return instructionOutputDtos;
+            return instructionDtos;
         }
 
-        public InstructionOutputDto getInstruction(Long id) {
+        public InstructionDto getInstruction(Long id) {
             Optional<Instruction> optionalInstruction = instructionRepository.findById(id);
             if (optionalInstruction.isPresent()) {
                 Instruction instruction1 = optionalInstruction.get();
-                return transferInstructionToDto(instruction1);
+                return transferInstructionToInstructionDto(instruction1);
             } else {
                 throw new RecordNotFoundException("No instruction found with id: " + id + ".");
             }
         }
 
-        public Long createInstruction(InstructionInputDto instructionInputDto) {
+        public Long createInstruction(InstructionDto instructionDto) {
             Instruction newInstruction = new Instruction();
-            newInstruction = transferDtoToInstruction(instructionInputDto);
+            newInstruction = transferInstructionDtoToInstruction(instructionDto);
             Instruction savedInstruction = instructionRepository.save(newInstruction);
             return savedInstruction.getId();
         }
 
-        public InstructionOutputDto putInstruction(Long id, InstructionInputDto instructionInputDto) {
+        public InstructionDto putInstruction(Long id, InstructionDto instructionDto) {
             {
                 if (instructionRepository.findById(id).isPresent()) {
                     Instruction instruction = instructionRepository.findById(id).get();
-                    Instruction instruction1 = transferDtoToInstruction(instructionInputDto);
+                    Instruction instruction1 = transferInstructionDtoToInstruction(instructionDto);
                     instruction1.setId(instruction.getId());
                     instructionRepository.save(instruction1);
-                    return transferInstructionToDto(instruction1);
+                    return transferInstructionToInstructionDto(instruction1);
                 } else {
                     throw new RecordNotFoundException("No instruction found with id: " + id + ".");
                 }
             }
         }
 
-        public InstructionOutputDto patchInstruction(Long id, InstructionInputDto instructionInputDto) {
+        public InstructionDto patchInstruction(Long id, InstructionDto instructionDto) {
             Optional<Instruction> optionalInstruction = instructionRepository.findById(id);
             if (instructionRepository.existsById(id)) {
                 Instruction instructionToUpdate = optionalInstruction.get();
 
-                if (instructionInputDto.getInstruction() != null) {
-                    instructionToUpdate.setInstruction(instructionInputDto.getInstruction());
+                if (instructionDto.getInstruction() != null) {
+                    instructionToUpdate.setInstruction(instructionDto.getInstruction());
                 }
 
                 Instruction savedInstruction = instructionRepository.save(instructionToUpdate);
-                return transferInstructionToDto(savedInstruction);
+                return transferInstructionToInstructionDto(savedInstruction);
             } else {
                 throw new RecordNotFoundException("No instruction with id " + id);
             }
@@ -89,19 +88,36 @@ import java.util.Optional;
 
 
         //    helper methods.......................................................
-        private InstructionOutputDto transferInstructionToDto(Instruction instruction) {
-            InstructionOutputDto instructionOutputDto = new InstructionOutputDto();
-            instructionOutputDto.setRecipe(instruction.getRecipe());
-            instructionOutputDto.setId(instruction.getId());
-            instructionOutputDto.setInstruction(instruction.getInstruction());
-            return instructionOutputDto;
+        public InstructionDto transferInstructionToInstructionDto(Instruction instruction) {
+            InstructionDto instructionDto = new InstructionDto();
+            instructionDto.setRecipe(instruction.getRecipe());
+            instructionDto.setId(instruction.getId());
+            instructionDto.setInstruction(instruction.getInstruction());
+            return instructionDto;
         }
 
-        private Instruction transferDtoToInstruction(InstructionInputDto instructionInputDto) {
+        public Instruction transferInstructionDtoToInstruction(InstructionDto instructionDto) {
             Instruction instruction = new Instruction();
-            instruction.setRecipe(instructionInputDto.getRecipe());
-            instruction.setId(instructionInputDto.getId());
-            instruction.setInstruction(instructionInputDto.getInstruction());
+            instruction.setRecipe(instructionDto.getRecipe());
+            instruction.setId(instructionDto.getId());
+            instruction.setInstruction(instructionDto.getInstruction());
             return instruction;
         }
+
+        public List<InstructionDto> transferInstructionListToInstructionDtoList(List<Instruction> instructions){
+            List<InstructionDto> instructionDtos = new ArrayList<>();
+            for (Instruction instruction: instructions) {
+                instructionDtos.add(transferInstructionToInstructionDto(instruction));
+            }
+            return instructionDtos;
+        }
+
+        public List<Instruction> transferInstructionDtoListToInstructionList(List<InstructionDto> instructionstos){
+            List<Instruction> instructions = new ArrayList<>();
+            for (InstructionDto instructionsto : instructionstos) {
+                instructions.add(transferInstructionDtoToInstruction(instructionsto));
+            }
+            return instructions;
+        }
+
     }

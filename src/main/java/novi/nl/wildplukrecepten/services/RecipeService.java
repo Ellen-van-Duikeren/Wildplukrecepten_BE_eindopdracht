@@ -1,10 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.inputDto.IngredientInputDto;
-import novi.nl.wildplukrecepten.dto.inputDto.InstructionInputDto;
-import novi.nl.wildplukrecepten.dto.inputDto.RecipeInputDto;
-import novi.nl.wildplukrecepten.dto.inputDto.UtensilInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.RecipeOutputDto;
+import novi.nl.wildplukrecepten.dto.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.*;
 import novi.nl.wildplukrecepten.repositories.*;
@@ -37,18 +33,18 @@ public class RecipeService {
 
 
     // GetMapping, function for getting all recipes
-    public List<RecipeOutputDto> getAllRecipes() {
+    public List<RecipeDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
-        List<RecipeOutputDto> recipeOutputDtos = new ArrayList<>();
+        List<RecipeDto> recipeDtos = new ArrayList<>();
         for (Recipe recipe : recipes) {
-            RecipeOutputDto recipeOutputDto = transferToDto(recipe);
-            recipeOutputDtos.add(recipeOutputDto);
+            RecipeDto recipeDto = transferToDto(recipe);
+            recipeDtos.add(recipeDto);
         }
-        return recipeOutputDtos;
+        return recipeDtos;
     }
 
     // GetMapping by id, function for getting a recipe by id
-    public RecipeOutputDto getRecipe(Long id) {
+    public RecipeDto getRecipe(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (!recipeRepository.existsById(id)) {
             throw new RecordNotFoundException("No recipe found with id: " + id + ".");
@@ -59,17 +55,17 @@ public class RecipeService {
     }
 
     // PostMapping, function for adding a recipe
-    public Long createRecipe(RecipeInputDto recipeInputDto) {
+    public Long createRecipe(RecipeDto recipeDto) {
         Recipe newRecipe = new Recipe();
-        newRecipe = transferToRecipe(recipeInputDto);
+        newRecipe = transferToRecipe(recipeDto);
         Recipe savedRecipe1 = recipeRepository.save(newRecipe);
 
-        // need to save in between in savedRecipe1, savedRecipe2 instead of using savedRecipe in every line; otherwise the last instructions will overwrite the first utensils and you will only see instructions and no utensils        addUtensilToRecipe(recipeInputDto, savedRecipe);
-        addUtensilToRecipe(recipeInputDto, savedRecipe1);
+        // need to save in between in savedRecipe1, savedRecipe2 instead of using savedRecipe in every line; otherwise the last instructions will overwrite the first utensils and you will only see instructions and no utensils        addUtensilToRecipe(recipeDto, savedRecipe);
+        addUtensilToRecipe(recipeDto, savedRecipe1);
         Recipe savedRecipe2 = recipeRepository.save(savedRecipe1);
-        addIngredientToRecipe(recipeInputDto, savedRecipe2);
+        addIngredientToRecipe(recipeDto, savedRecipe2);
         Recipe savedRecipe3 = recipeRepository.save(savedRecipe2);
-        addInstructionToRecipe(recipeInputDto, savedRecipe3);
+        addInstructionToRecipe(recipeDto, savedRecipe3);
         recipeRepository.save(savedRecipe3);
 
         // Automaticaly sending an email to admin when someone post a new recipe
@@ -80,11 +76,11 @@ public class RecipeService {
     }
 
     // PutMapping, function for changing a (whole) recipe
-    public RecipeOutputDto putRecipe(Long id, RecipeInputDto recipeInputDto) {
+    public RecipeDto putRecipe(Long id, RecipeDto recipeDto) {
         {
             if (recipeRepository.findById(id).isPresent()) {
                 Recipe recipe = recipeRepository.findById(id).get();
-                Recipe recipe1 = transferToRecipe(recipeInputDto);
+                Recipe recipe1 = transferToRecipe(recipeDto);
                 recipe1.setId(recipe.getId());
                 recipeRepository.save(recipe1);
                 return transferToDto(recipe1);
@@ -95,45 +91,45 @@ public class RecipeService {
     }
 
     // Patchmapping, function for changing parts of a recipe
-    public RecipeOutputDto patchRecipe(Long id, RecipeInputDto recipeInputDto) {
+    public RecipeDto patchRecipe(Long id, RecipeDto recipeDto) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (recipeRepository.existsById(id)) {
             Recipe recipeToUpdate = optionalRecipe.get();
-            if (recipeInputDto.getTitle() != null) {
-                recipeToUpdate.setTitle(recipeInputDto.getTitle());
+            if (recipeDto.getTitle() != null) {
+                recipeToUpdate.setTitle(recipeDto.getTitle());
             }
-            if (recipeInputDto.getSub_title() != null) {
-                recipeToUpdate.setSub_title(recipeInputDto.getSub_title());
+            if (recipeDto.getSub_title() != null) {
+                recipeToUpdate.setSub_title(recipeDto.getSub_title());
             }
-            if (recipeInputDto.getPersons() != null) {
-                recipeToUpdate.setPersons(recipeInputDto.getPersons());
+            if (recipeDto.getPersons() != null) {
+                recipeToUpdate.setPersons(recipeDto.getPersons());
             }
-            if (recipeInputDto.getSource() != null) {
-                recipeToUpdate.setSource(recipeInputDto.getSource());
+            if (recipeDto.getSource() != null) {
+                recipeToUpdate.setSource(recipeDto.getSource());
             }
-            if (recipeInputDto.getStory() != null) {
-                recipeToUpdate.setStory(recipeInputDto.getStory());
+            if (recipeDto.getStory() != null) {
+                recipeToUpdate.setStory(recipeDto.getStory());
             }
-            if (recipeInputDto.getPrep_time() != null) {
-                recipeToUpdate.setPrep_time(recipeInputDto.getPrep_time());
+            if (recipeDto.getPrep_time() != null) {
+                recipeToUpdate.setPrep_time(recipeDto.getPrep_time());
             }
-            if (recipeInputDto.getCook_time() != null) {
-                recipeToUpdate.setCook_time(recipeInputDto.getCook_time());
+            if (recipeDto.getCook_time() != null) {
+                recipeToUpdate.setCook_time(recipeDto.getCook_time());
             }
-            if (recipeInputDto.getIngredients() != null) {
-                recipeToUpdate.setIngredients(recipeInputDto.getIngredients());
+            if (recipeDto.getIngredients() != null) {
+                recipeToUpdate.setIngredients(recipeDto.getIngredients());
             }
-            if (recipeInputDto.getInstructions() != null) {
-                recipeToUpdate.setInstructions(recipeInputDto.getInstructions());
+            if (recipeDto.getInstructions() != null) {
+                recipeToUpdate.setInstructions(recipeDto.getInstructions());
             }
-            if (recipeInputDto.getUtensils() != null) {
-                recipeToUpdate.setUtensils(recipeInputDto.getUtensils());
+            if (recipeDto.getUtensils() != null) {
+                recipeToUpdate.setUtensils(recipeDto.getUtensils());
             }
-            if (recipeInputDto.getMonths() != null) {
-                recipeToUpdate.setMonths(recipeInputDto.getMonths());
+            if (recipeDto.getMonths() != null) {
+                recipeToUpdate.setMonths(recipeDto.getMonths());
             }
-            if (recipeInputDto.getTags() != null) {
-                recipeToUpdate.setTags(recipeInputDto.getTags());
+            if (recipeDto.getTags() != null) {
+                recipeToUpdate.setTags(recipeDto.getTags());
             }
 
             Recipe savedRecipe = recipeRepository.save(recipeToUpdate);
@@ -195,61 +191,61 @@ public class RecipeService {
 
     // helper methods......................................................................................................
     // helper method from Recipe to Dto
-    private RecipeOutputDto transferToDto(Recipe recipe) {
-        RecipeOutputDto recipeOutputDto = new RecipeOutputDto();
-        recipeOutputDto.setId(recipe.getId());
-        recipeOutputDto.setTitle(recipe.getTitle());
-        recipeOutputDto.setSub_title(recipe.getSub_title());
-        recipeOutputDto.setPersons(recipe.getPersons());
-        recipeOutputDto.setSource(recipe.getSource());
-        recipeOutputDto.setStory(recipe.getStory());
-        recipeOutputDto.setPrep_time(recipe.getPrep_time());
-        recipeOutputDto.setCook_time(recipe.getCook_time());
+    private RecipeDto transferToDto(Recipe recipe) {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(recipe.getId());
+        recipeDto.setTitle(recipe.getTitle());
+        recipeDto.setSub_title(recipe.getSub_title());
+        recipeDto.setPersons(recipe.getPersons());
+        recipeDto.setSource(recipe.getSource());
+        recipeDto.setStory(recipe.getStory());
+        recipeDto.setPrep_time(recipe.getPrep_time());
+        recipeDto.setCook_time(recipe.getCook_time());
         if (recipe.getIngredients() != null) {
-            recipeOutputDto.setIngredients(recipe.getIngredients());
+            recipeDto.setIngredients(recipe.getIngredients());
         }
         if (recipe.getInstructions() != null) {
-            recipeOutputDto.setInstructions(recipe.getInstructions());
+            recipeDto.setInstructions(recipe.getInstructions());
         }
         if (recipe.getUtensils() != null) {
-            recipeOutputDto.setUtensils(recipe.getUtensils());
+            recipeDto.setUtensils(recipe.getUtensils());
         }
         if (recipe.getMonths() != null) {
-            recipeOutputDto.setMonths(recipe.getMonths());
+            recipeDto.setMonths(recipe.getMonths());
         }
         if (recipe.getTags() != null) {
-            recipeOutputDto.setTags(recipe.getTags());
+            recipeDto.setTags(recipe.getTags());
         }
 
         if (recipe.getFile() != null) {
-            recipeOutputDto.setFile(recipe.getFile());
+            recipeDto.setFile(recipe.getFile());
         }
-        return recipeOutputDto;
+        return recipeDto;
     }
 
     //helper method from Dto to Recipe
-    public Recipe transferToRecipe(RecipeInputDto recipeInputDto) {
+    public Recipe transferToRecipe(RecipeDto recipeDto) {
         Recipe recipe = new Recipe();
-        recipe.setId(recipeInputDto.getId());
-        recipe.setTitle(recipeInputDto.getTitle());
-        recipe.setSub_title(recipeInputDto.getSub_title());
-        recipe.setPersons(recipeInputDto.getPersons());
-        recipe.setSource(recipeInputDto.getSource());
-        recipe.setStory(recipeInputDto.getStory());
-        recipe.setPrep_time(recipeInputDto.getPrep_time());
-        recipe.setCook_time(recipeInputDto.getCook_time());
+        recipe.setId(recipeDto.getId());
+        recipe.setTitle(recipeDto.getTitle());
+        recipe.setSub_title(recipeDto.getSub_title());
+        recipe.setPersons(recipeDto.getPersons());
+        recipe.setSource(recipeDto.getSource());
+        recipe.setStory(recipeDto.getStory());
+        recipe.setPrep_time(recipeDto.getPrep_time());
+        recipe.setCook_time(recipeDto.getCook_time());
 
-        recipe.setMonths(recipeInputDto.getMonths());
-        recipe.setTags(recipeInputDto.getTags());
+        recipe.setMonths(recipeDto.getMonths());
+        recipe.setTags(recipeDto.getTags());
 
-        recipe.setFile(recipeInputDto.getFile());
+        recipe.setFile(recipeDto.getFile());
 
         return recipe;
     }
 
     //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
-//    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-//        for (Utensil utensil : recipeInputDto.getUtensils()) {
+//    public void addUtensilToRecipe(RecipeDto recipeDto, Recipe recipe) {
+//        for (Utensil utensil : recipeDto.getUtensils()) {
 //            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
 //                continue;
 //            } else {
@@ -260,22 +256,22 @@ public class RecipeService {
 //    }
 //
 
-    public void addUtensilToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-        for (Utensil utensil : recipeInputDto.getUtensils()) {
+    public void addUtensilToRecipe(RecipeDto recipeDto, Recipe recipe) {
+        for (Utensil utensil : recipeDto.getUtensils()) {
             utensil.setRecipe(recipe);
             utensilRepository.save(utensil);
         }
     }
 
-    public void addIngredientToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-        for (Ingredient ingredient : recipeInputDto.getIngredients()) {
+    public void addIngredientToRecipe(RecipeDto recipeDto, Recipe recipe) {
+        for (Ingredient ingredient : recipeDto.getIngredients()) {
             ingredient.setRecipe(recipe);
             ingredientRepository.save(ingredient);
         }
     }
 
-    public void addInstructionToRecipe(RecipeInputDto recipeInputDto, Recipe recipe) {
-        for (Instruction instruction : recipeInputDto.getInstructions()) {
+    public void addInstructionToRecipe(RecipeDto recipeDto, Recipe recipe) {
+        for (Instruction instruction : recipeDto.getInstructions()) {
             instruction.setRecipe(recipe);
             instructionRepository.save(instruction);
         }

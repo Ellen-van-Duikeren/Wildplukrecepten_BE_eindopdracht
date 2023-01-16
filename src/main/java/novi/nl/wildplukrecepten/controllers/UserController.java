@@ -1,11 +1,8 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.UserInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.UserOutputDto;
+import novi.nl.wildplukrecepten.dto.UserDto;
 import novi.nl.wildplukrecepten.exceptions.BadRequestException;
-import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.services.UserService;
-import novi.nl.wildplukrecepten.utilities.RandomStringGenerator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,20 +22,20 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserOutputDto>> getUsers() {
-        List<UserOutputDto> userOutputDtos = userService.getUsers();
-        return ResponseEntity.ok().body(userOutputDtos);
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> userDtos = userService.getUsers();
+        return ResponseEntity.ok().body(userDtos);
     }
 
     @GetMapping("/users/{username}")
-    public ResponseEntity<UserOutputDto> getUser(@PathVariable("username") String username) {
-        UserOutputDto optionalUser = userService.getUser(username);
+    public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
+        UserDto optionalUser = userService.getUser(username);
         return ResponseEntity.ok().body(optionalUser);
     }
 
     @PostMapping("/users/register")
-    public ResponseEntity<UserOutputDto> registerUser(@RequestBody UserInputDto userInputDto) {
-        String newUsername = userService.createUser(userInputDto);
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+        String newUsername = userService.createUser(userDto);
         userService.addAuthority(newUsername, "ROLE_USER");
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
@@ -47,14 +44,14 @@ public class UserController {
 
 
     @PutMapping("/users/{username}")
-    public ResponseEntity<UserOutputDto> updateUser(@PathVariable("username") String username, @RequestBody UserOutputDto userOutputDto) {
-        userService.updateUser(username, userOutputDto);
+    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
+        userService.updateUser(username, userDto);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/users/{username}")
-    public ResponseEntity<UserOutputDto> patchUser(@PathVariable("username") String username, @RequestBody UserOutputDto userOutputDto) {
-        userService.patchUser(username, userOutputDto);
+    public ResponseEntity<UserDto> patchUser(@PathVariable("username") String username, @RequestBody UserDto userDto) {
+        userService.patchUser(username, userDto);
         return ResponseEntity.noContent().build();
     }
 

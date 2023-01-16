@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.IngredientInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.IngredientOutputDto;
+import novi.nl.wildplukrecepten.dto.IngredientDto;
 import novi.nl.wildplukrecepten.services.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +25,22 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredients")
-    public ResponseEntity<List<IngredientOutputDto>> getAllIngredients() {
+    public ResponseEntity<List<IngredientDto>> getAllIngredients() {
         return ResponseEntity.ok(ingredientService.getAllIngredients());
     }
 
     @GetMapping("/ingredients/{id}")
-    public ResponseEntity<IngredientOutputDto> getIngredient(@PathVariable Long id) {
+    public ResponseEntity<IngredientDto> getIngredient(@PathVariable Long id) {
         return ResponseEntity.ok(ingredientService.getIngredient(id));
     }
 
     @PostMapping("/ingredients")
-    public ResponseEntity<String> createIngredient(@Valid @RequestBody IngredientInputDto ingredientInputDto, BindingResult br) {
+    public ResponseEntity<String> createIngredient(@Valid @RequestBody IngredientDto ingredientDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
         } else {
-            Long createdId = ingredientService.createIngredient(ingredientInputDto);
+            Long createdId = ingredientService.createIngredient(ingredientDto);
             URI uri = URI.create(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/ingredients/" + createdId)
@@ -51,15 +50,15 @@ public class IngredientController {
     }
 
     @PutMapping("/ingredients/{id}")
-    public ResponseEntity<IngredientOutputDto> updateIngredient(@PathVariable Long id, @Valid @RequestBody IngredientInputDto ingredientInputDto) {
-        IngredientOutputDto ingredientDto = ingredientService.putIngredient(id, ingredientInputDto);
-        return ResponseEntity.ok().body(ingredientDto);
+    public ResponseEntity<IngredientDto> updateIngredient(@PathVariable Long id, @Valid @RequestBody IngredientDto ingredientDto) {
+        IngredientDto ingredientDto1 = ingredientService.putIngredient(id, ingredientDto);
+        return ResponseEntity.ok().body(ingredientDto1);
     }
 
     @PatchMapping("/ingredients/{id}")
-    public ResponseEntity<IngredientOutputDto> updatePartOfIngredient(@PathVariable Long id, @Valid @RequestBody IngredientInputDto ingredientInputDto) {
-        IngredientOutputDto ingredientDto = ingredientService.patchIngredient(id, ingredientInputDto);
-        return ResponseEntity.ok().body(ingredientDto);
+    public ResponseEntity<IngredientDto> updatePartOfIngredient(@PathVariable Long id, @Valid @RequestBody IngredientDto ingredientDto) {
+        IngredientDto ingredientDto1 = ingredientService.patchIngredient(id, ingredientDto);
+        return ResponseEntity.ok().body(ingredientDto1);
     }
 
     @DeleteMapping("/ingredients/{id}")

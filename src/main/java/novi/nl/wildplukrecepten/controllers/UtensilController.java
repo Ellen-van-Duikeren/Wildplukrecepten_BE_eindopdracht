@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.UtensilInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.UtensilOutputDto;
+import novi.nl.wildplukrecepten.dto.UtensilDto;
 import novi.nl.wildplukrecepten.services.UtensilService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +22,22 @@ public class UtensilController {
     }
 
     @GetMapping("/utensils")
-    public ResponseEntity<List<UtensilOutputDto>> getAllUtensils() {
+    public ResponseEntity<List<UtensilDto>> getAllUtensils() {
         return ResponseEntity.ok(utensilService.getAllUtensils());
     }
 
     @GetMapping("/utensils/{id}")
-    public ResponseEntity<UtensilOutputDto> getUtensil(@PathVariable Long id) {
+    public ResponseEntity<UtensilDto> getUtensil(@PathVariable Long id) {
         return ResponseEntity.ok(utensilService.getUtensil(id));
     }
 
     @PostMapping("/utensils")
-    public ResponseEntity<String> createUtensil(@Valid @RequestBody UtensilInputDto utensilInputDto, BindingResult br) {
+    public ResponseEntity<String> createUtensil(@Valid @RequestBody UtensilDto utensilDto, BindingResult br) {
         if (br.hasErrors()) {
             String errorString = getErrorString(br);
             return new ResponseEntity<>(errorString, HttpStatus.BAD_REQUEST);
         } else {
-            Long createdId = utensilService.createUtensil(utensilInputDto);
+            Long createdId = utensilService.createUtensil(utensilDto);
             URI uri = URI.create(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/utensils/" + createdId)
@@ -48,15 +47,15 @@ public class UtensilController {
     }
 
     @PutMapping("/utensils/{id}")
-    public ResponseEntity<UtensilOutputDto> updateUtensil(@PathVariable Long id, @Valid @RequestBody UtensilInputDto utensilInputDto) {
-        UtensilOutputDto utensilDto = utensilService.putUtensil(id, utensilInputDto);
-        return ResponseEntity.ok().body(utensilDto);
+    public ResponseEntity<UtensilDto> updateUtensil(@PathVariable Long id, @Valid @RequestBody UtensilDto utensilDto) {
+        UtensilDto utensilDto1 = utensilService.putUtensil(id, utensilDto);
+        return ResponseEntity.ok().body(utensilDto1);
     }
 
     @PatchMapping("/utensils/{id}")
-    public ResponseEntity<UtensilOutputDto> updatePartOfUtensil(@PathVariable Long id, @Valid @RequestBody UtensilInputDto utensilInputDto) {
-        UtensilOutputDto utensilDto = utensilService.patchUtensil(id, utensilInputDto);
-        return ResponseEntity.ok().body(utensilDto);
+    public ResponseEntity<UtensilDto> updatePartOfUtensil(@PathVariable Long id, @Valid @RequestBody UtensilDto utensilDto) {
+        UtensilDto utensilDto1 = utensilService.patchUtensil(id, utensilDto);
+        return ResponseEntity.ok().body(utensilDto1);
     }
 
     @DeleteMapping("/utensils/{id}")

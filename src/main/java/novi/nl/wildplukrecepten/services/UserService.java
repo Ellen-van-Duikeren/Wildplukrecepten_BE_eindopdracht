@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.inputDto.UserInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.UserOutputDto;
+import novi.nl.wildplukrecepten.dto.UserDto;
 import novi.nl.wildplukrecepten.models.Authority;
 import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.repositories.UserRepository;
@@ -28,8 +27,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserOutputDto> getUsers() {
-        List<UserOutputDto> collection = new ArrayList<>();
+    public List<UserDto> getUsers() {
+        List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
             collection.add(fromUser(user));
@@ -37,15 +36,15 @@ public class UserService {
         return collection;
     }
 
-    public UserOutputDto getUser(String username) {
-        UserOutputDto userOutputDto = new UserOutputDto();
+    public UserDto getUser(String username) {
+        UserDto userDto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
-            userOutputDto = fromUser(user.get());
+            userDto = fromUser(user.get());
         } else {
             throw new UsernameNotFoundException(username);
         }
-        return userOutputDto;
+        return userDto;
     }
 
     public boolean userExists(String username) {
@@ -53,14 +52,14 @@ public class UserService {
     }
 
 
-    public String createUser(UserInputDto userInputDto) {
+    public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userInputDto.setApikey(randomString);
+        userDto.setApikey(randomString);
         // zelf toegevoegd
-        userInputDto.setEnabled(true);
+        userDto.setEnabled(true);
 
-        userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
-        User newUser = userRepository.save(toUser(userInputDto));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername();
     }
 
@@ -68,7 +67,7 @@ public class UserService {
         userRepository.deleteById(username);
     }
 
-    public void updateUser(String username, UserOutputDto newUser) {
+    public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
@@ -80,10 +79,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void patchUser(String username, UserOutputDto changeUser) {
+    public void patchUser(String username, UserDto changeUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        if (changeUser.getPassword() != null) {
+        if (!changeUser.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(changeUser.getPassword()));
         }
         if (changeUser.getEnabled() != null) {
@@ -92,13 +91,13 @@ public class UserService {
         if (changeUser.getApikey() != null) {
             user.setApikey(changeUser.getApikey());
         }
-        if (changeUser.getFirstname() != null) {
+        if (!changeUser.getFirstname().isEmpty()) {
             user.setFirstname(changeUser.getFirstname());
         }
-        if (changeUser.getLastname() != null) {
+        if (!changeUser.getLastname().isEmpty()) {
             user.setLastname(changeUser.getLastname());
         }
-        if (changeUser.getEmailadress() != null) {
+        if (!changeUser.getEmailadress().isEmpty()) {
             user.setEmailadress(changeUser.getEmailadress());
         }
         userRepository.save(user);
@@ -108,8 +107,8 @@ public class UserService {
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        UserOutputDto userOutputDto = fromUser(user);
-        return userOutputDto.getAuthorities();
+        UserDto userDto = fromUser(user);
+        return userDto.getAuthorities();
     }
 
     public void addAuthority(String username, String authority) {
@@ -127,29 +126,29 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public static UserOutputDto fromUser(User user) {
-        var userOutputDto = new UserOutputDto();
-        userOutputDto.username = user.getUsername();
-        userOutputDto.password = user.getPassword();
-        userOutputDto.enabled = user.isEnabled();
-        userOutputDto.apikey = user.getApikey();
-        userOutputDto.firstname = user.getFirstname();
-        userOutputDto.lastname = user.getLastname();
-        userOutputDto.emailadress = user.getEmailadress();
-        userOutputDto.authorities = user.getAuthorities();
+    public static UserDto fromUser(User user) {
+        var userDto = new UserDto();
+        userDto.username = user.getUsername();
+        userDto.password = user.getPassword();
+        userDto.enabled = user.isEnabled();
+        userDto.apikey = user.getApikey();
+        userDto.firstname = user.getFirstname();
+        userDto.lastname = user.getLastname();
+        userDto.emailadress = user.getEmailadress();
+        userDto.authorities = user.getAuthorities();
 
-        return userOutputDto;
+        return userDto;
     }
 
-    public User toUser(UserInputDto userInputDto) {
+    public User toUser(UserDto userDto) {
         var user = new User();
-        user.setUsername(userInputDto.getUsername());
-        user.setPassword(userInputDto.getPassword());
-        user.setEnabled(userInputDto.getEnabled());
-        user.setApikey(userInputDto.getApikey());
-        user.setFirstname(userInputDto.getFirstname());
-        user.setLastname(userInputDto.getLastname());
-        user.setEmailadress(userInputDto.getEmailadress());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setEnabled(userDto.getEnabled());
+        user.setApikey(userDto.getApikey());
+        user.setFirstname(userDto.getFirstname());
+        user.setLastname(userDto.getLastname());
+        user.setEmailadress(userDto.getEmailadress());
 
         return user;
     }

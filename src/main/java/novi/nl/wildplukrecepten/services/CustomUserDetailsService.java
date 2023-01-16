@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.outputDto.UserOutputDto;
+import novi.nl.wildplukrecepten.dto.UserDto;
 import novi.nl.wildplukrecepten.models.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +25,7 @@ private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserOutputDto userDto = userService.getUser(username);
+        UserDto userDto = userService.getUser(username);
 
 
         String password = userDto.getPassword();

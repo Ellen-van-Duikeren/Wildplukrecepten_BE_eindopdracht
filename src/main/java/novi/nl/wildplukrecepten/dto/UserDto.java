@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto.Dto;
+package novi.nl.wildplukrecepten.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;

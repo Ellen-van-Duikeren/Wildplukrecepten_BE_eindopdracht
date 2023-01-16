@@ -26,7 +26,6 @@ public class EmailService implements EmailRepository {
     // To send a simple email
     public String sendSimpleMail(EmailDetails details)
     {
-
         // Try block to check for exceptions
         try {
 

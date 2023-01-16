@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.inputDto.UtensilInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.UtensilOutputDto;
+import novi.nl.wildplukrecepten.dto.UtensilDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Utensil;
 import novi.nl.wildplukrecepten.repositories.UtensilRepository;
@@ -19,17 +18,17 @@ public class UtensilService {
         this.utensilRepository = utensilRepository;
     }
 
-    public List<UtensilOutputDto> getAllUtensils() {
+    public List<UtensilDto> getAllUtensils() {
         List<Utensil> utensils = utensilRepository.findAll();
-        ArrayList<UtensilOutputDto> utensilOutputDtos = new ArrayList<>();
+        ArrayList<UtensilDto> utensilDtos = new ArrayList<>();
         for (Utensil utensil : utensils) {
-            UtensilOutputDto utensilOutputDto = transferUtensilToDto(utensil);
-            utensilOutputDtos.add(utensilOutputDto);
+            UtensilDto utensilDto = transferUtensilToDto(utensil);
+            utensilDtos.add(utensilDto);
         }
-        return utensilOutputDtos;
+        return utensilDtos;
     }
 
-    public UtensilOutputDto getUtensil(Long id) {
+    public UtensilDto getUtensil(Long id) {
         Optional<Utensil> optionalUtensil = utensilRepository.findById(id);
         if (optionalUtensil.isPresent()) {
             Utensil utensil1 = optionalUtensil.get();
@@ -39,18 +38,18 @@ public class UtensilService {
         }
     }
 
-    public Long createUtensil(UtensilInputDto utensilInputDto) {
+    public Long createUtensil(UtensilDto utensilDto) {
         Utensil newUtensil = new Utensil();
-        newUtensil = transferDtoToUtensil(utensilInputDto);
+        newUtensil = transferDtoToUtensil(utensilDto);
         Utensil savedUtensil = utensilRepository.save(newUtensil);
         return savedUtensil.getId();
     }
 
-    public UtensilOutputDto putUtensil(Long id, UtensilInputDto utensilInputDto) {
+    public UtensilDto putUtensil(Long id, UtensilDto utensilDto) {
         {
             if (utensilRepository.findById(id).isPresent()) {
                 Utensil utensil = utensilRepository.findById(id).get();
-                Utensil utensil1 = transferDtoToUtensil(utensilInputDto);
+                Utensil utensil1 = transferDtoToUtensil(utensilDto);
                 utensil1.setId(utensil.getId());
                 utensilRepository.save(utensil1);
                 return transferUtensilToDto(utensil1);
@@ -60,13 +59,13 @@ public class UtensilService {
         }
     }
 
-    public UtensilOutputDto patchUtensil(Long id, UtensilInputDto utensilInputDto) {
+    public UtensilDto patchUtensil(Long id, UtensilDto utensilDto) {
         Optional<Utensil> optionalUtensil = utensilRepository.findById(id);
         if (utensilRepository.existsById(id)) {
             Utensil utensilToUpdate = optionalUtensil.get();
 
-            if (utensilInputDto.getUtensil() != null) {
-                utensilToUpdate.setUtensil(utensilInputDto.getUtensil());
+            if (utensilDto.getUtensil() != null) {
+                utensilToUpdate.setUtensil(utensilDto.getUtensil());
             }
 
             Utensil savedUtensil = utensilRepository.save(utensilToUpdate);
@@ -89,19 +88,19 @@ public class UtensilService {
 
 
     //    helper methods.......................................................
-    private UtensilOutputDto transferUtensilToDto(Utensil utensil) {
-        UtensilOutputDto utensilOutputDto = new UtensilOutputDto();
-        utensilOutputDto.setRecipe(utensil.getRecipe());
-        utensilOutputDto.setId(utensil.getId());
-        utensilOutputDto.setUtensil(utensil.getUtensil());
-        return utensilOutputDto;
+    private UtensilDto transferUtensilToDto(Utensil utensil) {
+        UtensilDto utensilDto = new UtensilDto();
+        utensilDto.setRecipe(utensil.getRecipe());
+        utensilDto.setId(utensil.getId());
+        utensilDto.setUtensil(utensil.getUtensil());
+        return utensilDto;
     }
 
-    private Utensil transferDtoToUtensil(UtensilInputDto utensilInputDto) {
+    private Utensil transferDtoToUtensil(UtensilDto utensilDto) {
         Utensil utensil = new Utensil();
-        utensil.setRecipe(utensilInputDto.getRecipe());
-        utensil.setId(utensilInputDto.getId());
-        utensil.setUtensil(utensilInputDto.getUtensil());
+        utensil.setRecipe(utensilDto.getRecipe());
+        utensil.setId(utensilDto.getId());
+        utensil.setUtensil(utensilDto.getUtensil());
         return utensil;
     }
 }

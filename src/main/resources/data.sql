@@ -1,16 +1,16 @@
 --Users.....................................................
 INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'jG3KOpz7qKRjcYfAjH4J', 'user', 'user', 'user@mail.com');
+    VALUES ('user@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', 'true', 'jG3KOpz7qKRjcYfAjH4J', 'user', 'user', 'user@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('user@mail.com', 'ROLE_USER');
 
     INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'VeRXQ5QNGvRRE3GtrLaD', 'admin', 'admin', 'admin@mail.com');
+    VALUES ('admin@mail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', 'true', 'VeRXQ5QNGvRRE3GtrLaD', 'admin', 'admin', 'admin@mail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('admin@mail.com', 'ROLE_ADMIN');
 
 INSERT INTO users (username, password, enabled, apikey, firstname, lastname, emailadress)
-    VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', true, 'n6n44lK99nPlXlqIukNd', 'Ellen', 'Van Duikeren', 'e.vanduikeren@gmail.com');
+    VALUES ('e.vanduikeren@gmail.com', '$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32', 'true', 'n6n44lK99nPlXlqIukNd', 'Ellen', 'Van Duikeren', 'e.vanduikeren@gmail.com');
 INSERT INTO authorities (username, authority)
     VALUES ('e.vanduikeren@gmail.com', 'ROLE_ADMIN');
 
@@ -26,9 +26,11 @@ INSERT INTO instructions(instruction) VALUES ('Was de bramen en pureer deze. Dit
 INSERT INTO instructions(instruction) VALUES ('Doe de bramenpuree met suiker en citroensap in een pan. Breng het mengsel aan de kook. Blijf voortdurend roeren. Als het kookt, laat je het ongeveer 2 minuten doorkoken. Blijf roeren.');
 INSERT INTO instructions(instruction) VALUES ('Giet de bramenjam in de schone potjes. Draai de deksels op de potjes en zet ze op hun kop voor in ieder geval 5 minuten. Daarna mag je ze weer omdraaien. Nu zijn ze vacuüm gezogen.');
 
-INSERT INTO file_uploads (file_name, content_type, url) VALUES ('raspberry.png', 'image/png', 'http://localhost:8081/download/raspberry.png');
+INSERT INTO file_uploads (file_name, content_type, url)
+VALUES ('raspberry.png', 'image/png', 'http://localhost:8081/download/raspberry.png');
 
-INSERT INTO recipes (title, sub_title, persons, source, story, prep_time, cook_time, file_file_name) VALUES ('Bramenjam', 'Voor ca. 600 ml bramenjam', 4, 'https://www.laurasbakery.nl/zelf-bramenjam-maken/',  'Dit is een heel makkelijk recept en bramen zijn overal te vinden. Ook juist op de ruige plekken.', '2 minuten', '10 minuten', 'raspberry.png');
+INSERT INTO recipes (title, sub_title, persons, source, story, prep_time, cook_time, file_file_name)
+VALUES ('Bramenjam', 'Voor ca. 600 ml bramenjam', 4, 'https://www.laurasbakery.nl/zelf-bramenjam-maken/',  'Dit is een heel makkelijk recept en bramen zijn overal te vinden. Ook juist op de ruige plekken.', '2 minuten', '10 minuten', 'raspberry.png');
 
 UPDATE utensils SET recipe_id = 1 WHERE id = 1;
 

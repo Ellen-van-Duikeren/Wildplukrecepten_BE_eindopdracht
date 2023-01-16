@@ -1,9 +1,14 @@
-package novi.nl.wildplukrecepten.dto.Dto;
+package novi.nl.wildplukrecepten.dto;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import novi.nl.wildplukrecepten.models.Recipe;
+
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Getter
 @Setter

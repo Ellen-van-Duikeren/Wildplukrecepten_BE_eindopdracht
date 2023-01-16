@@ -1,4 +1,4 @@
-package techiteasy1121.payload;
+package novi.nl.wildplukrecepten.payload;
 
 public class AuthenticationResponse {
 

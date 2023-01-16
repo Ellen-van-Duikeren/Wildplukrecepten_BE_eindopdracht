@@ -1,8 +1,8 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.inputDto.AuthenticationRequest;
-import novi.nl.wildplukrecepten.dto.inputDto.AuthenticationResponse;
 import novi.nl.wildplukrecepten.models.User;
+import novi.nl.wildplukrecepten.payload.AuthenticationRequest;
+import novi.nl.wildplukrecepten.payload.AuthenticationResponse;
 import novi.nl.wildplukrecepten.utilities.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

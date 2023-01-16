@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.inputDto.IngredientInputDto;
-import novi.nl.wildplukrecepten.dto.outputDto.IngredientOutputDto;
+import novi.nl.wildplukrecepten.dto.IngredientDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Ingredient;
 import novi.nl.wildplukrecepten.repositories.IngredientRepository;
@@ -19,17 +18,17 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public List<IngredientOutputDto> getAllIngredients() {
+    public List<IngredientDto> getAllIngredients() {
         List<Ingredient> ingredients = ingredientRepository.findAll();
-        ArrayList<IngredientOutputDto> ingredientOutputDtos = new ArrayList<>();
+        ArrayList<IngredientDto> ingredientDtos = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
-            IngredientOutputDto ingredientOutputDto = transferIngredientToDto(ingredient);
-            ingredientOutputDtos.add(ingredientOutputDto);
+            IngredientDto ingredientDto = transferIngredientToDto(ingredient);
+            ingredientDtos.add(ingredientDto);
         }
-        return ingredientOutputDtos;
+        return ingredientDtos;
     }
 
-    public IngredientOutputDto getIngredient(Long id) {
+    public IngredientDto getIngredient(Long id) {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
         if (optionalIngredient.isPresent()) {
             Ingredient ingredient1 = optionalIngredient.get();
@@ -39,18 +38,18 @@ public class IngredientService {
         }
     }
 
-    public Long createIngredient(IngredientInputDto ingredientInputDto) {
+    public Long createIngredient(IngredientDto ingredientDto) {
         Ingredient newIngredient = new Ingredient();
-        newIngredient = transferDtoToIngredient(ingredientInputDto);
+        newIngredient = transferDtoToIngredient(ingredientDto);
         Ingredient savedIngredient = ingredientRepository.save(newIngredient);
         return savedIngredient.getId();
     }
 
-    public IngredientOutputDto putIngredient(Long id, IngredientInputDto ingredientInputDto) {
+    public IngredientDto putIngredient(Long id, IngredientDto ingredientDto) {
         {
             if (ingredientRepository.findById(id).isPresent()) {
                 Ingredient ingredient = ingredientRepository.findById(id).get();
-                Ingredient ingredient1 = transferDtoToIngredient(ingredientInputDto);
+                Ingredient ingredient1 = transferDtoToIngredient(ingredientDto);
                 ingredient1.setId(ingredient.getId());
                 ingredientRepository.save(ingredient1);
                 return transferIngredientToDto(ingredient1);
@@ -60,19 +59,19 @@ public class IngredientService {
         }
     }
 
-    public IngredientOutputDto patchIngredient(Long id, IngredientInputDto ingredientInputDto) {
+    public IngredientDto patchIngredient(Long id, IngredientDto ingredientDto) {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
         if (ingredientRepository.existsById(id)) {
             Ingredient ingredientToUpdate = optionalIngredient.get();
 
-            if (ingredientInputDto.getAmount() != null) {
-                ingredientToUpdate.setAmount(ingredientInputDto.getAmount());
+            if (ingredientDto.getAmount() != null) {
+                ingredientToUpdate.setAmount(ingredientDto.getAmount());
             }
-            if (ingredientInputDto.getUnit() != null) {
-                ingredientToUpdate.setUnit(ingredientInputDto.getUnit());
+            if (ingredientDto.getUnit() != null) {
+                ingredientToUpdate.setUnit(ingredientDto.getUnit());
             }
-            if (ingredientInputDto.getIngredient_name() != null) {
-                ingredientToUpdate.setIngredient_name(ingredientInputDto.getIngredient_name());
+            if (ingredientDto.getIngredient_name() != null) {
+                ingredientToUpdate.setIngredient_name(ingredientDto.getIngredient_name());
             }
 
             Ingredient savedIngredient = ingredientRepository.save(ingredientToUpdate);
@@ -95,23 +94,23 @@ public class IngredientService {
 
 
     //    helper methods.......................................................
-    private IngredientOutputDto transferIngredientToDto(Ingredient ingredient) {
-        IngredientOutputDto ingredientOutputDto = new IngredientOutputDto();
-        ingredientOutputDto.setRecipe(ingredient.getRecipe());
-        ingredientOutputDto.setId(ingredient.getId());
-        ingredientOutputDto.setAmount(ingredient.getAmount());
-        ingredientOutputDto.setUnit(ingredient.getUnit());
-        ingredientOutputDto.setIngredient_name(ingredient.getIngredient_name());
-        return ingredientOutputDto;
+    private IngredientDto transferIngredientToDto(Ingredient ingredient) {
+        IngredientDto ingredientDto = new IngredientDto();
+        ingredientDto.setRecipe(ingredient.getRecipe());
+        ingredientDto.setId(ingredient.getId());
+        ingredientDto.setAmount(ingredient.getAmount());
+        ingredientDto.setUnit(ingredient.getUnit());
+        ingredientDto.setIngredient_name(ingredient.getIngredient_name());
+        return ingredientDto;
     }
 
-    private Ingredient transferDtoToIngredient(IngredientInputDto ingredientInputDto) {
+    private Ingredient transferDtoToIngredient(IngredientDto ingredientDto) {
         Ingredient ingredient = new Ingredient();
-        ingredient.setRecipe(ingredientInputDto.getRecipe());
-        ingredient.setId(ingredientInputDto.getId());
-        ingredient.setUnit(ingredientInputDto.getUnit());
-        ingredient.setAmount(ingredientInputDto.getAmount());
-        ingredient.setIngredient_name(ingredientInputDto.getIngredient_name());
+        ingredient.setRecipe(ingredientDto.getRecipe());
+        ingredient.setId(ingredientDto.getId());
+        ingredient.setUnit(ingredientDto.getUnit());
+        ingredient.setAmount(ingredientDto.getAmount());
+        ingredient.setIngredient_name(ingredientDto.getIngredient_name());
 
         return ingredient;
     }
