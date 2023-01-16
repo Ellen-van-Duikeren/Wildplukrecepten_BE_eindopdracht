@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto.outputDto;
+package novi.nl.wildplukrecepten.dto.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RecipeOutputDto {
+public class RecipeDto {
     private Long id;
     @NotBlank
     private String title;

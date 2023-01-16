@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto.outputDto;
+package novi.nl.wildplukrecepten.dto.Dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 
-public class UserOutputDto {
+public class UserDto {
     @NotBlank
     public String username;
     @NotBlank

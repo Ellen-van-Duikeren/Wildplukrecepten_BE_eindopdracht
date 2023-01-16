@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto.inputDto;
+package techiteasy1121.payload;
 
 public class AuthenticationRequest {
 

@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto.outputDto;
+package novi.nl.wildplukrecepten.dto.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import novi.nl.wildplukrecepten.models.Recipe;
 
 @Getter
 @Setter
-public class IngredientOutputDto {
+public class IngredientDto {
     private Long id;
     private Double amount;
     private String unit;
