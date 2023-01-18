@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(InstructionController.class)
-@ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
 class InstructionControllerTest {
 
@@ -135,17 +134,17 @@ class InstructionControllerTest {
     }
 
     @Test
-    void updatePartOfInstruction() {
-//        given(instructionService.updateInstruction(instructionInputDto2, 1L)).willReturn(instructionDto4);
-//
-//        mockMvc.perform(put("/instructions/9789076174105")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(instructionInputDto2)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("id").value(1L))
-//                .andExpect(jsonPath("instruction").value("Do 1"))
-//                .andExpect(jsonPath("recipe").value("en de geheime kamer"))
-//                ;
+    void updatePartOfInstruction() throws Exception {
+        given(instructionService.putInstruction(1L, instructionInputDto2)).willReturn(instructionDto4);
+
+        mockMvc.perform(put("/instructions/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(instructionInputDto2)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(1L))
+                .andExpect(jsonPath("instruction").value("Do 2"))
+//                .andExpect(jsonPath("recipe").value(recipe1))
+        ;
     }
 
     @Test

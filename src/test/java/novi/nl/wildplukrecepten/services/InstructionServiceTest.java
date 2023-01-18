@@ -52,13 +52,10 @@ class InstructionServiceTest {
     // testen..........................................................
     @Test
     void getAllInstructions() {
-        //Arrange
-        // Act
         when(instructionRepository.findAll()).thenReturn(List.of(instruction1, instruction2));
 
         List<Instruction> instructionsFound = instructionService.transferInstructionDtoListToInstructionList(instructionService.getAllInstructions());
 
-        //Assert
         assertEquals(instruction1.getInstruction(), instructionsFound.get(0).getInstruction());
         assertEquals(instruction2.getInstruction(), instructionsFound.get(1).getInstruction());
     }
@@ -66,12 +63,9 @@ class InstructionServiceTest {
 
     @Test
     void getInstruction() {
-        //Arrange
-        //Act
         when(instructionRepository.findById(1L)).thenReturn(Optional.of(instruction1));
         InstructionDto instructionDto = instructionService.getInstruction(1L);
 
-        //Assert
         assertEquals(instruction1.getId(), instructionDto.getId());
     }
 
