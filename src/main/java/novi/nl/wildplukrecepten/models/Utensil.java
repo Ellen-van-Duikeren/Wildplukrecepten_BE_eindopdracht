@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +26,18 @@ public class Utensil {
     @ManyToOne
     private Recipe recipe;
 
+
+    //equals & hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Utensil utensil1 = (Utensil) o;
+        return Objects.equals(id, utensil1.id) && Objects.equals(utensil, utensil1.utensil) && Objects.equals(recipe, utensil1.recipe);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, utensil, recipe);
+    }
 }

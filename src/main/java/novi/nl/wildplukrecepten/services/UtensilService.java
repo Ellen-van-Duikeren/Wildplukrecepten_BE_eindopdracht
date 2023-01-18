@@ -22,7 +22,7 @@ public class UtensilService {
         List<Utensil> utensils = utensilRepository.findAll();
         ArrayList<UtensilDto> utensilDtos = new ArrayList<>();
         for (Utensil utensil : utensils) {
-            UtensilDto utensilDto = transferUtensilToDto(utensil);
+            UtensilDto utensilDto = transferUtensilToUtensilDto(utensil);
             utensilDtos.add(utensilDto);
         }
         return utensilDtos;
@@ -32,15 +32,15 @@ public class UtensilService {
         Optional<Utensil> optionalUtensil = utensilRepository.findById(id);
         if (optionalUtensil.isPresent()) {
             Utensil utensil1 = optionalUtensil.get();
-            return transferUtensilToDto(utensil1);
+            return transferUtensilToUtensilDto(utensil1);
         } else {
             throw new RecordNotFoundException("No utensil found with id: " + id + ".");
         }
     }
 
     public Long createUtensil(UtensilDto utensilDto) {
-        Utensil newUtensil = new Utensil();
-        newUtensil = transferDtoToUtensil(utensilDto);
+        Utensil newUtensil;
+        newUtensil = transferUtensilDtoToUtensil(utensilDto);
         Utensil savedUtensil = utensilRepository.save(newUtensil);
         return savedUtensil.getId();
     }
@@ -49,10 +49,10 @@ public class UtensilService {
         {
             if (utensilRepository.findById(id).isPresent()) {
                 Utensil utensil = utensilRepository.findById(id).get();
-                Utensil utensil1 = transferDtoToUtensil(utensilDto);
+                Utensil utensil1 = transferUtensilDtoToUtensil(utensilDto);
                 utensil1.setId(utensil.getId());
                 utensilRepository.save(utensil1);
-                return transferUtensilToDto(utensil1);
+                return transferUtensilToUtensilDto(utensil1);
             } else {
                 throw new RecordNotFoundException("No utensil found with id: " + id + ".");
             }
@@ -69,7 +69,7 @@ public class UtensilService {
             }
 
             Utensil savedUtensil = utensilRepository.save(utensilToUpdate);
-            return transferUtensilToDto(savedUtensil);
+            return transferUtensilToUtensilDto(savedUtensil);
         } else {
             throw new RecordNotFoundException("No utensil with id " + id);
         }
@@ -88,7 +88,7 @@ public class UtensilService {
 
 
     //    helper methods.......................................................
-    private UtensilDto transferUtensilToDto(Utensil utensil) {
+    private UtensilDto transferUtensilToUtensilDto(Utensil utensil) {
         UtensilDto utensilDto = new UtensilDto();
         utensilDto.setRecipe(utensil.getRecipe());
         utensilDto.setId(utensil.getId());
@@ -96,11 +96,19 @@ public class UtensilService {
         return utensilDto;
     }
 
-    private Utensil transferDtoToUtensil(UtensilDto utensilDto) {
+    private Utensil transferUtensilDtoToUtensil(UtensilDto utensilDto) {
         Utensil utensil = new Utensil();
         utensil.setRecipe(utensilDto.getRecipe());
         utensil.setId(utensilDto.getId());
         utensil.setUtensil(utensilDto.getUtensil());
         return utensil;
+    }
+
+    public List<Utensil> transferUtensilDtoListToUtensilList(List<UtensilDto> utensilstos) {
+        List<Utensil> utensils = new ArrayList<>();
+        for (UtensilDto utensilsto : utensilstos) {
+            utensils.add(transferUtensilDtoToUtensil(utensilsto));
+        }
+        return utensils;
     }
 }

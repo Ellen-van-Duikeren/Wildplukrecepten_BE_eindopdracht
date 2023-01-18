@@ -3,11 +3,8 @@ package novi.nl.wildplukrecepten.services;
 import novi.nl.wildplukrecepten.dto.InstructionDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Instruction;
-import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.repositories.InstructionRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-//@MockitoSettings(strictness = Strictness.LENIENT)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class InstructionServiceTest {
     @Mock
     InstructionRepository instructionRepository;
@@ -47,14 +42,10 @@ class InstructionServiceTest {
 
     @BeforeEach
     void setUp() {
-        instruction1 = new Instruction(1L, "Doe 1", null);
-        instruction2 = new Instruction(2L, "Doe 2", null);
-        instructionDto1 = new InstructionDto(1L, "Doe 1", null);
-        instructionDto2 = new InstructionDto(2L, "Doe 2", null);
-    }
-
-    @AfterEach
-    void tearDown() {
+        instruction1 = new Instruction(1L, "Do 1", null);
+        instruction2 = new Instruction(2L, "Do 2", null);
+        instructionDto1 = new InstructionDto(1L, "Do 1", null);
+        instructionDto2 = new InstructionDto(2L, "Do 2", null);
     }
 
 
@@ -92,8 +83,6 @@ class InstructionServiceTest {
 
     @Test
     void createInstruction() {
-        //Arrange
-        //Act
         when(instructionRepository.save(instruction1)).thenReturn(instruction1);
 
         instructionService.createInstruction(instructionDto1);
@@ -107,6 +96,8 @@ class InstructionServiceTest {
     @Test
     void putInstruction() {
         when(instructionRepository.findById(1L)).thenReturn(Optional.of(instruction1));
+        when(instructionRepository.existsById(1L)).thenReturn(true);
+        when(instructionRepository.save(any())).thenReturn(instruction2);
 
         instructionService.putInstruction(1L, instructionDto1);
 
@@ -125,16 +116,18 @@ class InstructionServiceTest {
 
     @Test
     void patchInstruction() {
-//        when(instructionRepository.findById(1L)).thenReturn(Optional.of(instruction1));
-//
-//        instructionService.patchInstruction(1L, instructionDto1);
-//
-//        verify(instructionRepository, times(1)).save(captor.capture());
-//        Instruction captured = captor.getValue();
-//
-//        assertEquals(instruction1.getId(), captured.getId());
-//        assertEquals(instruction1.getInstruction(), captured.getInstruction());
-//        assertEquals(instruction1.getRecipe(), captured.getRecipe());
+        when(instructionRepository.findById(1L)).thenReturn(Optional.of(instruction1));
+        when(instructionRepository.existsById(1L)).thenReturn(true);
+        when(instructionRepository.save(any())).thenReturn(instruction2);
+
+        instructionService.patchInstruction(1L, instructionDto1);
+
+        verify(instructionRepository, times(1)).save(captor.capture());
+        Instruction captured = captor.getValue();
+
+        assertEquals(instruction1.getId(), captured.getId());
+        assertEquals(instruction1.getInstruction(), captured.getInstruction());
+        assertEquals(instruction1.getRecipe(), captured.getRecipe());
     }
 
     @Test
@@ -144,8 +137,16 @@ class InstructionServiceTest {
 
     @Test
     void deleteById() {
-//        instructionService.deleteById(1L);
-//
-//        verify(instructionRepository).deleteById(1L);
+        when(instructionRepository.existsById(1L)).thenReturn(true);
+        when(instructionRepository.findById(1L)).thenReturn(Optional.of(instruction1));
+        instructionService.deleteById(1L);
+
+        verify(instructionRepository).delete(instruction1);
     }
+
+    @Test
+    void deleteInstructionThrowsExceptionForInstructionTest() {
+        assertThrows(RecordNotFoundException.class, () -> instructionService.deleteById(1L));
+    }
+
 }
