@@ -45,17 +45,17 @@ class UtensilIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        utensil1 = new Utensil(1L, "Do 1", null);
-        utensil2 = new Utensil(2L, "Do 2", null);
+        utensil1 = new Utensil(1L, "Utensil1", null);
+        utensil2 = new Utensil(2L, "Utensil2", null);
 
         utensilRepository.save(utensil1);
         utensilRepository.save(utensil2);
 
         //with utensil.getId
-        utensilDto1 = new UtensilDto(utensil1.getId(), "Do 1", null);
-        utensilDto2 = new UtensilDto(utensil2.getId(), "Do 2", null);
+        utensilDto1 = new UtensilDto(utensil1.getId(), "Utensil1", null);
+        utensilDto2 = new UtensilDto(utensil2.getId(), "Utensil2", null);
         //with hardcoded id
-        utensilDto3 = new UtensilDto(3L, "Do 3", null);
+        utensilDto3 = new UtensilDto(3L, "Utensil3", null);
     }
 
     @Test
@@ -63,7 +63,7 @@ class UtensilIntegrationTest {
         mockMvc.perform(get("/utensils"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(utensil1.getId().toString()))
-                .andExpect(jsonPath("$[0].utensil").value("Do 1"))
+                .andExpect(jsonPath("$[0].utensil").value("Utensil1"))
         ;
     }
 
@@ -73,7 +73,7 @@ class UtensilIntegrationTest {
         mockMvc.perform(get("/utensils/" + utensil1.getId().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(utensil1.getId().toString()))
-                .andExpect(jsonPath("utensil").value("Do 1"))
+                .andExpect(jsonPath("utensil").value("Utensil1"))
         ;
     }
 
@@ -93,7 +93,7 @@ class UtensilIntegrationTest {
                         .content(asJsonString(utensilDto2)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("utensil").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
 
@@ -104,7 +104,7 @@ class UtensilIntegrationTest {
                         .content(asJsonString(utensilDto2)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("utensil").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
 
