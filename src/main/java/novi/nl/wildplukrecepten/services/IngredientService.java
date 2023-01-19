@@ -1,8 +1,10 @@
 package novi.nl.wildplukrecepten.services;
 
 import novi.nl.wildplukrecepten.dto.IngredientDto;
+import novi.nl.wildplukrecepten.dto.InstructionDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Ingredient;
+import novi.nl.wildplukrecepten.models.Instruction;
 import novi.nl.wildplukrecepten.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class IngredientService {
         List<Ingredient> ingredients = ingredientRepository.findAll();
         ArrayList<IngredientDto> ingredientDtos = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
-            IngredientDto ingredientDto = transferIngredientToDto(ingredient);
+            IngredientDto ingredientDto = transferIngredientToIngredientDto(ingredient);
             ingredientDtos.add(ingredientDto);
         }
         return ingredientDtos;
@@ -32,7 +34,7 @@ public class IngredientService {
         Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
         if (optionalIngredient.isPresent()) {
             Ingredient ingredient1 = optionalIngredient.get();
-            return transferIngredientToDto(ingredient1);
+            return transferIngredientToIngredientDto(ingredient1);
         } else {
             throw new RecordNotFoundException("No ingredient found with id: " + id + ".");
         }
@@ -40,7 +42,7 @@ public class IngredientService {
 
     public Long createIngredient(IngredientDto ingredientDto) {
         Ingredient newIngredient = new Ingredient();
-        newIngredient = transferDtoToIngredient(ingredientDto);
+        newIngredient = transferIngredientDtoToIngredient(ingredientDto);
         Ingredient savedIngredient = ingredientRepository.save(newIngredient);
         return savedIngredient.getId();
     }
@@ -49,10 +51,10 @@ public class IngredientService {
         {
             if (ingredientRepository.findById(id).isPresent()) {
                 Ingredient ingredient = ingredientRepository.findById(id).get();
-                Ingredient ingredient1 = transferDtoToIngredient(ingredientDto);
+                Ingredient ingredient1 = transferIngredientDtoToIngredient(ingredientDto);
                 ingredient1.setId(ingredient.getId());
                 ingredientRepository.save(ingredient1);
-                return transferIngredientToDto(ingredient1);
+                return transferIngredientToIngredientDto(ingredient1);
             } else {
                 throw new RecordNotFoundException("No ingredient found with id: " + id + ".");
             }
@@ -75,7 +77,7 @@ public class IngredientService {
             }
 
             Ingredient savedIngredient = ingredientRepository.save(ingredientToUpdate);
-            return transferIngredientToDto(savedIngredient);
+            return transferIngredientToIngredientDto(savedIngredient);
         } else {
             throw new RecordNotFoundException("No ingredient with id " + id);
         }
@@ -94,7 +96,7 @@ public class IngredientService {
 
 
     //    helper methods.......................................................
-    private IngredientDto transferIngredientToDto(Ingredient ingredient) {
+    private IngredientDto transferIngredientToIngredientDto(Ingredient ingredient) {
         IngredientDto ingredientDto = new IngredientDto();
         ingredientDto.setRecipe(ingredient.getRecipe());
         ingredientDto.setId(ingredient.getId());
@@ -104,7 +106,7 @@ public class IngredientService {
         return ingredientDto;
     }
 
-    private Ingredient transferDtoToIngredient(IngredientDto ingredientDto) {
+    private Ingredient transferIngredientDtoToIngredient(IngredientDto ingredientDto) {
         Ingredient ingredient = new Ingredient();
         ingredient.setRecipe(ingredientDto.getRecipe());
         ingredient.setId(ingredientDto.getId());
@@ -114,4 +116,13 @@ public class IngredientService {
 
         return ingredient;
     }
+
+    public List<Ingredient> transferIngredientDtoListToIngredientList(List<IngredientDto> ingredientsdtos) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (IngredientDto ingredientsdto : ingredientsdtos) {
+            ingredients.add(transferIngredientDtoToIngredient(ingredientsdto));
+        }
+        return ingredients;
+    }
+
 }

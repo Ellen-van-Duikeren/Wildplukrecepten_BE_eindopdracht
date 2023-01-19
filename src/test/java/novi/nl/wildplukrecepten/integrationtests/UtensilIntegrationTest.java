@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import novi.nl.wildplukrecepten.dto.InstructionDto;
-import novi.nl.wildplukrecepten.models.Instruction;
-import novi.nl.wildplukrecepten.repositories.InstructionRepository;
-import novi.nl.wildplukrecepten.services.InstructionService;
+import novi.nl.wildplukrecepten.dto.UtensilDto;
+import novi.nl.wildplukrecepten.models.Utensil;
+import novi.nl.wildplukrecepten.repositories.UtensilRepository;
+import novi.nl.wildplukrecepten.services.UtensilService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,96 +25,97 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@AutoConfigureMockMvc
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
-class InstructionIntegrationTest {
+class UtensilIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private InstructionService instructionService;
+    private UtensilService utensilService;
 
     @Autowired
-    private InstructionRepository instructionRepository;
+    private UtensilRepository utensilRepository;
 
-    Instruction instruction1;
-    Instruction instruction2;
-    InstructionDto instructionDto1;
-    InstructionDto instructionDto2;
-    InstructionDto instructionDto3;
+    Utensil utensil1;
+    Utensil utensil2;
+    UtensilDto utensilDto1;
+    UtensilDto utensilDto2;
+    UtensilDto utensilDto3;
+
 
 
     @BeforeEach
     void setUp() {
-        instruction1 = new Instruction(1L, "Do 1", null);
-        instruction2 = new Instruction(2L, "Do 2", null);
+        utensil1 = new Utensil(1L, "Do 1", null);
+        utensil2 = new Utensil(2L, "Do 2", null);
 
-        instructionRepository.save(instruction1);
-        instructionRepository.save(instruction2);
+        utensilRepository.save(utensil1);
+        utensilRepository.save(utensil2);
 
-        //with instruction.getId
-        instructionDto1 = new InstructionDto(instruction1.getId(), "Do 1", null);
-        instructionDto2 = new InstructionDto(instruction2.getId(), "Do 2", null);
+        //with utensil.getId
+        utensilDto1 = new UtensilDto(utensil1.getId(), "Do 1", null);
+        utensilDto2 = new UtensilDto(utensil2.getId(), "Do 2", null);
         //with hardcoded id
-        instructionDto3 = new InstructionDto(3L, "Do 3", null);
+        utensilDto3 = new UtensilDto(3L, "Do 3", null);
     }
 
     @Test
-    void getAllInstructions() throws Exception {
-        mockMvc.perform(get("/instructions"))
+    void getAllUtensils() throws Exception {
+        mockMvc.perform(get("/utensils"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(instruction1.getId().toString()))
-                .andExpect(jsonPath("$[0].instruction").value("Do 1"))
+                .andExpect(jsonPath("$[0].id").value(utensil1.getId().toString()))
+                .andExpect(jsonPath("$[0].utensil").value("Do 1"))
         ;
     }
 
 
     @Test
-    void getInstruction() throws Exception {
-        mockMvc.perform(get("/instructions/" + instruction1.getId().toString()))
+    void getUtensil() throws Exception {
+        mockMvc.perform(get("/utensils/" + utensil1.getId().toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(instruction1.getId().toString()))
-                .andExpect(jsonPath("instruction").value("Do 1"))
+                .andExpect(jsonPath("id").value(utensil1.getId().toString()))
+                .andExpect(jsonPath("utensil").value("Do 1"))
         ;
     }
 
     @Test
-    void createInstruction() throws Exception {
-        mockMvc.perform(post("/instructions")
+    void createUtensil() throws Exception {
+        mockMvc.perform(post("/utensils")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto1)))
+                        .content(asJsonString(utensilDto1)))
                 .andExpect(status().isCreated())
         ;
     }
 
     @Test
-    void putInstruction() throws Exception {
-        mockMvc.perform(put("/instructions/1")
+    void putUtensil() throws Exception {
+        mockMvc.perform(put("/utensils/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto2)))
+                        .content(asJsonString(utensilDto2)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("instruction").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Do 2"))
         ;
     }
 
     @Test
-    void patchInstruction() throws Exception {
-        mockMvc.perform(put("/instructions/1")
+    void patchUtensil() throws Exception {
+        mockMvc.perform(put("/utensils/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto2)))
+                        .content(asJsonString(utensilDto2)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("instruction").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Do 2"))
         ;
     }
 
     @Test
     void deleteById() throws Exception {
-        mockMvc.perform(delete("/instructions/1"))
+        mockMvc.perform(delete("/utensils/1"))
                 .andExpect(status().isNoContent());
     }
 
 
-    public static String asJsonString(final InstructionDto obj) {
+    public static String asJsonString(final UtensilDto obj) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());

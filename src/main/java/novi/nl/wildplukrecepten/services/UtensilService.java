@@ -104,10 +104,10 @@ public class UtensilService {
         return utensil;
     }
 
-    public List<Utensil> transferUtensilDtoListToUtensilList(List<UtensilDto> utensilstos) {
+    public List<Utensil> transferUtensilDtoListToUtensilList(List<UtensilDto> utensilsdtos) {
         List<Utensil> utensils = new ArrayList<>();
-        for (UtensilDto utensilsto : utensilstos) {
-            utensils.add(transferUtensilDtoToUtensil(utensilsto));
+        for (UtensilDto utensilsdto : utensilsdtos) {
+            utensils.add(transferUtensilDtoToUtensil(utensilsdto));
         }
         return utensils;
     }

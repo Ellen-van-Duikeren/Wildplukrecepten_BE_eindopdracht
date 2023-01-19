@@ -2,12 +2,12 @@ package novi.nl.wildplukrecepten.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import novi.nl.wildplukrecepten.dto.InstructionDto;
+import novi.nl.wildplukrecepten.dto.UtensilDto;
 import novi.nl.wildplukrecepten.dto.RecipeDto;
 import novi.nl.wildplukrecepten.filter.JwtRequestFilter;
-import novi.nl.wildplukrecepten.models.Instruction;
+import novi.nl.wildplukrecepten.models.Utensil;
 import novi.nl.wildplukrecepten.models.Recipe;
-import novi.nl.wildplukrecepten.services.InstructionService;
+import novi.nl.wildplukrecepten.services.UtensilService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(InstructionController.class)
+@WebMvcTest(UtensilController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class InstructionControllerTest {
+class UtensilControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,108 +45,108 @@ class InstructionControllerTest {
     JwtRequestFilter jwtRequestFilter;
 
     @MockBean
-    private InstructionService instructionService;
+    private UtensilService utensilService;
 
-    Instruction instruction1;
-    Instruction instruction2;
-    Instruction instruction3;
+    Utensil utensil1;
+    Utensil utensil2;
+    Utensil utensil3;
 
     // dtos
-    InstructionDto instructionDto1;
-    InstructionDto instructionDto2;
-    InstructionDto instructionDto3;
-    InstructionDto instructionDto4;
+    UtensilDto utensilDto1;
+    UtensilDto utensilDto2;
+    UtensilDto utensilDto3;
+    UtensilDto utensilDto4;
 
     //input Dtos
-    InstructionDto instructionDto5;
-    InstructionDto instructionDto6;
+    UtensilDto utensilDto5;
+    UtensilDto utensilDto6;
 
     @BeforeEach
     void setUp() {
         Recipe recipe1 = null;
         Recipe recipe2 = null;
-        instruction1 = new Instruction(1L, "Do 1", recipe1);
-        instruction2 = new Instruction(2L, "Do 2", recipe1);
-        instruction3 = new Instruction(3L, "Do 3", recipe2);
+        utensil1 = new Utensil(1L, "Utensil1", recipe1);
+        utensil2 = new Utensil(2L, "Utensil2", recipe1);
+        utensil3 = new Utensil(3L, "Utensil3", recipe2);
 
-        instructionDto1 = new InstructionDto(1L, "Do 1", recipe1);
-        instructionDto2 = new InstructionDto(2L, "Do 2", recipe1);
-        instructionDto3 = new InstructionDto(3L, "Do 3", recipe2);
-        instructionDto4 = new InstructionDto(1L, "Do 2", recipe2);
+        utensilDto1 = new UtensilDto(1L, "Utensil1", recipe1);
+        utensilDto2 = new UtensilDto(2L, "Utensil2", recipe1);
+        utensilDto3 = new UtensilDto(3L, "Utensil3", recipe2);
+        utensilDto4 = new UtensilDto(1L, "Utensil2", recipe2);
 
-        instructionDto5 = new InstructionDto(1L, "Do 1", recipe1);
-        instructionDto6 = new InstructionDto(1L, "Do 2", recipe2);
+        utensilDto5 = new UtensilDto(1L, "Utensil1", recipe1);
+        utensilDto6 = new UtensilDto(1L, "Utensil2", recipe2);
     }
 
 
     @Test
-    void getAllInstructions() throws Exception {
-        given(instructionService.getAllInstructions()).willReturn(List.of(instructionDto1, instructionDto2, instructionDto3));
+    void getAllUtensils() throws Exception {
+        given(utensilService.getAllUtensils()).willReturn(List.of(utensilDto1, utensilDto2, utensilDto3));
 
-        mockMvc.perform(get("/instructions"))
+        mockMvc.perform(get("/utensils"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].instruction").value("Do 1"))
+                .andExpect(jsonPath("$[0].utensil").value("Utensil1"))
                 .andExpect(jsonPath("$[1].id").value(2L))
-                .andExpect(jsonPath("$[1].instruction").value("Do 2"))
+                .andExpect(jsonPath("$[1].utensil").value("Utensil2"))
                 .andExpect(jsonPath("$[2].id").value(3L))
-                .andExpect(jsonPath("$[2].instruction").value("Do 3"))
+                .andExpect(jsonPath("$[2].utensil").value("Utensil3"))
         ;
     }
 
     @Test
-    void getInstruction() throws Exception {
-        given(instructionService.getInstruction(anyLong())).willReturn(instructionDto1);
+    void getUtensil() throws Exception {
+        given(utensilService.getUtensil(anyLong())).willReturn(utensilDto1);
 
-        mockMvc.perform(get("/instructions/1"))
+        mockMvc.perform(get("/utensils/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("instruction").value("Do 1"))
+                .andExpect(jsonPath("utensil").value("Utensil1"))
         ;
     }
 
 
     @Test
-    void createInstruction() throws Exception {
-        given(instructionService.createInstruction(instructionDto5)).willReturn(instructionDto1.getId());
+    void createUtensil() throws Exception {
+        given(utensilService.createUtensil(utensilDto5)).willReturn(utensilDto1.getId());
 
-        mockMvc.perform(post("/instructions")
+        mockMvc.perform(post("/utensils")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto5)))
+                        .content(asJsonString(utensilDto5)))
                 .andExpect(status().isCreated())
         ;
     }
 
 
     @Test
-    void updateInstruction() throws Exception {
-        given(instructionService.putInstruction(1L, instructionDto6)).willReturn(instructionDto4);
+    void updateUtensil() throws Exception {
+        given(utensilService.putUtensil(1L, utensilDto6)).willReturn(utensilDto4);
 
-        mockMvc.perform(put("/instructions/1")
+        mockMvc.perform(put("/utensils/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto6)))
+                        .content(asJsonString(utensilDto6)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("instruction").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
 
     @Test
-    void updatePartOfInstruction() throws Exception {
-        given(instructionService.putInstruction(1L, instructionDto6)).willReturn(instructionDto4);
+    void updatePartOfUtensil() throws Exception {
+        given(utensilService.putUtensil(1L, utensilDto6)).willReturn(utensilDto4);
 
-        mockMvc.perform(put("/instructions/1")
+        mockMvc.perform(put("/utensils/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(instructionDto6)))
+                        .content(asJsonString(utensilDto6)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(1L))
-                .andExpect(jsonPath("instruction").value("Do 2"))
+                .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
 
     @Test
-    void deleteInstruction() throws Exception {
-        mockMvc.perform(delete("/instructions/1"))
+    void deleteUtensil() throws Exception {
+        mockMvc.perform(delete("/utensils/1"))
                 .andExpect(status().isNoContent());
     }
 

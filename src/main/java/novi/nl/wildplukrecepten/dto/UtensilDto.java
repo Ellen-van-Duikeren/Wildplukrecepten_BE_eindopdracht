@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import novi.nl.wildplukrecepten.models.Recipe;
 
+import java.util.Objects;
+
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -20,4 +22,20 @@ public class UtensilDto {
     //relations............................................
     @JsonIncludeProperties({"id", "title"})
     private Recipe recipe;
+
+
+    //equals & hashcode......................................................................................................
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UtensilDto that = (UtensilDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(utensil, that.utensil) && Objects.equals(recipe, that.recipe);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, utensil, recipe);
+    }
+
 }

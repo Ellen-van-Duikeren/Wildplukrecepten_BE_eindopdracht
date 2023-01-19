@@ -1,5 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
+import novi.nl.wildplukrecepten.dto.IngredientDto;
 import novi.nl.wildplukrecepten.dto.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.*;
@@ -37,7 +38,7 @@ public class RecipeService {
         List<Recipe> recipes = recipeRepository.findAll();
         List<RecipeDto> recipeDtos = new ArrayList<>();
         for (Recipe recipe : recipes) {
-            RecipeDto recipeDto = transferToDto(recipe);
+            RecipeDto recipeDto = transferRecipeToRecipeDto(recipe);
             recipeDtos.add(recipeDto);
         }
         return recipeDtos;
@@ -46,18 +47,18 @@ public class RecipeService {
     // GetMapping by id, function for getting a recipe by id
     public RecipeDto getRecipe(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-        if (!recipeRepository.existsById(id)) {
-            throw new RecordNotFoundException("No recipe found with id: " + id + ".");
+        if (optionalRecipe.isPresent()) {
+            Recipe ingredient1 = optionalRecipe.get();
+            return transferRecipeToRecipeDto(ingredient1);
         } else {
-            Recipe recipe1 = optionalRecipe.get();
-            return transferToDto(recipe1);
+            throw new RecordNotFoundException("No recipe found with id: " + id + ".");
         }
     }
 
     // PostMapping, function for adding a recipe
     public Long createRecipe(RecipeDto recipeDto) {
         Recipe newRecipe = new Recipe();
-        newRecipe = transferToRecipe(recipeDto);
+        newRecipe = transferRecipeDtoToRecipe(recipeDto);
         Recipe savedRecipe1 = recipeRepository.save(newRecipe);
 
         // need to save in between in savedRecipe1, savedRecipe2 instead of using savedRecipe in every line; otherwise the last instructions will overwrite the first utensils and you will only see instructions and no utensils        addUtensilToRecipe(recipeDto, savedRecipe);
@@ -80,10 +81,10 @@ public class RecipeService {
         {
             if (recipeRepository.findById(id).isPresent()) {
                 Recipe recipe = recipeRepository.findById(id).get();
-                Recipe recipe1 = transferToRecipe(recipeDto);
+                Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
                 recipe1.setId(recipe.getId());
                 recipeRepository.save(recipe1);
-                return transferToDto(recipe1);
+                return transferRecipeToRecipeDto(recipe1);
             } else {
                 throw new RecordNotFoundException("No recipe found with id: " + id + ".");
             }
@@ -133,7 +134,7 @@ public class RecipeService {
             }
 
             Recipe savedRecipe = recipeRepository.save(recipeToUpdate);
-            return transferToDto(savedRecipe);
+            return transferRecipeToRecipeDto(savedRecipe);
         } else {
             throw new RecordNotFoundException("No recipe with id " + id);
         }
@@ -191,7 +192,7 @@ public class RecipeService {
 
     // helper methods......................................................................................................
     // helper method from Recipe to Dto
-    private RecipeDto transferToDto(Recipe recipe) {
+    private RecipeDto transferRecipeToRecipeDto(Recipe recipe) {
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(recipe.getId());
         recipeDto.setTitle(recipe.getTitle());
@@ -223,8 +224,9 @@ public class RecipeService {
         return recipeDto;
     }
 
+
     //helper method from Dto to Recipe
-    public Recipe transferToRecipe(RecipeDto recipeDto) {
+    public Recipe transferRecipeDtoToRecipe(RecipeDto recipeDto) {
         Recipe recipe = new Recipe();
         recipe.setId(recipeDto.getId());
         recipe.setTitle(recipeDto.getTitle());
@@ -243,19 +245,16 @@ public class RecipeService {
         return recipe;
     }
 
-    //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
-//    public void addUtensilToRecipe(RecipeDto recipeDto, Recipe recipe) {
-//        for (Utensil utensil : recipeDto.getUtensils()) {
-//            if (utensilRepository.existsByUtensil(utensil.getUtensil())) {
-//                continue;
-//            } else {
-//                utensil.setRecipe(recipe);
-//                utensilRepository.save(utensil);
-//            }
-//        }
-//    }
-//
+    public List<Recipe> transferRecipeDtoListToRecipeList(List<RecipeDto> ingredientsdtos) {
+        List<Recipe> ingredients = new ArrayList<>();
+        for (RecipeDto ingredientsdto : ingredientsdtos) {
+            ingredients.add(transferRecipeDtoToRecipe(ingredientsdto));
+        }
+        return ingredients;
+    }
 
+
+    //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
     public void addUtensilToRecipe(RecipeDto recipeDto, Recipe recipe) {
         for (Utensil utensil : recipeDto.getUtensils()) {
             utensil.setRecipe(recipe);

@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -78,25 +79,43 @@ public class Recipe {
     List<Tags> tags;
 
 
-// relations......................................................................................................
+    // relations......................................................................................................
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
+
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
     }
 
     @OneToMany(mappedBy = "recipe")
     private List<Instruction> instructions;
+
     public void addInstruction(Instruction instruction) {
         this.instructions.add(instruction);
     }
 
     @OneToMany(mappedBy = "recipe")
     private List<Utensil> utensils;
+
     public void addUtensil(Utensil utensil) {
         this.utensils.add(utensil);
     }
 
     @OneToOne
     FileUpload file;
+
+
+    //equals & hashcode......................................................................................................
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recipe recipe = (Recipe) o;
+        return Objects.equals(id, recipe.id) && Objects.equals(title, recipe.title) && Objects.equals(sub_title, recipe.sub_title) && Objects.equals(persons, recipe.persons) && Objects.equals(source, recipe.source) && Objects.equals(story, recipe.story) && Objects.equals(prep_time, recipe.prep_time) && Objects.equals(cook_time, recipe.cook_time) && Objects.equals(months, recipe.months) && Objects.equals(tags, recipe.tags) && Objects.equals(ingredients, recipe.ingredients) && Objects.equals(instructions, recipe.instructions) && Objects.equals(utensils, recipe.utensils) && Objects.equals(file, recipe.file);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, sub_title, persons, source, story, prep_time, cook_time, months, tags, ingredients, instructions, utensils, file);
+    }
 }

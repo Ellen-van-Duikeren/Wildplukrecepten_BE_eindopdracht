@@ -22,6 +22,8 @@ public class InstructionDto {
     @JsonIncludeProperties({"id", "title"})
     private Recipe recipe;
 
+
+    //equals & hashcode......................................................................................................
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

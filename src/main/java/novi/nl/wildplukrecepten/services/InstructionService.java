@@ -103,10 +103,10 @@ public class InstructionService {
         return instruction;
     }
 
-    public List<Instruction> transferInstructionDtoListToInstructionList(List<InstructionDto> instructionstos) {
+    public List<Instruction> transferInstructionDtoListToInstructionList(List<InstructionDto> instructionsdtos) {
         List<Instruction> instructions = new ArrayList<>();
-        for (InstructionDto instructionsto : instructionstos) {
-            instructions.add(transferInstructionDtoToInstruction(instructionsto));
+        for (InstructionDto instructionsdto : instructionsdtos) {
+            instructions.add(transferInstructionDtoToInstruction(instructionsdto));
         }
         return instructions;
     }
