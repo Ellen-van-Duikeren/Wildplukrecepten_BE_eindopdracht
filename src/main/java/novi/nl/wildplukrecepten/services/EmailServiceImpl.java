@@ -9,13 +9,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 
-//https://www.geeksforgeeks.org/spring-boot-sending-email-via-smtp/
 @Service
-public class EmailService implements EmailRepository {
+public class EmailServiceImpl implements EmailRepository {
+
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -24,35 +25,36 @@ public class EmailService implements EmailRepository {
 
     // Method 1
     // To send a simple email
-    public String sendSimpleMail(EmailDetails details)
-    {
+    public String sendSimpleMail(EmailDetails emailDetails) {
+
         // Try block to check for exceptions
         try {
-
             // Creating a simple mail message
             SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-            // Setting up necessary details
+            // Setting up necessary emailDetails
             mailMessage.setFrom(sender);
-            mailMessage.setTo(details.getRecipient());
-            mailMessage.setText(details.getMsgBody());
-            mailMessage.setSubject(details.getSubject());
+            mailMessage.setTo(emailDetails.getRecipient());
+            mailMessage.setText(emailDetails.getMsgBody());
+            mailMessage.setSubject(emailDetails.getSubject());
+            System.out.println("doe ik +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println(emailDetails.getRecipient());
 
             // Sending the mail
             javaMailSender.send(mailMessage);
-            return "Mail is verzonden...";
+            return "Mail Sent Successfully...";
         }
 
         // Catch block to handle the exceptions
         catch (Exception e) {
-            return "Error bij het versturen van de mail";
+            return "Error while Sending Mail";
         }
     }
 
     // Method 2
     // To send an email with attachment
-    public String sendMailWithAttachment(EmailDetails details)
-    {
+    public String
+    sendMailWithAttachment(EmailDetails emailDetails) {
         // Creating a mime message
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
@@ -62,24 +64,24 @@ public class EmailService implements EmailRepository {
             // Setting multipart as true for attachments to be send
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(sender);
-            mimeMessageHelper.setTo(details.getRecipient());
-            mimeMessageHelper.setText(details.getMsgBody());
-            mimeMessageHelper.setSubject(details.getSubject());
+            mimeMessageHelper.setTo(emailDetails.getRecipient());
+            mimeMessageHelper.setText(emailDetails.getMsgBody());
+            mimeMessageHelper.setSubject(emailDetails.getSubject());
 
             // Adding the attachment
-            FileSystemResource file = new FileSystemResource(new File(details.getAttachment()));
+            FileSystemResource file = new FileSystemResource(new File(emailDetails.getAttachment()));
 
             mimeMessageHelper.addAttachment(file.getFilename(), file);
 
             // Sending the mail
             javaMailSender.send(mimeMessage);
-            return "Mail is verzonden...";
+            return "Mail sent Successfully";
         }
 
         // Catch block to handle MessagingException
         catch (MessagingException e) {
             // Display message when exception occurred
-            return "Error bij het versturen van de mail";
+            return "Error while sending mail!!!";
         }
     }
 }

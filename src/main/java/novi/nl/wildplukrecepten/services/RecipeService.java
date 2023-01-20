@@ -1,10 +1,10 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.IngredientDto;
 import novi.nl.wildplukrecepten.dto.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.*;
 import novi.nl.wildplukrecepten.repositories.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ public class RecipeService {
     private final FileUploadRepository uploadRepository;
 
     //    test
-    public final EmailService emailService;
+    public final EmailRepository emailService;
 
 
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository, FileUploadRepository uploadRepository, EmailService emailService) {
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, UtensilRepository utensilRepository, InstructionRepository instructionRepository, FileUploadRepository uploadRepository, EmailRepository emailService) {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.utensilRepository = utensilRepository;
@@ -69,9 +69,9 @@ public class RecipeService {
         addInstructionToRecipe(recipeDto, savedRecipe3);
         recipeRepository.save(savedRecipe3);
 
-        // Automaticaly sending an email to admin when someone post a new recipe
-//        EmailDetails test = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd", "nieuw recept toegevoegd", "C:/Users/evand/Novi/Eindopdracht/Onderliggend/Assets/bramenjam.jpg");
-//        this.emailService.sendMailWithAttachment(test);
+        // Automaticaly sending an email to my address, when someone post a new recipe
+        EmailDetails email = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd.", "nieuw recept toegevoegd");
+        this.emailService.sendSimpleMail(email);
 
         return savedRecipe1.getId();
     }

@@ -82,22 +82,22 @@ public class UserService {
     public void patchUser(String username, UserDto changeUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        if (!changeUser.getPassword().isEmpty()) {
+        if (changeUser.getPassword() != "") {
             user.setPassword(passwordEncoder.encode(changeUser.getPassword()));
         }
         if (changeUser.getEnabled() != null) {
             user.setEnabled(changeUser.getEnabled());
         }
-        if (changeUser.getApikey() != null) {
+        if (changeUser.getApikey() != "") {
             user.setApikey(changeUser.getApikey());
         }
-        if (!changeUser.getFirstname().isEmpty()) {
+        if (changeUser.getFirstname() != "") {
             user.setFirstname(changeUser.getFirstname());
         }
-        if (!changeUser.getLastname().isEmpty()) {
+        if (changeUser.getLastname() != "") {
             user.setLastname(changeUser.getLastname());
         }
-        if (!changeUser.getEmailadress().isEmpty()) {
+        if (changeUser.getEmailadress() != "") {
             user.setEmailadress(changeUser.getEmailadress());
         }
         userRepository.save(user);
