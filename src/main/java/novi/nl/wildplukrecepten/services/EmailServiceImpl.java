@@ -37,8 +37,6 @@ public class EmailServiceImpl implements EmailRepository {
             mailMessage.setTo(emailDetails.getRecipient());
             mailMessage.setText(emailDetails.getMsgBody());
             mailMessage.setSubject(emailDetails.getSubject());
-            System.out.println("doe ik +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println(emailDetails.getRecipient());
 
             // Sending the mail
             javaMailSender.send(mailMessage);

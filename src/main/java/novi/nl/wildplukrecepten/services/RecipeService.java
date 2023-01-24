@@ -57,23 +57,19 @@ public class RecipeService {
 
     // PostMapping, function for adding a recipe
     public Long createRecipe(RecipeDto recipeDto) {
-        Recipe newRecipe = new Recipe();
+        Recipe newRecipe;
         newRecipe = transferRecipeDtoToRecipe(recipeDto);
-        Recipe savedRecipe1 = recipeRepository.save(newRecipe);
+        Recipe savedRecipe = recipeRepository.save(newRecipe);
 
-        // need to save in between in savedRecipe1, savedRecipe2 instead of using savedRecipe in every line; otherwise the last instructions will overwrite the first utensils and you will only see instructions and no utensils        addUtensilToRecipe(recipeDto, savedRecipe);
-        addUtensilToRecipe(recipeDto, savedRecipe1);
-        Recipe savedRecipe2 = recipeRepository.save(savedRecipe1);
-        addIngredientToRecipe(recipeDto, savedRecipe2);
-        Recipe savedRecipe3 = recipeRepository.save(savedRecipe2);
-        addInstructionToRecipe(recipeDto, savedRecipe3);
-        recipeRepository.save(savedRecipe3);
+        addUtensilToRecipe(recipeDto, savedRecipe);
+        addIngredientToRecipe(recipeDto, savedRecipe);
+        addInstructionToRecipe(recipeDto, savedRecipe);
 
         // Automaticaly sending an email to my address, when someone post a new recipe
         EmailDetails email = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd.", "nieuw recept toegevoegd");
         this.emailService.sendSimpleMail(email);
 
-        return savedRecipe1.getId();
+        return savedRecipe.getId();
     }
 
     // PutMapping, function for changing a (whole) recipe
