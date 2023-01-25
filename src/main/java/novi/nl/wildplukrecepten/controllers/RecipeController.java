@@ -78,12 +78,12 @@ public class RecipeController {
 
 
     //  to link a photo to a recipe
-
     @PostMapping("/recipes/{id}/photo")
-    public void assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
+    public ResponseEntity<Object> assignPhotoToRecipe(@PathVariable("id") Long id, @RequestBody MultipartFile file) {
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
         String photo = fileUploadService.storeFile(file, url);
         recipeService.assignPhotoToRecipe(photo, id);
+        return ResponseEntity.noContent().build();
     }
 }
 

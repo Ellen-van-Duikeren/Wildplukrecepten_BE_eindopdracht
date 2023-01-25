@@ -22,7 +22,6 @@ public class RecipeDto {
     @NotBlank
     private String title;
     private String sub_title;
-    @Size(min = 1)
     private Integer persons;
     private String source;
     private String story;
