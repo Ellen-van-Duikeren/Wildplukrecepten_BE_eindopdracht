@@ -1,10 +1,9 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.RecipeDto;
+import novi.nl.wildplukrecepten.dtos.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.*;
 import novi.nl.wildplukrecepten.repositories.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

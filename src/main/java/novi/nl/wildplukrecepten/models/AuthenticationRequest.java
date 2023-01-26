@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.payload;
+package novi.nl.wildplukrecepten.models;
 
 public class AuthenticationRequest {
 

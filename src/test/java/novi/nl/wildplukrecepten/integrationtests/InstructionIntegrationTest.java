@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import novi.nl.wildplukrecepten.dto.InstructionDto;
+import novi.nl.wildplukrecepten.dtos.InstructionDto;
 import novi.nl.wildplukrecepten.models.Instruction;
 import novi.nl.wildplukrecepten.repositories.InstructionRepository;
 import novi.nl.wildplukrecepten.services.InstructionService;

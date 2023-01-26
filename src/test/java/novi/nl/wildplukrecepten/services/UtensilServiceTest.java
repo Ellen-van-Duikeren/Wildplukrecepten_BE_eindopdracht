@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.UtensilDto;
+import novi.nl.wildplukrecepten.dtos.UtensilDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Utensil;
 import novi.nl.wildplukrecepten.repositories.UtensilRepository;

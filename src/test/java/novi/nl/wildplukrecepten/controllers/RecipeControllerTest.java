@@ -2,11 +2,10 @@ package novi.nl.wildplukrecepten.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import novi.nl.wildplukrecepten.dto.RecipeDto;
+import novi.nl.wildplukrecepten.dtos.RecipeDto;
 import novi.nl.wildplukrecepten.filter.JwtRequestFilter;
 import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.services.FileUploadService;
-import novi.nl.wildplukrecepten.services.RecipeService;
 import novi.nl.wildplukrecepten.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

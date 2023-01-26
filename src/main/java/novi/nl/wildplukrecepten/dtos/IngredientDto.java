@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto;
+package novi.nl.wildplukrecepten.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
@@ -14,27 +14,28 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class InstructionDto {
+public class IngredientDto {
     private Long id;
-    private String instruction;
+    private Double amount;
+    private String unit;
+    private String ingredient_name;
 
-    //relations............................................
+
+    // relations............................................
     @JsonIncludeProperties({"id", "title"})
     private Recipe recipe;
-
 
     //equals & hashcode......................................................................................................
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InstructionDto that = (InstructionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(instruction, that.instruction) && Objects.equals(recipe, that.recipe);
+        IngredientDto that = (IngredientDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(amount, that.amount) && Objects.equals(unit, that.unit) && Objects.equals(ingredient_name, that.ingredient_name) && Objects.equals(recipe, that.recipe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, instruction, recipe);
+        return Objects.hash(id, amount, unit, ingredient_name, recipe);
     }
-
 }

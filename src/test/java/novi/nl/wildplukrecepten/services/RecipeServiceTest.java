@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.IngredientDto;
-import novi.nl.wildplukrecepten.dto.RecipeDto;
+import novi.nl.wildplukrecepten.dtos.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.repositories.RecipeRepository;

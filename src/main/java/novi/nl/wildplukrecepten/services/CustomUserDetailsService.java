@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.services;
 
-import novi.nl.wildplukrecepten.dto.UserDto;
+import novi.nl.wildplukrecepten.dtos.UserDto;
 import novi.nl.wildplukrecepten.models.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.UserDto;
+import novi.nl.wildplukrecepten.dtos.UserDto;
 import novi.nl.wildplukrecepten.exceptions.BadRequestException;
 import novi.nl.wildplukrecepten.services.UserService;
 import org.springframework.http.ResponseEntity;

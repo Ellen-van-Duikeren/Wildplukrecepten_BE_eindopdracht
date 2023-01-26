@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto;
+package novi.nl.wildplukrecepten.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.Setter;
 import novi.nl.wildplukrecepten.models.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 

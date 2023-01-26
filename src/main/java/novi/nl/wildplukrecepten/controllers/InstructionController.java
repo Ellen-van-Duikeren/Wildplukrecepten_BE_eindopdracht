@@ -1,6 +1,6 @@
 package novi.nl.wildplukrecepten.controllers;
 
-import novi.nl.wildplukrecepten.dto.InstructionDto;
+import novi.nl.wildplukrecepten.dtos.InstructionDto;
 import novi.nl.wildplukrecepten.services.InstructionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

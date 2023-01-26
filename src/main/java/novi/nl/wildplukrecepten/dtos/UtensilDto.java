@@ -1,4 +1,4 @@
-package novi.nl.wildplukrecepten.dto;
+package novi.nl.wildplukrecepten.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
