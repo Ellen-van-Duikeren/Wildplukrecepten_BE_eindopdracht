@@ -78,6 +78,7 @@ public class RecipeService {
                 Recipe recipe = recipeRepository.findById(id).get();
                 Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
                 recipe1.setId(recipe.getId());
+
                 recipeRepository.save(recipe1);
                 return transferRecipeToRecipeDto(recipe1);
             } else {
@@ -112,15 +113,53 @@ public class RecipeService {
             if (recipeDto.getCook_time() != null) {
                 recipeToUpdate.setCook_time(recipeDto.getCook_time());
             }
-            if (recipeDto.getIngredients() != null) {
-                recipeToUpdate.setIngredients(recipeDto.getIngredients());
-            }
-            if (recipeDto.getInstructions() != null) {
-                recipeToUpdate.setInstructions(recipeDto.getInstructions());
-            }
+
             if (recipeDto.getUtensils() != null) {
-                recipeToUpdate.setUtensils(recipeDto.getUtensils());
+                for (Utensil utensil : recipeDto.getUtensils()) {
+                    if (utensil != null) {
+                        Optional<Utensil> optionalUtensil = utensilRepository.findById(utensil.getId());
+                        if (utensilRepository.existsById(id)) {
+                            Utensil utensilToUpdate = optionalUtensil.get();
+                            utensilToUpdate.setUtensil(utensil.getUtensil());
+                        } else {
+                            throw new RecordNotFoundException("No utensil with id " + utensil.getId());
+                        }
+                    }
+                }
             }
+
+            if (recipeDto.getIngredients() != null) {
+                for (Ingredient ingredient: recipeDto.getIngredients()) {
+                    if (ingredient!= null) {
+                        Optional<Ingredient> optionalIngredient = ingredientRepository.findById(ingredient.getId());
+                        if (ingredientRepository.existsById(id)) {
+                            Ingredient ingredientToUpdate = optionalIngredient.get();
+                            ingredientToUpdate.setAmount(ingredient.getAmount());
+                            ingredientToUpdate.setUnit(ingredient.getUnit());
+                            ingredientToUpdate.setIngredient_name(ingredient.getIngredient_name());
+                        } else {
+                            throw new RecordNotFoundException("No ingredient with id " + ingredient.getId());
+                        }
+                    }
+                }
+            }
+
+
+            if (recipeDto.getInstructions() != null) {
+                for (Instruction instruction : recipeDto.getInstructions()) {
+                    if (instruction != null) {
+                        Optional<Instruction> optionalInstruction = instructionRepository.findById(instruction.getId());
+                        if (instructionRepository.existsById(id)) {
+                            Instruction instructionToUpdate = optionalInstruction.get();
+                            instructionToUpdate.setInstruction(instruction.getInstruction());
+                        } else {
+                            throw new RecordNotFoundException("No instruction with id " + instruction.getId());
+                        }
+                    }
+                }
+            }
+
+
             if (recipeDto.getMonths() != null) {
                 recipeToUpdate.setMonths(recipeDto.getMonths());
             }
