@@ -168,7 +168,7 @@ INSERT INTO instructions(instruction) VALUES ('Voeg alle andere ingrediënten sa
 INSERT INTO instructions(instruction) VALUES ('Zet het vat/de pot afgesloten op een donkere plaats.');
 INSERT INTO instructions(instruction) VALUES ('Laat het brouwsel ministens 10 weken staan. En roer het 1x per week door.');
 INSERT INTO instructions(instruction) VALUES ('Zeef het met een koffiefilter. Dit kan best wat tijd in beslag nemen.');
-INSERT INTO instructions(instruction) VALUES ('Doe de sloe gin in een fles.');
+INSERT INTO instructions(instruction) VALUES ('Doe de sloegin in een fles.');
 
 INSERT INTO file_uploads (file_name, url) VALUES ('sloegin.png', 'http://localhost:8081/download/sloegin.png');
 

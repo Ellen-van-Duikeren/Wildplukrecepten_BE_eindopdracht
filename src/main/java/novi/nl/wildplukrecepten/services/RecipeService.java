@@ -60,9 +60,15 @@ public class RecipeService {
         newRecipe = transferRecipeDtoToRecipe(recipeDto);
         Recipe savedRecipe = recipeRepository.save(newRecipe);
 
-        addUtensilToRecipe(recipeDto, savedRecipe);
-        addIngredientToRecipe(recipeDto, savedRecipe);
-        addInstructionToRecipe(recipeDto, savedRecipe);
+//        if (savedRecipe.getUtensils() != null) {
+            addUtensilToRecipe(recipeDto, savedRecipe);
+//        }
+//        if (savedRecipe.getIngredients() != null) {
+            addIngredientToRecipe(recipeDto, savedRecipe);
+//        }
+//        if (savedRecipe.getInstructions() != null) {
+            addInstructionToRecipe(recipeDto, savedRecipe);
+//        }
 
         // Automaticaly sending an email to my address, when someone post a new recipe
         EmailDetails email = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd.", "nieuw recept toegevoegd");
@@ -73,16 +79,62 @@ public class RecipeService {
 
     // PutMapping, function for changing a (whole) recipe
     public RecipeDto putRecipe(Long id, RecipeDto recipeDto) {
-        {
-            if (recipeRepository.findById(id).isPresent()) {
-                Recipe recipe = recipeRepository.findById(id).get();
-                Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
-                recipe1.setId(recipe.getId());
-                recipeRepository.save(recipe1);
-                return transferRecipeToRecipeDto(recipe1);
-            } else {
-                throw new RecordNotFoundException("No recipe found with id: " + id + ".");
+        if (recipeRepository.findById(id).isPresent()) {
+            Recipe recipeToChange = recipeRepository.findById(id).get();
+            Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
+            recipe1.setId(recipeToChange.getId());
+
+            recipe1.setUtensils(recipeDto.getUtensils());
+            for (Utensil utensilRecipe : recipeToChange.getUtensils()) {
+                Boolean hasChanged = false;
+                for (Utensil utensilNew : recipeDto.getUtensils()) {
+                    if (utensilRecipe.getId() == utensilNew.getId()) {
+                        utensilRecipe.setUtensil(utensilNew.getUtensil());
+                        hasChanged = true;
+                        break;
+                    }
+                }
+                if (hasChanged == false) {
+                    utensilRepository.delete(utensilRecipe);
+                }
             }
+
+            recipe1.setIngredients(recipeDto.getIngredients());
+            for (Ingredient ingredientRecipe : recipeToChange.getIngredients()) {
+                Boolean hasChanged = false;
+                for (Ingredient ingredientNew : recipeDto.getIngredients()) {
+                    if (ingredientRecipe.getId() == ingredientNew.getId()) {
+                        ingredientRecipe.setAmount(ingredientNew.getAmount());
+                        ingredientRecipe.setUnit(ingredientNew.getUnit());
+                        ingredientRecipe.setIngredient_name(ingredientNew.getIngredient_name());
+                        hasChanged = true;
+                        break;
+                    }
+                }
+                if (hasChanged == false) {
+                    ingredientRepository.delete(ingredientRecipe);
+                }
+            }
+
+            recipe1.setInstructions(recipeDto.getInstructions());
+            for (Instruction instructionRecipe : recipeToChange.getInstructions()) {
+                Boolean hasChanged = false;
+                for (Instruction instructionNew : recipeDto.getInstructions()) {
+                    if (instructionRecipe.getId() == instructionNew.getId()) {
+                        instructionRecipe.setInstruction(instructionNew.getInstruction());
+                        hasChanged = true;
+                        break;
+                    }
+                }
+                if (hasChanged == false) {
+                    instructionRepository.delete(instructionRecipe);
+                }
+            }
+
+            recipeRepository.save(recipe1);
+            return transferRecipeToRecipeDto(recipe1);
+        } else {
+            throw new RecordNotFoundException("No recipe found with id: " + id + ".");
         }
     }
 
@@ -91,48 +143,96 @@ public class RecipeService {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (recipeRepository.existsById(id)) {
             Recipe recipeToUpdate = optionalRecipe.get();
+
+            // nieuw
+            Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
+            recipe1.setId(recipeToUpdate.getId());
+
             if (recipeDto.getTitle() != null) {
+//            if (!recipeDto.getTitle().isEmpty()) {
                 recipeToUpdate.setTitle(recipeDto.getTitle());
             }
             if (recipeDto.getSub_title() != null) {
+//            if (!recipeDto.getSub_title().isEmpty()) {
                 recipeToUpdate.setSub_title(recipeDto.getSub_title());
             }
             if (recipeDto.getPersons() != null) {
-                recipeToUpdate.setPersons(recipeDto.getPersons());
+//                recipeToUpdate.setPersons(recipeDto.getPersons());
             }
             if (recipeDto.getSource() != null) {
+//            if (!recipeDto.getSource().isEmpty()) {
                 recipeToUpdate.setSource(recipeDto.getSource());
             }
             if (recipeDto.getStory() != null) {
+//            if (!recipeDto.getStory().isEmpty()) {
                 recipeToUpdate.setStory(recipeDto.getStory());
             }
             if (recipeDto.getPrep_time() != null) {
+//            if (!recipeDto.getPrep_time().isEmpty()) {
                 recipeToUpdate.setPrep_time(recipeDto.getPrep_time());
             }
             if (recipeDto.getCook_time() != null) {
+//            if (!recipeDto.getCook_time().isEmpty()) {
                 recipeToUpdate.setCook_time(recipeDto.getCook_time());
             }
-            if (recipeDto.getIngredients() != null) {
-                recipeToUpdate.setIngredients(recipeDto.getIngredients());
-            }
-            if (recipeDto.getInstructions() != null) {
-                recipeToUpdate.setInstructions(recipeDto.getInstructions());
-            }
+
             if (recipeDto.getUtensils() != null) {
-                recipeToUpdate.setUtensils(recipeDto.getUtensils());
+                for (Utensil utensilRecipe : recipeToUpdate.getUtensils()) {
+                    for (Utensil utensilNew : recipeDto.getUtensils()) {
+                        if (utensilRecipe.getId() == utensilNew.getId()) {
+                            utensilRecipe.setUtensil(utensilNew.getUtensil());
+                            break;
+                        }
+                    }
+                }
             }
+
+            if (recipeDto.getIngredients() != null) {
+                for (Ingredient ingredientRecipe : recipeToUpdate.getIngredients()) {
+                    for (Ingredient ingredientNew : recipeDto.getIngredients()) {
+                        if (ingredientRecipe.getId() == ingredientNew.getId()) {
+                            if (ingredientNew.getAmount() != null) {
+                                ingredientRecipe.setAmount(ingredientNew.getAmount());
+                            }
+                            if (ingredientNew.getUnit() != null) {
+                                ingredientRecipe.setUnit(ingredientNew.getUnit());
+                            }
+                            if (ingredientNew.getIngredient_name() != null) {
+                                ingredientRecipe.setIngredient_name(ingredientNew.getIngredient_name());
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (recipeDto.getInstructions() != null) {
+                for (Instruction instructionRecipe : recipeToUpdate.getInstructions()) {
+                    for (Instruction instructionNew : recipeDto.getInstructions()) {
+                        if (instructionRecipe.getId() == instructionNew.getId()) {
+                            instructionRecipe.setInstruction(instructionNew.getInstruction());
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (recipeDto.getMonths() != null) {
+//            if (!recipeDto.getMonths().isEmpty()) {
                 recipeToUpdate.setMonths(recipeDto.getMonths());
             }
             if (recipeDto.getTags() != null) {
+//            if (!recipeDto.getTags().isEmpty()) {
                 recipeToUpdate.setTags(recipeDto.getTags());
             }
+
 
             Recipe savedRecipe = recipeRepository.save(recipeToUpdate);
             return transferRecipeToRecipeDto(savedRecipe);
         } else {
-            throw new RecordNotFoundException("No recipe with id " + id);
+            throw new RecordNotFoundException("No recipe found with id " + id);
         }
+
     }
 
     // DeleteMapping, function for deleting a recipe
@@ -159,18 +259,6 @@ public class RecipeService {
 
 
     // relations...........................................................................................................
-    public void assignIngredientToRecipe(Long id, Long IngredientId) {
-        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-        Optional<Ingredient> optionalIngredient = ingredientRepository.findById(IngredientId);
-        if (optionalRecipe.isPresent() && optionalIngredient != null) {
-            Recipe recipe = optionalRecipe.get();
-            Ingredient ingredient = optionalIngredient.get();
-            recipe.addIngredient(ingredient);
-            recipeRepository.save(recipe);
-        } else {
-            throw new RecordNotFoundException();
-        }
-    }
 
     //assign photo to a recipe
     public void assignPhotoToRecipe(String fileName, Long id) {
@@ -252,22 +340,28 @@ public class RecipeService {
     //    helper methods to add utensils, ingredients and instructions to these lists and connect to recipe
     public void addUtensilToRecipe(RecipeDto recipeDto, Recipe recipe) {
         for (Utensil utensil : recipeDto.getUtensils()) {
-            utensil.setRecipe(recipe);
-            utensilRepository.save(utensil);
+            if (!utensil.getUtensil().isEmpty()) {
+                utensil.setRecipe(recipe);
+                utensilRepository.save(utensil);
+            }
         }
     }
 
     public void addIngredientToRecipe(RecipeDto recipeDto, Recipe recipe) {
         for (Ingredient ingredient : recipeDto.getIngredients()) {
-            ingredient.setRecipe(recipe);
-            ingredientRepository.save(ingredient);
+            if (!ingredient.getIngredient_name().isEmpty()) {
+                ingredient.setRecipe(recipe);
+                ingredientRepository.save(ingredient);
+            }
         }
     }
 
     public void addInstructionToRecipe(RecipeDto recipeDto, Recipe recipe) {
         for (Instruction instruction : recipeDto.getInstructions()) {
-            instruction.setRecipe(recipe);
-            instructionRepository.save(instruction);
+            if (!instruction.getInstruction().isEmpty()) {
+                instruction.setRecipe(recipe);
+                instructionRepository.save(instruction);
+            }
         }
     }
 

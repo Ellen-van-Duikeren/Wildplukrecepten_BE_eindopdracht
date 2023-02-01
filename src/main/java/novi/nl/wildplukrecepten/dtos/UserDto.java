@@ -1,12 +1,16 @@
 package novi.nl.wildplukrecepten.dtos;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import novi.nl.wildplukrecepten.models.Authority;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Getter
 @Setter
@@ -24,4 +28,6 @@ public class UserDto {
 
     @JsonSerialize
     public Set<Authority> authorities;
+
+
 }
