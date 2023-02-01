@@ -2,8 +2,6 @@ package novi.nl.wildplukrecepten.services;
 
 import novi.nl.wildplukrecepten.dtos.RecipeDto;
 import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
-import novi.nl.wildplukrecepten.models.Ingredient;
-import novi.nl.wildplukrecepten.models.Instruction;
 import novi.nl.wildplukrecepten.models.Recipe;
 import novi.nl.wildplukrecepten.models.Utensil;
 import novi.nl.wildplukrecepten.repositories.IngredientRepository;
@@ -22,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,15 +33,6 @@ class RecipeServiceTest {
     @Mock
     RecipeRepository recipeRepository;
 
-    @Mock
-    UtensilRepository utensilRepository;
-
-    @Mock
-    IngredientRepository ingredientRepository;
-
-    @Mock
-    InstructionRepository instructionRepository;
-
     @InjectMocks
     RecipeService recipeService;
 
@@ -55,9 +43,6 @@ class RecipeServiceTest {
     Recipe recipe2;
     RecipeDto recipeDto1;
     RecipeDto recipeDto2;
-    Utensil utensil1;
-    Utensil utensil2;
-    Utensil utensil3;
 
 
     @BeforeEach
@@ -67,14 +52,9 @@ class RecipeServiceTest {
 
         recipeDto1 = new RecipeDto(1L, "title1", "subtitle1", 4, "source1", "story1", "preptime1", "cooktime1", null, null, null, null, null, null);
         recipeDto2 = new RecipeDto(2L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
-
-        utensil1 = new Utensil(1L, "Utensil1", recipe1);
-        utensil2 = new Utensil(2L, "Utensil2", recipe1);
-        utensil3 = new Utensil(3L, "Utensil3", recipe2);
     }
 
 
-    // testen..........................................................
     @Test
     void getAllRecipes() {
         when(recipeRepository.findAll()).thenReturn(List.of(recipe1, recipe2));
@@ -116,47 +96,10 @@ class RecipeServiceTest {
 
 
     @Test
-    @Disabled
-    void createRecipe() {
-        when(recipeRepository.save(recipe1)).thenReturn(recipe1);
-//        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe1));
-//        when(recipeRepository.findById(1L).get().getUtensils()).thenReturn((List<Utensil>) utensil1);
-//        when(utensilRepository.save(utensil1)).thenReturn(utensil1);
-//        when(utensilRepository.save(utensil2)).thenReturn(utensil2);
-        recipeService.createRecipe(recipeDto1);
-        verify(recipeRepository, times(1)).save(captor.capture());
-        Recipe captured = captor.getValue();
-
-        assertEquals(recipe1.getId(), captured.getId());
-    }
-
-
-    @Test
-    @Disabled
-    void putRecipe() {
-        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe1));
-        when(recipeRepository.existsById(1L)).thenReturn(true);
-        when(recipeRepository.save(any())).thenReturn(recipe2);
-
-        recipeService.putRecipe(1L, recipeDto1);
-
-        verify(recipeRepository, times(1)).save(captor.capture());
-        Recipe captured = captor.getValue();
-
-        assertEquals(recipe1.getId(), captured.getId());
-        assertEquals(recipe1.getTitle(), captured.getTitle());
-        assertEquals(recipe1.getSub_title(), captured.getSub_title());
-        assertEquals(recipe1.getSource(), captured.getSource());
-        assertEquals(recipe1.getStory(), captured.getStory());
-        assertEquals(recipe1.getPrep_time(), captured.getPrep_time());
-        assertEquals(recipe1.getCook_time(), captured.getCook_time())
-        ;
-    }
-
-    @Test
     void putRecipeThrowsExceptionForRecipeTest() {
         assertThrows(RecordNotFoundException.class, () -> recipeService.putRecipe(1L, new RecipeDto(3L, "title3", "subtitle3", 4, "source3", "story3", "preptime3", "cooktime3", null, null, null, null, null, null)));
     }
+
 
     @Test
     void patchRecipe() {
@@ -179,25 +122,15 @@ class RecipeServiceTest {
         ;
     }
 
+
     @Test
     void patchRecipeThrowsExceptionForRecipeTest() {
         assertThrows(RecordNotFoundException.class, () -> recipeService.patchRecipe(1L, new RecipeDto(3L, "title3", "subtitle3", 4, "source3", "story3", "preptime3", "cooktime3", null, null, null, null, null, null)));
     }
 
-    // will work when utensils... are not null
-    @Test
-    @Disabled
-    void deleteById() {
-        when(recipeRepository.existsById(1L)).thenReturn(true);
-        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe1));
-        recipeService.deleteById(1L);
-
-        verify(recipeRepository).delete(recipe1);
-    }
 
     @Test
     void deleteRecipeThrowsExceptionForRecipeTest() {
         assertThrows(RecordNotFoundException.class, () -> recipeService.deleteById(1L));
     }
-
 }

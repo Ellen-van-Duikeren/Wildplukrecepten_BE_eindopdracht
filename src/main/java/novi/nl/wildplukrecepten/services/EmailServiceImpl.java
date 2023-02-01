@@ -27,7 +27,6 @@ public class EmailServiceImpl implements EmailRepository {
     // To send a simple email
     public String sendSimpleMail(EmailDetails emailDetails) {
 
-        // Try block to check for exceptions
         try {
             // Creating a simple mail message
             SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -78,7 +77,6 @@ public class EmailServiceImpl implements EmailRepository {
 
         // Catch block to handle MessagingException
         catch (MessagingException e) {
-            // Display message when exception occurred
             return "Error while sending mail!!!";
         }
     }

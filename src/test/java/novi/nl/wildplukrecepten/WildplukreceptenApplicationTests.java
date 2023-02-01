@@ -10,6 +10,6 @@ class WildplukreceptenApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
 
+	}
 }

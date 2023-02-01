@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Objects;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -23,6 +22,7 @@ public class Instruction {
     @Column(name = "id", nullable = false)
     private Long id;
     private String instruction;
+
 
     //relations............................................
     @ManyToOne

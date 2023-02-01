@@ -18,6 +18,7 @@ public class UtensilService {
         this.utensilRepository = utensilRepository;
     }
 
+
     public List<UtensilDto> getAllUtensils() {
         List<Utensil> utensils = utensilRepository.findAll();
         ArrayList<UtensilDto> utensilDtos = new ArrayList<>();
@@ -46,7 +47,6 @@ public class UtensilService {
     }
 
     public UtensilDto putUtensil(Long id, UtensilDto utensilDto) {
-        {
             if (utensilRepository.findById(id).isPresent()) {
                 Utensil utensil = utensilRepository.findById(id).get();
                 Utensil utensil1 = transferUtensilDtoToUtensil(utensilDto);
@@ -56,7 +56,6 @@ public class UtensilService {
             } else {
                 throw new RecordNotFoundException("No utensil found with id: " + id + ".");
             }
-        }
     }
 
     public UtensilDto patchUtensil(Long id, UtensilDto utensilDto) {

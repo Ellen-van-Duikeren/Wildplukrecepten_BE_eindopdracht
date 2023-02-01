@@ -38,7 +38,9 @@ class RecipeControllerTest {
 
     @MockBean
     private RecipeService recipeService;
-    @MockBean FileUploadController fileUploadController;
+
+    @MockBean
+    FileUploadController fileUploadController;
 
     @MockBean
     FileUploadService fileUploadService;
@@ -57,19 +59,20 @@ class RecipeControllerTest {
     RecipeDto recipeDto6;
 
 
-        @BeforeEach
+    @BeforeEach
     void setUp() {
         recipe1 = new Recipe(1L, "title1", "subtitle1", 4, "source1", "story1", "preptime1", "cooktime1", null, null, null, null, null, null);
         recipe2 = new Recipe(2L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
 
         recipeDto1 = new RecipeDto(1L, "title1", "subtitle1", 4, "source1", "story1", "preptime1", "cooktime1", null, null, null, null, null, null);
         recipeDto2 = new RecipeDto(2L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
-            recipeDto3 = new RecipeDto(3L, "title3", "subtitle3", 4, "source3", "story3", "preptime3", "cooktime3", null, null, null, null, null, null);
-            recipeDto4 = new RecipeDto(1L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
+        recipeDto3 = new RecipeDto(3L, "title3", "subtitle3", 4, "source3", "story3", "preptime3", "cooktime3", null, null, null, null, null, null);
+        recipeDto4 = new RecipeDto(1L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
 
-            recipeDto5 = new RecipeDto(1L, "title1", "subtitle1", 4, "source1", "story1", "preptime1", "cooktime1", null, null, null, null, null, null);
-            recipeDto6 = new RecipeDto(1L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
+        recipeDto5 = new RecipeDto(1L, "title1", "subtitle1", 4, "source1", "story1", "preptime1", "cooktime1", null, null, null, null, null, null);
+        recipeDto6 = new RecipeDto(1L, "title2", "subtitle2", 4, "source2", "story2", "preptime2", "cooktime2", null, null, null, null, null, null);
     }
+
 
     @Test
     void getAllRecipes() throws Exception {
@@ -105,6 +108,8 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$[2].cook_time").value("cooktime3"))
         ;
     }
+
+
     @Test
     void getRecipe() throws Exception {
         given(recipeService.getRecipe(anyLong())).willReturn(recipeDto1);
@@ -156,9 +161,9 @@ class RecipeControllerTest {
 
     @Test
     void updatePartOfRecipe() throws Exception {
-        given(recipeService.putRecipe(1L, recipeDto6)).willReturn(recipeDto4);
+        given(recipeService.patchRecipe(1L, recipeDto6)).willReturn(recipeDto4);
 
-        mockMvc.perform(put("/recipes/1")
+        mockMvc.perform(patch("/recipes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(recipeDto6)))
                 .andExpect(status().isOk())
@@ -172,6 +177,7 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("cook_time").value("cooktime2"))
         ;
     }
+
 
     @Test
     void deleteRecipe() throws Exception {

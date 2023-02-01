@@ -1,7 +1,6 @@
 package novi.nl.wildplukrecepten.models;
 
 public class AuthenticationResponse {
-
     private final String jwt;
 
     public AuthenticationResponse(String jwt) {

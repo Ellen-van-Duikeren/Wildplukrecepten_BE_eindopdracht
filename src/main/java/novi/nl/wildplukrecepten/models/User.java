@@ -41,12 +41,17 @@ public class User {
     @Column
     private String emailadress;
 
+
+    //relations............................................
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
+
+
+    //methods............................................
     private Set<Authority> authorities = new HashSet<>();
 
     public Set<Authority> getAuthorities() {

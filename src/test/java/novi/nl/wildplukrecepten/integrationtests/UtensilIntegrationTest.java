@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@AutoConfigureMockMvc
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class UtensilIntegrationTest {
@@ -42,7 +41,6 @@ class UtensilIntegrationTest {
     UtensilDto utensilDto3;
 
 
-
     @BeforeEach
     void setUp() {
         utensil1 = new Utensil(1L, "Utensil1", null);
@@ -57,6 +55,7 @@ class UtensilIntegrationTest {
         //with hardcoded id
         utensilDto3 = new UtensilDto(3L, "Utensil3", null);
     }
+
 
     @Test
     void getAllUtensils() throws Exception {
@@ -86,6 +85,7 @@ class UtensilIntegrationTest {
         ;
     }
 
+
     @Test
     void putUtensil() throws Exception {
         mockMvc.perform(put("/utensils/1")
@@ -97,6 +97,7 @@ class UtensilIntegrationTest {
         ;
     }
 
+
     @Test
     void patchUtensil() throws Exception {
         mockMvc.perform(put("/utensils/1")
@@ -107,6 +108,7 @@ class UtensilIntegrationTest {
                 .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
+
 
     @Test
     void deleteById() throws Exception {

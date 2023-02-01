@@ -21,13 +21,13 @@ import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 @RestController
 public class RecipeController {
     private final RecipeService recipeService;
-    //    private final FileUploadController fileUploadController;
     private final FileUploadService fileUploadService;
 
     public RecipeController(RecipeService recipeService, FileUploadController fileUploadController, FileUploadService fileUploadService) {
         this.recipeService = recipeService;
         this.fileUploadService = fileUploadService;
     }
+
 
     @GetMapping("/recipes")
     @Transactional

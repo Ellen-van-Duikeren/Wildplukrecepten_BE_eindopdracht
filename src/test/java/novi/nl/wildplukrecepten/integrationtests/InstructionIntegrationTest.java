@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@AutoConfigureMockMvc
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class InstructionIntegrationTest {
@@ -57,6 +56,7 @@ class InstructionIntegrationTest {
         instructionDto3 = new InstructionDto(3L, "Do 3", null);
     }
 
+
     @Test
     void getAllInstructions() throws Exception {
         mockMvc.perform(get("/instructions"))
@@ -76,6 +76,7 @@ class InstructionIntegrationTest {
         ;
     }
 
+
     @Test
     void createInstruction() throws Exception {
         mockMvc.perform(post("/instructions")
@@ -84,6 +85,7 @@ class InstructionIntegrationTest {
                 .andExpect(status().isCreated())
         ;
     }
+
 
     @Test
     void putInstruction() throws Exception {
@@ -96,6 +98,7 @@ class InstructionIntegrationTest {
         ;
     }
 
+
     @Test
     void patchInstruction() throws Exception {
         mockMvc.perform(put("/instructions/1")
@@ -106,6 +109,7 @@ class InstructionIntegrationTest {
                 .andExpect(jsonPath("instruction").value("Do 2"))
         ;
     }
+
 
     @Test
     void deleteById() throws Exception {

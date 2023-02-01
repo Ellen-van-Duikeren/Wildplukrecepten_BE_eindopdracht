@@ -138,9 +138,9 @@ class IngredientControllerTest {
 
     @Test
     void updatePartOfIngredient() throws Exception {
-        given(ingredientService.putIngredient(1L, ingredientDto6)).willReturn(ingredientDto4);
+        given(ingredientService.patchIngredient(1L, ingredientDto6)).willReturn(ingredientDto4);
 
-        mockMvc.perform(put("/ingredients/1")
+        mockMvc.perform(patch("/ingredients/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(ingredientDto6)))
                 .andExpect(status().isOk())
@@ -150,6 +150,7 @@ class IngredientControllerTest {
                 .andExpect(jsonPath("ingredient_name").value("ingredient2"))
         ;
     }
+
 
     @Test
     void deleteIngredient() throws Exception {

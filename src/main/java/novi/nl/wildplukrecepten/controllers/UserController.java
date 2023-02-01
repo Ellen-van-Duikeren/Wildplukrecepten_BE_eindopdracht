@@ -14,12 +14,12 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class UserController {
-
     private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers() {
