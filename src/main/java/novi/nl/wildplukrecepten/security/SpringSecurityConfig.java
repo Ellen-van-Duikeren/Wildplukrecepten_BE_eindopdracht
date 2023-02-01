@@ -52,7 +52,7 @@ public class SpringSecurityConfig {
                 .httpBasic().disable().cors().and()
                 .authorizeRequests()
 
-// antMatchers for users........................................................................................
+                // antMatchers for users........................................................................................
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "USER")
@@ -60,61 +60,18 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
-                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+//                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 
-//antMatchers for recipes......................................................................................
-//                .antMatchers(HttpMethod.POST, "/recipes").hasAnyRole("ADMIN", "USER")
-//                .antMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST, "/ingredients").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/ingredients/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST, "/instructions").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/instructions/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST, "/utensils").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/utensils/**").hasRole("ADMIN")
-//
-//                .antMatchers("/recipes").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/ingredients").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/instructions").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/utensils").hasAnyRole("ADMIN", "USER")
-//
-//                .antMatchers("/recipes/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/ingredients/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/instructions/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/utensils/**").hasAnyRole("ADMIN", "USER")
-//
-//                .antMatchers(HttpMethod.PUT, "/recipes/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/ingredients/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/instructions/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/utensils/**").hasRole("ADMIN")
-//
-//                .antMatchers(HttpMethod.PATCH, "/recipes/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/ingredients/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/instructions/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PATCH, "/utensils/**").hasRole("ADMIN")
-//
-//                .antMatchers(HttpMethod.POST, "/recipes/**/**").hasAnyRole("ADMIN", "USER")
-
-
+                // antMatchers for recipes
                 .antMatchers(HttpMethod.GET, "/recipes").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/utensils").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/ingredients").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/instructions").hasAnyRole("ADMIN", "USER")
 
                 .antMatchers(HttpMethod.POST, "/recipes").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/ingredients").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/ingredients/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/instructions").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/instructions/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/utensils").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/utensils/**").hasRole("ADMIN")
-
-                .antMatchers("/recipes").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/ingredients").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/instructions").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/utensils").hasAnyRole("ADMIN", "USER")
-
-                .antMatchers("/recipes/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/ingredients/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/instructions/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/utensils/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.POST, "/ingredients").hasAnyRole("ADMIN","USER")
+                .antMatchers(HttpMethod.POST, "/instructions").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.POST, "/utensils").hasAnyRole("ADMIN", "USER")
 
                 .antMatchers(HttpMethod.PUT, "/recipes/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/ingredients/**").hasRole("ADMIN")
@@ -126,16 +83,32 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PATCH, "/instructions/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/utensils/**").hasRole("ADMIN")
 
+                .antMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/ingredients/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/instructions/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/utensils/**").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/recipes/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/ingredients/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/instructions/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.GET, "/utensils/**").hasAnyRole("ADMIN", "USER")
+
+                // adding a photo to a new recipe
                 .antMatchers(HttpMethod.POST, "/recipes/**/**").hasAnyRole("ADMIN", "USER")
 
-// up- and download
+                // mail
+                .antMatchers("/sendMail").hasRole("ADMIN")
+                .antMatchers("/sendMailWithAttachment").hasRole("ADMIN")
+
+                // up- and download
                 .antMatchers("/upload").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/download").hasAnyRole("ADMIN", "USER")
 
-
+                // authentication
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()
-                .anyRequest().permitAll()
+
+//                .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

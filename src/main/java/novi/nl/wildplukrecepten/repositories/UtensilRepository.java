@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UtensilRepository extends JpaRepository<Utensil, Long> {
-//    boolean existsByUtensil(String utensil);
-//
-//    Long findById(Optional<Recipe> byId);
+    boolean existsByUtensil(String utensil);
+
+    //    Long findById(Optional<Recipe> byId);
 //
 //    void delete(Optional<Utensil> byId);
 }
