@@ -15,9 +15,7 @@ import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
-    /*inject userservice */
-private UserService userService;
+    private UserService userService;
 
     public CustomUserDetailsService(UserService userService) {
         this.userService = userService;
@@ -26,7 +24,6 @@ private UserService userService;
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserDto userDto = userService.getUser(username);
-
 
         String password = userDto.getPassword();
 
@@ -38,5 +35,4 @@ private UserService userService;
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }
-
 }

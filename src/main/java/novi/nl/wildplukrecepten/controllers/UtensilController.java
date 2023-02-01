@@ -21,6 +21,7 @@ public class UtensilController {
         this.utensilService = utensilService;
     }
 
+    
     @GetMapping("/utensils")
     public ResponseEntity<List<UtensilDto>> getAllUtensils() {
         return ResponseEntity.ok(utensilService.getAllUtensils());

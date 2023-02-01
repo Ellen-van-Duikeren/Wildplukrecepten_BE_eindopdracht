@@ -50,16 +50,12 @@ class UtensilServiceTest {
     }
 
 
-// testen..........................................................
     @Test
     void getAllUtensils() {
-        //Arrange
-        // Act
         when(utensilRepository.findAll()).thenReturn(List.of(utensil1, utensil2));
 
         List<Utensil> utensilsFound = utensilService.transferUtensilDtoListToUtensilList(utensilService.getAllUtensils());
 
-        //Assert
         assertEquals(utensil1.getUtensil(), utensilsFound.get(0).getUtensil());
         assertEquals(utensil2.getUtensil(), utensilsFound.get(1).getUtensil());
     }
@@ -67,14 +63,12 @@ class UtensilServiceTest {
 
     @Test
     void getUtensil() {
-        //Arrange
-        //Act
         when(utensilRepository.findById(1L)).thenReturn(Optional.of(utensil1));
         UtensilDto utensilDto = utensilService.getUtensil(1L);
 
-        //Assert
         assertEquals(utensil1.getId(), utensilDto.getId());
     }
+
 
     @Test
     void getUtensilThrowsExceptionForUtensilTest() {
@@ -93,6 +87,7 @@ class UtensilServiceTest {
         assertEquals(utensil1.getId(), captured.getId());
     }
 
+
     @Test
     void putUtensil() {
         when(utensilRepository.findById(1L)).thenReturn(Optional.of(utensil1));
@@ -109,10 +104,12 @@ class UtensilServiceTest {
         assertEquals(utensil1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void putUtensilThrowsExceptionForUtensilTest() {
         assertThrows(RecordNotFoundException.class, () -> utensilService.putUtensil(1L, new UtensilDto(3L, "Doe 3", null)));
     }
+
 
     @Test
     void patchUtensil() {
@@ -130,10 +127,12 @@ class UtensilServiceTest {
         assertEquals(utensil1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void patchUtensilThrowsExceptionForUtensilTest() {
         assertThrows(RecordNotFoundException.class, () -> utensilService.patchUtensil(1L, new UtensilDto(3L, "Doe 3", null)));
     }
+
 
     @Test
     void deleteById() {
@@ -143,6 +142,7 @@ class UtensilServiceTest {
 
         verify(utensilRepository).delete(utensil1);
     }
+
 
     @Test
     void deleteUtensilThrowsExceptionForUtensilTest() {

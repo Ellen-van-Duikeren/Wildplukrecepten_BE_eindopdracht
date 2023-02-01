@@ -126,9 +126,9 @@ class InstructionControllerTest {
 
     @Test
     void updatePartOfInstruction() throws Exception {
-        given(instructionService.putInstruction(1L, instructionDto6)).willReturn(instructionDto4);
+        given(instructionService.patchInstruction(1L, instructionDto6)).willReturn(instructionDto4);
 
-        mockMvc.perform(put("/instructions/1")
+        mockMvc.perform(patch("/instructions/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(instructionDto6)))
                 .andExpect(status().isOk())

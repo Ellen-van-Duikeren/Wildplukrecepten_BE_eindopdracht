@@ -124,11 +124,12 @@ class UtensilControllerTest {
         ;
     }
 
+
     @Test
     void updatePartOfUtensil() throws Exception {
-        given(utensilService.putUtensil(1L, utensilDto6)).willReturn(utensilDto4);
+        given(utensilService.patchUtensil(1L, utensilDto6)).willReturn(utensilDto4);
 
-        mockMvc.perform(put("/utensils/1")
+        mockMvc.perform(patch("/utensils/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(utensilDto6)))
                 .andExpect(status().isOk())
@@ -136,6 +137,7 @@ class UtensilControllerTest {
                 .andExpect(jsonPath("utensil").value("Utensil2"))
         ;
     }
+
 
     @Test
     void deleteUtensil() throws Exception {

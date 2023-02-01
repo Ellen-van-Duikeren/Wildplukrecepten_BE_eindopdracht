@@ -39,9 +39,7 @@ public class FileUploadService {
     }
 
     public String storeFile(MultipartFile file, String url) {
-
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-
         Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
 
         try {
@@ -51,14 +49,11 @@ public class FileUploadService {
         }
 
         fileUploadRepository.save(new FileUpload(fileName, file.getContentType(), url));
-
         return fileName;
     }
 
     public Resource downLoadFile(String fileName) {
-
         Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(fileName);
-
         Resource resource;
 
         try {
@@ -73,6 +68,5 @@ public class FileUploadService {
             throw new RuntimeException("the file doesn't exist or is not readable");
         }
     }
-
 }
 

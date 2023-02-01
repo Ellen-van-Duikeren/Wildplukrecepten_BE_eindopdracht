@@ -18,6 +18,7 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
+
     public List<IngredientDto> getAllIngredients() {
         List<Ingredient> ingredients = ingredientRepository.findAll();
         ArrayList<IngredientDto> ingredientDtos = new ArrayList<>();
@@ -39,7 +40,7 @@ public class IngredientService {
     }
 
     public Long createIngredient(IngredientDto ingredientDto) {
-        Ingredient newIngredient = new Ingredient();
+        Ingredient newIngredient;
         newIngredient = transferIngredientDtoToIngredient(ingredientDto);
         Ingredient savedIngredient = ingredientRepository.save(newIngredient);
         return savedIngredient.getId();
@@ -111,7 +112,6 @@ public class IngredientService {
         ingredient.setUnit(ingredientDto.getUnit());
         ingredient.setAmount(ingredientDto.getAmount());
         ingredient.setIngredient_name(ingredientDto.getIngredient_name());
-
         return ingredient;
     }
 
@@ -122,5 +122,4 @@ public class IngredientService {
         }
         return ingredients;
     }
-
 }

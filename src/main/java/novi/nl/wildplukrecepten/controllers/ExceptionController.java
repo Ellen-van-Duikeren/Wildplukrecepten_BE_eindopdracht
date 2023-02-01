@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ControllerAdvice
 public class ExceptionController {
-
     @ExceptionHandler(value = RecordNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String recordNotFoundException(Exception exception) {
         return exception.getMessage();
-
     }
 }

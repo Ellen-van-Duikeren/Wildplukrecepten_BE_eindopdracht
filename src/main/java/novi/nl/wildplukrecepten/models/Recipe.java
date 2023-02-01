@@ -83,26 +83,31 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
 
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
     @OneToMany(mappedBy = "recipe")
     private List<Instruction> instructions;
 
-    public void addInstruction(Instruction instruction) {
-        this.instructions.add(instruction);
-    }
 
     @OneToMany(mappedBy = "recipe")
     private List<Utensil> utensils;
 
-    public void addUtensil(Utensil utensil) {
-        this.utensils.add(utensil);
-    }
 
     @OneToOne
     FileUpload file;
+
+
+    //methods............................................
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+    }
+
+    public void addInstruction(Instruction instruction) {
+
+        this.instructions.add(instruction);
+    }
+
+    public void addUtensil(Utensil utensil) {
+        this.utensils.add(utensil);
+    }
 
 
     //equals & hashcode......................................................................................................

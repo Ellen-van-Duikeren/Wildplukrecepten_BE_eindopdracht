@@ -14,16 +14,14 @@ public class EmailController {
 
     // Sending a simple Email
     @PostMapping("/sendMail")
-    public String sendMail(@RequestBody EmailDetails emailDetails)
-    {
+    public String sendMail(@RequestBody EmailDetails emailDetails) {
         String status = emailRepository.sendSimpleMail(emailDetails);
         return status;
     }
 
     // Sending email with attachment
     @PostMapping("/sendMailWithAttachment")
-    public String sendMailWithAttachment(@RequestBody EmailDetails emailDetails)
-    {
+    public String sendMailWithAttachment(@RequestBody EmailDetails emailDetails) {
         String status = emailRepository.sendMailWithAttachment(emailDetails);
         return status;
     }

@@ -16,12 +16,12 @@ import static novi.nl.wildplukrecepten.utilities.Utilities.getErrorString;
 
 @RestController
 public class InstructionController {
-
     private final InstructionService instructionService;
 
     public InstructionController(InstructionService instructionService) {
         this.instructionService = instructionService;
     }
+
 
     @GetMapping("/instructions")
     public ResponseEntity<List<InstructionDto>> getAllInstructions() {
@@ -32,7 +32,6 @@ public class InstructionController {
     public ResponseEntity<InstructionDto> getInstruction(@PathVariable Long id) {
         return ResponseEntity.ok(instructionService.getInstruction(id));
     }
-
 
     @PostMapping("/instructions")
     public ResponseEntity<String> createInstruction(@Valid @RequestBody InstructionDto instructionDto, BindingResult br) {

@@ -19,15 +19,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-
-    /*inject customUserDetailService en jwtRequestFilter*/
     private CustomUserDetailsService customUserDetailsService;
     private JwtRequestFilter jwtRequestFilter;
+
 
     public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -38,14 +38,15 @@ public class SpringSecurityConfig {
                 .build();
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     protected SecurityFilterChain filter(HttpSecurity http) throws Exception {
-
         //JWT token authentication
         http
                 .csrf().disable()
@@ -59,8 +60,6 @@ public class SpringSecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-
-//                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
 
                 // antMatchers for recipes
                 .antMatchers(HttpMethod.GET, "/recipes").hasAnyRole("ADMIN", "USER")
@@ -108,7 +107,6 @@ public class SpringSecurityConfig {
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()
 
-//                .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -27,6 +27,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
@@ -35,6 +36,7 @@ public class UserService {
         }
         return collection;
     }
+
 
     public UserDto getUser(String username) {
         UserDto userDto;
@@ -52,8 +54,7 @@ public class UserService {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         userDto.setEnabled(true);
-
-            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername();
     }
@@ -68,13 +69,16 @@ public class UserService {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        user.setEnabled(newUser.getEnabled());
+        if (newUser.getEnabled() != null) {
+            user.setEnabled(newUser.getEnabled());
+        }
         user.setApikey(newUser.getApikey());
         user.setFirstname(newUser.getFirstname());
         user.setLastname(newUser.getLastname());
         user.setEmailadress(newUser.getEmailadress());
         userRepository.save(user);
     }
+
 
     public void patchUser(String username, UserDto changeUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
@@ -101,13 +105,13 @@ public class UserService {
     }
 
 
-
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         UserDto userDto = fromUser(user);
         return userDto.getAuthorities();
     }
+
 
     public void addAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
@@ -116,6 +120,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -123,6 +128,7 @@ public class UserService {
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
     }
+
 
     public static UserDto fromUser(User user) {
         var userDto = new UserDto();
@@ -138,6 +144,7 @@ public class UserService {
         return userDto;
     }
 
+
     public User toUser(UserDto userDto) {
         var user = new User();
         user.setUsername(userDto.getUsername());
@@ -149,10 +156,5 @@ public class UserService {
         user.setEmailadress(userDto.getEmailadress());
 
         return user;
-    }
-
-    //nieuw
-    public Object findById(String username) {
-        return userRepository.findById(username);
     }
 }

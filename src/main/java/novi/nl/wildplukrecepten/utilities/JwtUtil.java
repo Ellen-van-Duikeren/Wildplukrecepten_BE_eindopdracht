@@ -13,7 +13,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-
     private final static String SECRET_KEY = "/*vul hier je super geheime sleutel in*/";
 
     public String extractUsername(String token) {
@@ -56,5 +55,4 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
-
 }

@@ -27,8 +27,11 @@ public class UserDto {
     public String lastname;
     public String emailadress;
 
+
+    //relations............................................
     @JsonSerialize
     public Set<Authority> authorities;
+
 
     //equals & hashcode......................................................................................................
     @Override

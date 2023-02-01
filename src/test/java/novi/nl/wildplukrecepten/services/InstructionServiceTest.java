@@ -49,7 +49,6 @@ class InstructionServiceTest {
     }
 
 
-    // testen..........................................................
     @Test
     void getAllInstructions() {
         when(instructionRepository.findAll()).thenReturn(List.of(instruction1, instruction2));
@@ -68,6 +67,7 @@ class InstructionServiceTest {
 
         assertEquals(instruction1.getId(), instructionDto.getId());
     }
+
 
     @Test
     void getInstructionThrowsExceptionForInstructionTest() {
@@ -103,10 +103,12 @@ class InstructionServiceTest {
         assertEquals(instruction1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void putInstructionThrowsExceptionForInstructionTest() {
         assertThrows(RecordNotFoundException.class, () -> instructionService.putInstruction(1L, new InstructionDto(3L, "Doe 3", null)));
     }
+
 
     @Test
     void patchInstruction() {
@@ -124,10 +126,12 @@ class InstructionServiceTest {
         assertEquals(instruction1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void patchInstructionThrowsExceptionForInstructionTest() {
         assertThrows(RecordNotFoundException.class, () -> instructionService.patchInstruction(1L, new InstructionDto(3L, "Doe 3", null)));
     }
+
 
     @Test
     void deleteById() {
@@ -138,9 +142,9 @@ class InstructionServiceTest {
         verify(instructionRepository).delete(instruction1);
     }
 
+
     @Test
     void deleteInstructionThrowsExceptionForInstructionTest() {
         assertThrows(RecordNotFoundException.class, () -> instructionService.deleteById(1L));
     }
-
 }

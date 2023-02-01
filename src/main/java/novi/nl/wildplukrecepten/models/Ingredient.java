@@ -26,6 +26,8 @@ public class Ingredient {
     private String unit;
     private String ingredient_name;
 
+
+    //relations............................................
     @ManyToOne
     private Recipe recipe;
 

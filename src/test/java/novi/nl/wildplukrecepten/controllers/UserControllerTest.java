@@ -7,7 +7,6 @@ import novi.nl.wildplukrecepten.filter.JwtRequestFilter;
 import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,59 +127,7 @@ class UserControllerTest {
     }
 
 
-//    @Test
-//    void updateUser() throws Exception {
-//        // Arrange
-//        String username = "user@mail.com";
-//        userDto4 = new UserDto();
-//        given(userService(username)).willReturn(userDto4);
-//
-//        mockMvc.perform(put("/users/username")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(userDto6)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("username").value("user@mail.com"))
-//                .andExpect(jsonPath("password").value("password"))
-//                .andExpect(jsonPath("enabled").value(true))
-//                .andExpect(jsonPath("apikey").value("apikey1"))
-//                .andExpect(jsonPath("firstname").value("user"))
-//                .andExpect(jsonPath("lastname").value("user"))
-//                .andExpect(jsonPath("emailadress").value("user@mail.com"))
-//        ;
-//    }
-
-
-//    @Test
-//    void updateUser() throws Exception {
-//        String username ="user@mail.com";
-//        given(userService.updateUser(username, userDto6)).willReturn(userDto4);
-//        mockMvc.perform(put("/users/user@mail.com", "user@mail.com")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new ObjectMapper().writeValueAsString(userDto4)))
-//                .andExpect(status().isNoContent());
-//        verify(userService).updateUser("user@mail.com", userDto4);
-//    }
-
-
-//    @Test
-//    void patchUser() throws Exception {
-//        String username = "user@mail.com";
-////      given(userService.patchUser("user@mail.com", userDto6)).willReturn(userDto4);
-//        given(userService.findById(username)).willReturn(Optional.of(user1));
-//
-//        mockMvc.perform(put("/users/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(userDto6)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("id").value(1L))
-//                .andExpect(jsonPath("amount").value("500.0"))
-//                .andExpect(jsonPath("unit").value("gram"))
-//                .andExpect(jsonPath("user_name").value("user2"))
-//        ;
-//    }
-
     @Test
-    @Disabled
     void deleteUser() throws Exception {
         mockMvc.perform(delete("/users/user@mail.com"))
                 .andExpect(status().isNoContent());

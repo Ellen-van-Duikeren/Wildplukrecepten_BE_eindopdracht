@@ -1,9 +1,9 @@
 package novi.nl.wildplukrecepten.services;
 
 import novi.nl.wildplukrecepten.dtos.UserDto;
+import novi.nl.wildplukrecepten.exceptions.RecordNotFoundException;
 import novi.nl.wildplukrecepten.models.User;
 import novi.nl.wildplukrecepten.repositories.UserRepository;
-import novi.nl.wildplukrecepten.security.SpringSecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,11 +25,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-
-// nieuw ivm password
-//@SpringBootApplication(exclude=PasswordEncoder.class)
-
-
 class UserServiceTest {
     @Mock
     UserRepository userRepository;
@@ -49,10 +44,6 @@ class UserServiceTest {
 
     UserDto userDto1;
 
-    UserServiceTest(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
 
     @BeforeEach
     void setUp() {
@@ -64,7 +55,6 @@ class UserServiceTest {
     }
 
 
-    // testen..........................................................
     @Test
     void getUsers() {
         when(userRepository.findAll()).thenReturn(List.of(user1, user2, user3));
@@ -102,31 +92,13 @@ class UserServiceTest {
         UserDto userDto = userService.getUser("user1");
 
         assertEquals("user@mail.com", userDto.getUsername());
-        assertEquals("password", userDto.getPassword());
+        assertEquals("$2y$10$yq8BZ6yIcauc1NHKekI4Iu/cgF1GtFlzLLYvtssS0C3fouThfew32", userDto.getPassword());
         assertEquals(true, userDto.getEnabled());
         assertEquals("apikey1", userDto.getApikey());
         assertEquals("user", userDto.getFirstname());
         assertEquals("user", userDto.getLastname());
         assertEquals("user@mail.com", userDto.getEmailadress());
     }
-
-
-//    @Test
-//    void createUser() {
-//
-//        when(SpringSecurityConfig.passwordEncoder().encode(userDto1.getPassword())).thenReturn(user1.getPassword());
-//        when(userDto1.setPassword(userDto1.getPassword())).thenReturn(user1.getPassword());
-//        when(passwordEncoder.encode(userDto1.getPassword())).thenReturn(user1.getPassword());
-//        when(userRepository.save(user1)).thenReturn(user1);
-//
-//        userService.createUser(userDto1);
-//        verify(userRepository, times(1)).save(captor.capture());
-//        User captured = captor.getValue();
-//
-//        assertEquals(user1.getUsername(), captured.getUsername());
-//    }
-
-
 
 
     @Test

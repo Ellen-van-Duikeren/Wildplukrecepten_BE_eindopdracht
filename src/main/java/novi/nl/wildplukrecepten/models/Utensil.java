@@ -23,6 +23,8 @@ public class Utensil {
     private Long id;
     private String utensil;
 
+
+    //relations............................................
     @ManyToOne
     private Recipe recipe;
 

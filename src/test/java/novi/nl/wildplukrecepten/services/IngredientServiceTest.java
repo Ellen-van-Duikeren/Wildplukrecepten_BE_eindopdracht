@@ -41,11 +41,9 @@ class IngredientServiceTest {
     IngredientDto ingredientDto2;
 
 
-
     @BeforeEach
     void setUp() {
         Recipe recipe1 = null;
-        Recipe recipe2 = null;
         ingredient1 = new Ingredient(1L, 500.0,"gram", "ingredient1", recipe1);
         ingredient2 = new Ingredient(2L, 500.0,"gram", "ingredient2", recipe1);
 
@@ -54,7 +52,6 @@ class IngredientServiceTest {
     }
 
 
-    // testen..........................................................
     @Test
     void getAllIngredients() {
         when(ingredientRepository.findAll()).thenReturn(List.of(ingredient1, ingredient2));
@@ -79,6 +76,7 @@ class IngredientServiceTest {
 
         assertEquals(ingredient1.getId(), ingredientDto.getId());
     }
+
 
     @Test
     void getIngredientThrowsExceptionForIngredientTest() {
@@ -116,10 +114,13 @@ class IngredientServiceTest {
         assertEquals(ingredient1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void putIngredientThrowsExceptionForIngredientTest() {
         assertThrows(RecordNotFoundException.class, () -> ingredientService.putIngredient(1L, new IngredientDto(3L, 500.0, "gram", "ingredient3", null)));
     }
+
+
 
     @Test
     void patchIngredient() {
@@ -139,10 +140,12 @@ class IngredientServiceTest {
         assertEquals(ingredient1.getRecipe(), captured.getRecipe());
     }
 
+
     @Test
     void patchIngredientThrowsExceptionForIngredientTest() {
         assertThrows(RecordNotFoundException.class, () -> ingredientService.patchIngredient(1L, new IngredientDto(3L, 500.0, "gram", "ingredient3", null)));
     }
+
 
     @Test
     void deleteById() {
@@ -153,9 +156,9 @@ class IngredientServiceTest {
         verify(ingredientRepository).delete(ingredient1);
     }
 
+
     @Test
     void deleteIngredientThrowsExceptionForIngredientTest() {
         assertThrows(RecordNotFoundException.class, () -> ingredientService.deleteById(1L));
     }
-
 }

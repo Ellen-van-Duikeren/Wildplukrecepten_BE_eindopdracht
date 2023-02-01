@@ -18,11 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "file_uploads")
 public class FileUpload {
-
     @Id
     private String fileName;
-
     private String contentType;
-
     private String url;
 }

@@ -17,8 +17,6 @@ public class RecipeService {
     private final InstructionRepository instructionRepository;
     private final UtensilRepository utensilRepository;
     private final FileUploadRepository uploadRepository;
-
-    //    test
     public final EmailRepository emailService;
 
 
@@ -32,7 +30,7 @@ public class RecipeService {
     }
 
 
-    // GetMapping, function for getting all recipes
+    // GetMapping, method for getting all recipes
     public List<RecipeDto> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
         List<RecipeDto> recipeDtos = new ArrayList<>();
@@ -43,7 +41,7 @@ public class RecipeService {
         return recipeDtos;
     }
 
-    // GetMapping by id, function for getting a recipe by id
+    // GetMapping by id, method for getting a recipe by id
     public RecipeDto getRecipe(Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (optionalRecipe.isPresent()) {
@@ -54,21 +52,15 @@ public class RecipeService {
         }
     }
 
-    // PostMapping, function for adding a recipe
+    // PostMapping, method for adding a recipe
     public Long createRecipe(RecipeDto recipeDto) {
         Recipe newRecipe;
         newRecipe = transferRecipeDtoToRecipe(recipeDto);
         Recipe savedRecipe = recipeRepository.save(newRecipe);
 
-//        if (savedRecipe.getUtensils() != null) {
             addUtensilToRecipe(recipeDto, savedRecipe);
-//        }
-//        if (savedRecipe.getIngredients() != null) {
             addIngredientToRecipe(recipeDto, savedRecipe);
-//        }
-//        if (savedRecipe.getInstructions() != null) {
             addInstructionToRecipe(recipeDto, savedRecipe);
-//        }
 
         // Automaticaly sending an email to my address, when someone post a new recipe
         EmailDetails email = new EmailDetails("e.vanduikeren@gmail.com", "Er is een nieuw recept toegevoegd.", "nieuw recept toegevoegd");
@@ -77,13 +69,14 @@ public class RecipeService {
         return savedRecipe.getId();
     }
 
-    // PutMapping, function for changing a (whole) recipe
+    // PutMapping, method for changing a (whole) recipe
     public RecipeDto putRecipe(Long id, RecipeDto recipeDto) {
         if (recipeRepository.findById(id).isPresent()) {
             Recipe recipeToChange = recipeRepository.findById(id).get();
             Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
             recipe1.setId(recipeToChange.getId());
 
+            // changing utensils, ingredients and instructions by given ones; delete the others
             recipe1.setUtensils(recipeDto.getUtensils());
             for (Utensil utensilRecipe : recipeToChange.getUtensils()) {
                 Boolean hasChanged = false;
@@ -138,44 +131,37 @@ public class RecipeService {
         }
     }
 
-    // Patchmapping, function for changing parts of a recipe
+    // Patchmapping, method for changing parts of a recipe
     public RecipeDto patchRecipe(Long id, RecipeDto recipeDto) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         if (recipeRepository.existsById(id)) {
             Recipe recipeToUpdate = optionalRecipe.get();
 
-            // nieuw
             Recipe recipe1 = transferRecipeDtoToRecipe(recipeDto);
             recipe1.setId(recipeToUpdate.getId());
 
             if (recipeDto.getTitle() != null) {
-//            if (!recipeDto.getTitle().isEmpty()) {
                 recipeToUpdate.setTitle(recipeDto.getTitle());
             }
             if (recipeDto.getSub_title() != null) {
-//            if (!recipeDto.getSub_title().isEmpty()) {
                 recipeToUpdate.setSub_title(recipeDto.getSub_title());
             }
             if (recipeDto.getPersons() != null) {
-//                recipeToUpdate.setPersons(recipeDto.getPersons());
             }
             if (recipeDto.getSource() != null) {
-//            if (!recipeDto.getSource().isEmpty()) {
                 recipeToUpdate.setSource(recipeDto.getSource());
             }
             if (recipeDto.getStory() != null) {
-//            if (!recipeDto.getStory().isEmpty()) {
                 recipeToUpdate.setStory(recipeDto.getStory());
             }
             if (recipeDto.getPrep_time() != null) {
-//            if (!recipeDto.getPrep_time().isEmpty()) {
                 recipeToUpdate.setPrep_time(recipeDto.getPrep_time());
             }
             if (recipeDto.getCook_time() != null) {
-//            if (!recipeDto.getCook_time().isEmpty()) {
                 recipeToUpdate.setCook_time(recipeDto.getCook_time());
             }
 
+            // changing utensils, ingredients and instructions by given ones; else use the old ones
             if (recipeDto.getUtensils() != null) {
                 for (Utensil utensilRecipe : recipeToUpdate.getUtensils()) {
                     for (Utensil utensilNew : recipeDto.getUtensils()) {
@@ -218,11 +204,9 @@ public class RecipeService {
             }
 
             if (recipeDto.getMonths() != null) {
-//            if (!recipeDto.getMonths().isEmpty()) {
                 recipeToUpdate.setMonths(recipeDto.getMonths());
             }
             if (recipeDto.getTags() != null) {
-//            if (!recipeDto.getTags().isEmpty()) {
                 recipeToUpdate.setTags(recipeDto.getTags());
             }
 
@@ -235,11 +219,12 @@ public class RecipeService {
 
     }
 
-    // DeleteMapping, function for deleting a recipe
+    // DeleteMapping, method for deleting a recipe
     public String deleteById(Long id) {
         if (recipeRepository.existsById(id)) {
             Optional<Recipe> deletedRecipe = recipeRepository.findById(id);
             Recipe recipe1 = deletedRecipe.get();
+
             // deleting utensils, ingredients and instructions first
             for (Utensil utensil : recipe1.getUtensils()) {
                 utensilRepository.delete(utensil);
@@ -250,6 +235,7 @@ public class RecipeService {
             for (Instruction instruction : recipe1.getInstructions()) {
                 instructionRepository.delete(instruction);
             }
+
             recipeRepository.delete(recipe1);
             return "Recipe with id: " + id + " deleted.";
         } else {
@@ -258,9 +244,7 @@ public class RecipeService {
     }
 
 
-    // relations...........................................................................................................
-
-    //assign photo to a recipe
+    // Assign photo to a recipe
     public void assignPhotoToRecipe(String fileName, Long id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
         Optional<FileUpload> fileUploadResponse = uploadRepository.findByFileName(fileName);
@@ -364,8 +348,6 @@ public class RecipeService {
             }
         }
     }
-
-
 }
 
 

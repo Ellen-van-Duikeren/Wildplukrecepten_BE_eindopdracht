@@ -18,6 +18,7 @@ public class InstructionService {
         this.instructionRepository = instructionRepository;
     }
 
+
     public List<InstructionDto> getAllInstructions() {
         List<Instruction> instructions = instructionRepository.findAll();
         ArrayList<InstructionDto> instructionDtos = new ArrayList<>();
@@ -110,5 +111,4 @@ public class InstructionService {
         }
         return instructions;
     }
-
 }
