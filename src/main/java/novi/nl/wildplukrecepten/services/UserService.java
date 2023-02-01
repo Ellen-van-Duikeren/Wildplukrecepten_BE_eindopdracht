@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public UserDto getUser(String username) {
-        UserDto userDto = new UserDto();
+        UserDto userDto;
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
             userDto = fromUser(user.get());
@@ -47,30 +47,27 @@ public class UserService {
         return userDto;
     }
 
-    public boolean userExists(String username) {
-        return userRepository.existsById(username);
-    }
-
 
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
-        // zelf toegevoegd
         userDto.setEnabled(true);
 
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername();
     }
+
 
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
+
     public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setEnabled(newUser.getEnabled());
         user.setApikey(newUser.getApikey());
         user.setFirstname(newUser.getFirstname());
@@ -102,6 +99,7 @@ public class UserService {
         }
         userRepository.save(user);
     }
+
 
 
     public Set<Authority> getAuthorities(String username) {
@@ -153,4 +151,8 @@ public class UserService {
         return user;
     }
 
+    //nieuw
+    public Object findById(String username) {
+        return userRepository.findById(username);
+    }
 }
