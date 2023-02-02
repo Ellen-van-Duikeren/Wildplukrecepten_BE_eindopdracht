@@ -89,15 +89,13 @@ public class UserService {
         if (changeUser.getEnabled() != null) {
             user.setEnabled(changeUser.getEnabled());
         }
-        if (changeUser.getApikey() != "") {
-            user.setApikey(changeUser.getApikey());
-        }
         if (changeUser.getFirstname() != "") {
             user.setFirstname(changeUser.getFirstname());
         }
         if (changeUser.getLastname() != "") {
             user.setLastname(changeUser.getLastname());
         }
+        // do not change apikey
         if (changeUser.getEmailadress() != "") {
             user.setEmailadress(changeUser.getEmailadress());
         }

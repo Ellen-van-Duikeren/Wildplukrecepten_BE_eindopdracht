@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -122,8 +123,25 @@ class UserControllerTest {
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(userDto5)))
-                .andExpect(status().isCreated())
-        ;
+                .andExpect(status().isCreated());
+    }
+
+
+    @Test
+    void updateUser() throws Exception {
+        mockMvc.perform(put("/users/user@mail.com")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(userDto4)))
+                .andExpect(status().isNoContent());
+    }
+
+
+    @Test
+    void patchUser() throws Exception {
+        mockMvc.perform(patch("/users/user@mail.com")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(userDto4)))
+                .andExpect(status().isNoContent());
     }
 
 
